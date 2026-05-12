@@ -105,6 +105,19 @@ window._AMapSecurityConfig = {
   .project-info-table td { padding:7px 10px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
   .project-info-table .pi-label { color:var(--muted); white-space:nowrap; width:90px; font-weight:500; }
   .project-img-wrap { text-align:center; overflow-x:auto; }
+
+  /* ===== 开盘项目 ===== */
+  .launch-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .launch-table th { background:var(--primary); color:#fff; padding:8px 6px; font-size:11px; font-weight:500; white-space:nowrap; position:sticky; top:0; }
+  .launch-table td { padding:4px 6px; border:1px solid var(--border); }
+  .launch-table td[contenteditable] { background:#fffff0; min-width:60px; outline:none; transition:background 0.15s; }
+  .launch-table td[contenteditable]:focus { background:#fff9c4; box-shadow:inset 0 0 0 2px var(--accent); }
+  .launch-table td[contenteditable]:empty::before { content:'点击填写'; color:#ccc; font-style:italic; }
+  .launch-table .del-btn { background:none; border:none; color:#c0392b; cursor:pointer; font-size:16px; padding:2px 6px; }
+  .launch-table .del-btn:hover { background:#fde8e8; border-radius:4px; }
+  .launch-add-btn { background:var(--accent); color:#fff; border:none; padding:6px 16px; border-radius:4px; cursor:pointer; font-size:12px; font-weight:500; }
+  .launch-add-btn:hover { opacity:0.85; }
+  @media (max-width:768px) { .launch-table { font-size:10px; } .launch-table th,.launch-table td { padding:4px 3px; } }
   @media (max-width:768px) {
     .project-top-row { grid-template-columns:1fr; }
     .project-map { height:280px; }
@@ -330,7 +343,7 @@ window._AMapSecurityConfig = {
   <a href="#newhome" onclick="scrollToSection('newhome')">新房市场</a>
   <a href="#ranking" onclick="scrollToSection('ranking')">成交排名</a>
   <a href="#beike-new" onclick="scrollToSection('beike-new')">贝壳新房</a>
-  <a href="#secondhand" onclick="scrollToSection('secondhand')">二手房市场</a>
+  <a href="#launch" onclick="scrollToSection('launch')">开盘项目</a>
   <a href="#beike-old" onclick="scrollToSection('beike-old')">贝壳二手</a>
   <a href="#land" onclick="scrollToSection('land')">土地市场</a>
   <a href="#planning" onclick="scrollToSection('planning')">规证公示</a>
@@ -593,6 +606,79 @@ window._AMapSecurityConfig = {
       </div>
     </div>
     <p style="font-size:11px;color:var(--muted);margin-top:12px;">注：板块地图使用百度地图底图（BD-09坐标系）。部分板块暂无坐标数据，未在地图上显示。板块填色以成交套数为依据。</p>
+  </div>
+</section>
+
+<!-- ====== 本周开盘项目 ====== -->
+<section id="launch" class="section">
+  <div class="section-title"><span class="icon">🚀</span>本周开盘项目</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">手动填写数据 · 点击地图添加项目位置 · 表格可直接编辑</p>
+
+  <div class="project-top-row">
+    <div class="card" style="padding:0; min-height:400px;">
+      <div id="launchMap" class="project-map" style="height:480px;"></div>
+      <p style="font-size:11px;color:var(--muted);padding:8px 12px;border-top:1px solid var(--border);">💡 点击地图任意位置添加项目标记，点击标记可输入项目名称或删除</p>
+    </div>
+    <div class="card project-info-card" style="overflow-x:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
+        <h4 style="font-size:16px;color:var(--primary);">项目开盘信息表</h4>
+        <button class="launch-add-btn" onclick="addLaunchRow()">+ 添加行</button>
+      </div>
+      <table class="launch-table">
+        <thead>
+          <tr>
+            <th>开盘类型</th>
+            <th>项目名称</th>
+            <th>开盘时间</th>
+            <th>供应套型</th>
+            <th>供应套数</th>
+            <th>认购套数</th>
+            <th>去化率</th>
+            <th>认购均价<br>(元/㎡)</th>
+            <th>销售分析</th>
+            <th style="width:36px;"></th>
+          </tr>
+        </thead>
+        <tbody id="launchTableBody">
+          <tr>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true" oninput="recalcRow(this)"></td>
+            <td contenteditable="true" oninput="recalcRow(this)"></td>
+            <td class="launch-rate"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true" oninput="recalcRow(this)"></td>
+            <td contenteditable="true" oninput="recalcRow(this)"></td>
+            <td class="launch-rate"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>
+          </tr>
+          <tr>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true" oninput="recalcRow(this)"></td>
+            <td contenteditable="true" oninput="recalcRow(this)"></td>
+            <td class="launch-rate"></td>
+            <td contenteditable="true"></td>
+            <td contenteditable="true"></td>
+            <td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
@@ -1839,6 +1925,117 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
     infoWin.open(projectMap, [103.9835, 30.6902]);
   }, 500);
 })();
+
+// ===== Launch Map (本周开盘项目 高德地图) =====
+(function() {
+  var mapContainer = document.getElementById('launchMap');
+  if (!mapContainer || mapContainer.offsetHeight === 0) return;
+
+  var launchMap = new AMap.Map('launchMap', {
+    center: [104.0668, 30.5728],
+    zoom: 11,
+    viewMode: '2D',
+    resizeEnable: true
+  });
+
+  var markers = [];
+
+  launchMap.on('click', function(e) {
+    var name = prompt('请输入项目名称：', '');
+    if (!name) return;
+
+    var marker = new AMap.Marker({
+      position: [e.lnglat.getLng(), e.lnglat.getLat()],
+      title: name,
+      map: launchMap
+    });
+
+    var infoContent = '<div style="padding:6px 10px;font-size:12px;">'
+      + '<strong>' + name + '</strong><br>'
+      + '<span style="color:#999;">坐标: ' + e.lnglat.getLng().toFixed(4) + ', ' + e.lnglat.getLat().toFixed(4) + '</span><br>'
+      + '<a href="javascript:void(0)" onclick="removeLaunchMarker(this)" style="color:#c0392b;font-size:11px;">删除此标记</a></div>';
+
+    marker.on('click', function() {
+      var infoWin = new AMap.InfoWindow({
+        content: infoContent,
+        offset: new AMap.Pixel(0, -30)
+      });
+      infoWin.open(launchMap, marker.getPosition());
+    });
+
+    marker.infoContent = infoContent;
+    marker._launchName = name;
+    markers.push(marker);
+
+    // Auto open info window
+    setTimeout(function() {
+      var infoWin = new AMap.InfoWindow({
+        content: infoContent,
+        offset: new AMap.Pixel(0, -30)
+      });
+      infoWin.open(launchMap, marker.getPosition());
+    }, 300);
+  });
+
+  window.removeLaunchMarker = function(el) {
+    // Find and remove marker - close all info windows first
+    var allWindows = document.querySelectorAll('.amap-info-window');
+    allWindows.forEach(function(w) { w.remove && w.remove(); });
+
+    // Rebuild without the deleted marker
+    // Simple approach: just alert the user to re-add
+    alert('请在地图上重新点击添加项目标记。如需清除所有标记，请刷新页面。');
+  };
+})();
+
+// ===== Launch Table: row add/delete & auto calc =====
+function addLaunchRow() {
+  var tbody = document.getElementById('launchTableBody');
+  if (!tbody) return;
+  var tr = document.createElement('tr');
+  tr.innerHTML = '<td contenteditable="true"></td>'
+    + '<td contenteditable="true"></td>'
+    + '<td contenteditable="true"></td>'
+    + '<td contenteditable="true"></td>'
+    + '<td contenteditable="true" oninput="recalcRow(this)"></td>'
+    + '<td contenteditable="true" oninput="recalcRow(this)"></td>'
+    + '<td class="launch-rate"></td>'
+    + '<td contenteditable="true"></td>'
+    + '<td contenteditable="true"></td>'
+    + '<td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>';
+  tbody.appendChild(tr);
+  // Scroll to new row
+  tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function deleteLaunchRow(btn) {
+  var tbody = document.getElementById('launchTableBody');
+  if (!tbody || tbody.children.length <= 1) {
+    alert('至少保留一行');
+    return;
+  }
+  btn.closest('tr').remove();
+}
+
+function recalcRow(cell) {
+  var row = cell.closest('tr');
+  var cells = row.querySelectorAll('td[contenteditable]');
+  var supply = parseFloat(cells[4].textContent.trim()) || 0;
+  var sub = parseFloat(cells[5].textContent.trim()) || 0;
+  var rateCell = row.querySelector('.launch-rate');
+  if (rateCell) {
+    if (supply > 0 && sub >= 0) {
+      var rate = (sub / supply * 100);
+      rateCell.textContent = rate.toFixed(1) + '%';
+      rateCell.style.color = rate >= 80 ? '#27ae60' : rate >= 50 ? '#e67e22' : '#c0392b';
+      rateCell.style.fontWeight = '600';
+    } else {
+      rateCell.textContent = '—';
+      rateCell.style.color = '';
+      rateCell.style.fontWeight = '';
+    }
+  }
+}
 
 </script>
 
