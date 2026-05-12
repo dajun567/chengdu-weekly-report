@@ -596,9 +596,9 @@ window._AMapSecurityConfig = {
   </div>
 </section>
 
-<!-- ====== 二手房市场监测（贝壳找房） ====== -->
+<!-- ====== 贝壳二手市场监测 ====== -->
 <section id="beike-old" class="section">
-  <div class="section-title"><span class="icon">📈</span>四、二手房市场监测（贝壳找房）</div>
+  <div class="section-title"><span class="icon">📈</span>四、贝壳二手市场监测</div>
   <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：贝壳找房 · 成都二手 · 近20周趋势（部分月度数据）</p>
   <div class="beike-charts">
     <div class="beike-chart-card">
@@ -637,13 +637,6 @@ window._AMapSecurityConfig = {
       <div class="chart-wrap"><canvas id="chartOldRatio"></canvas></div>
       <div class="chart-note">柱状：新增有效客户量+新增房源量(套) · 折线：新增有效客房比</div>
     </div>
-    <div class="beike-chart-card">
-      <h4>潜客走势（月度）</h4>
-        <div class="chart-stats" id="statsOldPotential"></div>
-      <div class="chart-wrap"><canvas id="chartOldPotential"></canvas></div>
-      <div class="chart-note">柱状：新二潜客量 · 折线：潜客支付力(万元)</div>
-    </div>
-    
   </div>
 </section>
 
@@ -793,7 +786,6 @@ const OLD_VIEWING = [["2025W52",38],["2026W01",40],["2026W02",40],["2026W03",38]
 const OLD_SUPPLY_DEMAND = [["2025W52",5318,1347,17199,12972],["2026W01",5051,1240,17867,12836],["2026W02",6054,1553,17448,13110],["2026W03",5581,1640,16970,13041],["2026W04",4978,1560,17219,13135],["2026W05",4914,1418,16994,12976],["2026W06",3630,1263,16404,13684],["2026W07",1379,552,16653,13971],["2026W08",556,41,15784,12343],["2026W09",8624,1605,16314,12389],["2026W10",7912,2413,16893,12778],["2026W11",7622,2641,16690,12709],["2026W12",7217,2536,17226,12951],["2026W13",6602,2414,16592,12979],["2026W14",5858,1924,16636,12883],["2026W15",6826,2413,16804,12775],["2026W16",6370,2098,16982,12929],["2026W17",6007,1905,17614,13122],["2026W18",4669,1451,17006,12923],["2026W19",6198,2057,17277,12918]];
 const OLD_CYCLE = [["2025W52",131,103],["2026W01",140,102],["2026W02",138,106],["2026W03",145,97],["2026W04",136,99],["2026W05",147,100],["2026W06",140,98],["2026W07",164,91],["2026W08",134,113],["2026W09",158,102],["2026W10",154,103],["2026W11",157,97],["2026W12",163,96],["2026W13",153,91],["2026W14",151,90],["2026W15",153,97],["2026W16",153,90],["2026W17",151,94],["2026W18",150,97],["2026W19",152,96]];
 const OLD_RATIO = [["2025-05",1.9874,57936,29152],["2025-06",1.7733,52294,29489],["2025-07",1.5079,47048,31202],["2025-08",1.6225,47608,29343],["2025-09",1.5971,49647,31086],["2025-10",1.8304,51107,27921],["2025-11",1.7428,47691,27365],["2025-12",1.7277,45258,26196],["2026-01",1.9163,48339,25225],["2026-02",1.8309,26443,14443],["2026-03",2.0773,71584,34460],["2026-04",1.9918,56170,28200]];
-const OLD_POTENTIAL = [["2025-05",223217,161.9],["2025-06",222399,160.2],["2025-07",222307,155.9],["2025-08",221909,155.6],["2025-09",220696,149.8],["2025-10",219058,153.4],["2025-11",215258,150.5],["2025-12",221423,154.6],["2026-01",218249,147.8],["2026-02",206941,146.4]];
 const OLD_DEMAND = [["2025W52",18024,8830,425],["2026W01",19250,7103,390],["2026W02",18971,8645,354],["2026W03",21003,8567,325],["2026W04",19285,7761,357],["2026W05",18046,7084,329],["2026W06",16059,5673,248],["2026W07",14055,2583,97],["2026W08",16554,1296,14],["2026W09",29319,10342,596],["2026W10",26651,10609,538],["2026W11",29719,12716,662],["2026W12",26481,12259,562],["2026W13",25113,10152,559],["2026W14",23031,10010,602],["2026W15",24803,11356,538],["2026W16",23540,9914,393],["2026W17",20985,9473,389],["2026W18",21450,11459,638],["2026W19",23563,12120,719]];
 
 // ===== Smooth scroll =====
@@ -1507,9 +1499,6 @@ function setStats(elId, curVal, prevVal, label, suffix) {
   setStats('statsOldRatio', (last[1]*100).toFixed(1), (prev[1]*100).toFixed(1), '本月客房比', '%');
   document.getElementById('statsOldRatio').innerHTML += '<span class="stat-item"><span>新增客户：</span><span class="stat-val">' + fmtVal(last[2]) + '</span></span>' + fmtChg(last[2], prev[2]);
 
-  d = OLD_POTENTIAL; last = d[d.length-1]; prev = d[d.length-2];
-  setStats('statsOldPotential', fmtVal(last[1]), fmtVal(prev[1]), '本月潜客量', '');
-  document.getElementById('statsOldPotential').innerHTML += '<span class="stat-item"><span>支付力：</span><span class="stat-val">' + fmtVal(last[2]) + '万</span></span>' + fmtChg(last[2], prev[2]);
 })();
 
 
@@ -1726,30 +1715,6 @@ var COLORS = {
         { type: 'bar', label: '新增有效客户量', data: OLD_RATIO.map(function(r){return r[2];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 3 },
         { type: 'bar', label: '新增房源量(套)', data: OLD_RATIO.map(function(r){return r[3];}), backgroundColor: COLORS.greenLight, borderRadius: 3, yAxisID: 'y', order: 2 },
         { type: 'line', label: '新增有效客房比', data: OLD_RATIO.map(function(r){return Math.round(r[1]*100)/100;}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 7, tension: 0.3, yAxisID: 'y1', order: 1 }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
-      scales: {
-        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
-        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
-        x: { ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 0 } }
-      }
-    }
-  });
-})();
-
-(function() {
-  var ctx = document.getElementById('chartOldPotential').getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: getLabels(OLD_POTENTIAL),
-      datasets: [
-        { type: 'bar', label: '潜客量', data: OLD_POTENTIAL.map(function(r){return r[1];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 2 },
-        { type: 'line', label: '潜客支付力(万元)', data: OLD_POTENTIAL.map(function(r){return r[2];}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 7, tension: 0.3, yAxisID: 'y1', order: 1 }
       ]
     },
     options: {
