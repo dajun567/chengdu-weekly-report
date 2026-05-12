@@ -117,6 +117,14 @@ window._AMapSecurityConfig = {
   .launch-table .del-btn:hover { background:#fde8e8; border-radius:4px; }
   .launch-add-btn { background:var(--accent); color:#fff; border:none; padding:6px 16px; border-radius:4px; cursor:pointer; font-size:12px; font-weight:500; }
   .launch-add-btn:hover { opacity:0.85; }
+  .launch-pub-btn { background:#fff; color:var(--primary); border:1px solid var(--primary); padding:5px 14px; border-radius:4px; cursor:pointer; font-size:12px; font-weight:500; }
+  .launch-pub-btn:hover { background:var(--primary); color:#fff; }
+  .launch-pub-primary { background:var(--primary); color:#fff; }
+  .launch-pub-primary:hover { background:#2c5f8a; }
+  .launch-cfg-btn { background:none; border:1px solid var(--border); padding:5px 8px; border-radius:4px; cursor:pointer; font-size:14px; }
+  .launch-cfg-btn:hover { background:#f0f0f0; }
+  .launch-status-ok { color:#27ae60 !important; }
+  .launch-status-err { color:var(--accent) !important; }
   @media (max-width:768px) { .launch-table { font-size:10px; } .launch-table th,.launch-table td { padding:4px 3px; } }
   @media (max-width:768px) {
     .project-top-row { grid-template-columns:1fr; }
@@ -617,7 +625,15 @@ if (!sessionStorage.getItem('cdre_auth')) { window.location.replace('login.html'
 <!-- ====== 本周开盘项目 ====== -->
 <section id="launch" class="section">
   <div class="section-title"><span class="icon">🚀</span>本周开盘项目</div>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">手动填写数据 · 点击地图添加项目位置 · 表格可直接编辑</p>
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
+    <p style="font-size:13px;color:var(--muted);margin:0;">手动填写 · 点击地图标记位置 · 表格可直接编辑</p>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span id="launchStatus" style="font-size:11px;color:var(--muted);"></span>
+      <button class="launch-pub-btn" onclick="loadPublishedData()" title="从服务器加载已发布数据">📥 加载</button>
+      <button class="launch-pub-btn launch-pub-primary" onclick="publishData()" title="发布到服务器，其他人可见">📤 发布</button>
+      <button class="launch-cfg-btn" onclick="setupToken()" title="设置 GitHub Token">⚙️</button>
+    </div>
+  </div>
 
   <div class="project-top-row">
     <div class="card" style="padding:0; min-height:400px;">
@@ -2002,6 +2018,7 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
     });
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch(e) {}
   }
+  window._saveLaunchTable = saveTable;
 
   function loadTable() {
     try {
@@ -2091,6 +2108,199 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
 
   // Load saved data on page init
   loadTable();
+})();
+
+// ===== GitHub 发布系统 =====
+var GH_OWNER = 'v6445123-creator';
+var GH_REPO = 'chengdu-weekly-report';
+var GH_FILE = 'launch_data.json';
+var GH_API = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
+var GH_RAW = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/main/' + GH_FILE;
+var TOKEN_KEY = 'gh_pat_launch';
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+function setStatus(msg, cls) {
+  var el = document.getElementById('launchStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = cls || '';
+  setTimeout(function() { el.textContent = ''; el.className = ''; }, 4000);
+}
+
+window.setupToken = function() {
+  var msg = '请输入 GitHub Personal Access Token：\n\n'
+    + '如何获取：\n'
+    + '1. 访问 https://github.com/settings/tokens\n'
+    + '2. 点击 "Generate new token (classic)"\n'
+    + '3. 勾选 "public_repo" 权限\n'
+    + '4. 生成后粘贴到这里\n\n'
+    + '当前 Token：' + (getToken() ? '已设置 (' + getToken().substring(0,8) + '...)' : '未设置');
+  var token = prompt(msg, getToken() || '');
+  if (token && token.trim()) {
+    localStorage.setItem(TOKEN_KEY, token.trim());
+    setStatus('Token 已保存', 'launch-status-ok');
+  }
+};
+
+function collectData() {
+  var rows = [];
+  var tbody = document.getElementById('launchTableBody');
+  if (tbody) {
+    tbody.querySelectorAll('tr').forEach(function(tr) {
+      var cells = tr.querySelectorAll('td[contenteditable]');
+      var row = [];
+      cells.forEach(function(td) { row.push(td.textContent.trim()); });
+      // Only include non-empty rows
+      var hasContent = row.some(function(v) { return v !== ''; });
+      if (hasContent) rows.push(row);
+    });
+  }
+  var markers = [];
+  try {
+    var saved = JSON.parse(localStorage.getItem('launch_markers_v1'));
+    if (saved && saved.length) markers = saved;
+  } catch(e) {}
+  return { rows: rows, markers: markers, updatedAt: new Date().toISOString() };
+}
+
+window.publishData = function() {
+  var token = getToken();
+  if (!token) {
+    alert('请先设置 GitHub Token（点击 ⚙️ 按钮）');
+    setupToken();
+    return;
+  }
+  var data = collectData();
+  if (!data.rows.length && !data.markers.length) {
+    alert('没有可发布的数据。请先填写表格或添加地图标记。');
+    return;
+  }
+  var btn = document.querySelector('.launch-pub-primary');
+  if (btn) { btn.disabled = true; btn.textContent = '发布中...'; }
+
+  var content = JSON.stringify(data, null, 2);
+  var b64 = btoa(unescape(encodeURIComponent(content)));
+
+  // First GET existing file to get SHA
+  fetch(GH_API, { headers: { 'Authorization': 'Bearer ' + token } })
+    .then(function(r) { return r.ok ? r.json() : { sha: null }; })
+    .then(function(existing) {
+      var body = { message: 'Update launch data', content: b64 };
+      if (existing.sha) body.sha = existing.sha;
+      return fetch(GH_API, {
+        method: 'PUT',
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+    })
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(result) {
+      setStatus('发布成功！(' + new Date().toLocaleTimeString() + ')', 'launch-status-ok');
+      if (btn) { btn.disabled = false; btn.textContent = '📤 发布'; }
+    })
+    .catch(function(err) {
+      setStatus('发布失败: ' + err.message, 'launch-status-err');
+      if (btn) { btn.disabled = false; btn.textContent = '📤 发布'; }
+      if (err.message.indexOf('401') > -1) {
+        alert('Token 无效或已过期，请重新设置（点击 ⚙️）。');
+        localStorage.removeItem(TOKEN_KEY);
+      }
+    });
+};
+
+window.loadPublishedData = function() {
+  var btn = document.querySelector('.launch-pub-btn:not(.launch-pub-primary)');
+  if (btn) { btn.disabled = true; btn.textContent = '加载中...'; }
+
+  fetch(GH_RAW + '?t=' + Date.now())
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      // Populate markers
+      if (data.markers && data.markers.length) {
+        localStorage.setItem('launch_markers_v1', JSON.stringify(data.markers));
+        // Reload map markers (requires page refresh or rebuild markers)
+        setStatus('数据已加载，请刷新页面以显示地图标记', 'launch-status-ok');
+      }
+      // Populate table
+      if (data.rows && data.rows.length) {
+        var tbody = document.getElementById('launchTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        data.rows.forEach(function(rowData) {
+          // normalize to 9 columns
+          while (rowData.length < 9) rowData.push('');
+          if (rowData.length > 9) rowData = rowData.slice(0, 9);
+          window._addRowFromData(rowData);
+        });
+        // Save to localStorage too
+        var tableData = [];
+        tbody.querySelectorAll('tr').forEach(function(tr) {
+          var cells = tr.querySelectorAll('td[contenteditable]');
+          var row = [];
+          cells.forEach(function(td) { row.push(td.textContent.trim()); });
+          tableData.push(row);
+        });
+        try { localStorage.setItem('launch_table_v1', JSON.stringify(tableData)); } catch(e) {}
+        setStatus('已加载 ' + data.rows.length + ' 条记录 (' + (data.updatedAt || '').substring(0,10) + ')', 'launch-status-ok');
+      } else {
+        setStatus('服务器暂无数据', '');
+      }
+      if (btn) { btn.disabled = false; btn.textContent = '📥 加载'; }
+    })
+    .catch(function(err) {
+      setStatus('加载失败: ' + err.message, 'launch-status-err');
+      if (btn) { btn.disabled = false; btn.textContent = '📥 加载'; }
+    });
+};
+
+// Expose addRow for loadPublishedData (uses the inner addRow function)
+window._addRowFromData = function(data) {
+  var tbody = document.getElementById('launchTableBody');
+  if (!tbody) return;
+  var tr = document.createElement('tr');
+  var editableCols = [false, false, false, false, true, true, false, false, false];
+  for (var i = 0; i < 9; i++) {
+    var td = document.createElement('td');
+    td.setAttribute('contenteditable', 'true');
+    if (data[i]) td.textContent = data[i];
+    if (editableCols[i]) {
+      td.oninput = function() { recalcRow(this); if (window._saveLaunchTable) window._saveLaunchTable(); };
+    }
+    td.onblur = function() { if (window._saveLaunchTable) window._saveLaunchTable(); };
+    tr.appendChild(td);
+  }
+  // 去化率 cell
+  var rateTd = document.createElement('td');
+  rateTd.className = 'launch-rate';
+  tr.appendChild(rateTd);
+  // Delete button
+  var delTd = document.createElement('td');
+  var delBtn = document.createElement('button');
+  delBtn.className = 'del-btn';
+  delBtn.textContent = '×';
+  delBtn.title = '删除行';
+  delBtn.onclick = function() { deleteLaunchRow(this); };
+  delTd.appendChild(delBtn);
+  tr.appendChild(delTd);
+  tbody.appendChild(tr);
+  // Recalc if data has supply/sub values
+  if (data[4] || data[5]) {
+    setTimeout(function() { recalcRow(tr.querySelectorAll('td[contenteditable]')[4]); }, 50);
+  }
+};
+
+// Check token status on load
+(function() {
+  if (getToken()) { setStatus('Token 已就绪', 'launch-status-ok'); }
 })();
 
 </script>
