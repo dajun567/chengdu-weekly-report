@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>成都房地产市场周报 | 2026年第19周 (5.4-5.10)</title>
+<script>
+window._AMapSecurityConfig = {
+  securityJsCode: '042cd6c07dab9e0a1f78fe505e23989d'
+};
+</script>
+<script src="https://webapi.amap.com/maps?v=2.0&key=37b06865a18c74420f8b2724427bd812"></script>
+<script src="https://api.map.baidu.com/api?v=3.0&ak=gbBJzz3WNdYUfFkX2n2m3RxDHMp1lmoJ"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #1a3a5c;
+    --accent: #c41230;
+    --bg: #f5f5f5;
+    --card: #ffffff;
+    --text: #333333;
+    --muted: #888888;
+    --border: #e0e0e0;
+    --up: #c41230;
+    --down: #2e7d32;
+    --tag-policy: #e74c3c;
+    --tag-land: #e67e22;
+    --tag-plan: #3498db;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; background: var(--bg); color: var(--text); line-height:1.6; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, var(--primary) 0%, #2c5f8a 100%);
+    color: white; padding: 32px 40px;
+  }
+  .header h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; }
+  .header .sub { font-size: 14px; opacity: 0.85; margin-top: 6px; }
+  .header .meta { display:flex; gap:24px; margin-top:12px; font-size:13px; opacity:0.75; }
+
+  /* Navigation */
+  .nav { display:flex; gap:0; background:white; border-bottom:2px solid var(--border); padding:0 40px; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+  .nav a { padding:14px 20px; text-decoration:none; color:var(--muted); font-size:14px; font-weight:500; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all 0.2s; cursor:pointer; }
+  .nav a:hover, .nav a.active { color:var(--primary); border-bottom-color:var(--accent); }
+
+  /* Layout */
+  .container { max-width:1280px; margin:0 auto; padding:24px 40px; }
+  .section { margin-bottom:40px; }
+  .section-title {
+    font-size:20px; font-weight:700; color:var(--primary); padding-bottom:10px;
+    border-bottom:2px solid var(--accent); margin-bottom:20px; display:flex; align-items:center; gap:10px;
+  }
+  .section-title .icon { font-size:22px; }
+
+  /* Cards */
+  .card { background:var(--card); border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.06); padding:24px; }
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
+
+  /* KPI Cards */
+  .kpi-row { display:flex; gap:20px; flex-wrap:wrap; }
+  .kpi {
+    flex:1; min-width:160px; background:var(--card); border-radius:8px;
+    padding:20px 24px; box-shadow:0 2px 12px rgba(0,0,0,0.06); text-align:center;
+  }
+  .kpi .label { font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+  .kpi .value { font-size:32px; font-weight:700; color:var(--primary); margin:6px 0; }
+  .kpi .change { font-size:13px; }
+  .kpi .change.up { color:var(--up); }
+  .kpi .change.down { color:var(--down); }
+
+  /* Tables */
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { background:#f8f9fa; padding:10px 12px; text-align:left; font-weight:600; color:var(--primary); border-bottom:2px solid var(--border); white-space:nowrap; }
+  td { padding:10px 12px; border-bottom:1px solid var(--border); }
+  tr:hover td { background:#f8f9ff; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:3px; font-size:11px; font-weight:600; }
+  .tag-policy { background:#fde8e8; color:#c41230; }
+  .tag-land { background:#fef3e2; color:#e67e22; }
+  .tag-plan { background:#e8f4fd; color:#2980b9; }
+  .impact { display:inline-block; padding:2px 8px; border-radius:3px; font-size:11px; font-weight:700; margin-left:6px; vertical-align:middle; }
+  .impact-high { background:#c41230; color:#fff; }
+  /* 贝壳数据模块 */
+  .beike-charts { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .beike-charts.full { grid-template-columns:1fr; }
+  .beike-chart-card { background:var(--card); border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.06); padding:18px; }
+  .beike-chart-card h4 { font-size:14px; color:var(--primary); margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .beike-chart-card .chart-wrap { position:relative; width:100%; height:280px; }
+  .beike-chart-card .chart-wrap canvas { width:100% !important; }
+  .beike-chart-card .chart-note { font-size:11px; color:var(--muted); margin-top:4px; }
+  @media (max-width:768px) { .beike-charts { grid-template-columns:1fr; } }
+  .impact-mid { background:#e67e22; color:#fff; }
+  .impact-low { background:#f0ad4e; color:#fff; }
+
+  /* Charts area */
+  .chart-wrap { position:relative; height:360px; }
+  .chart-wrap.tall { height:420px; }
+  .chart-scroll { overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; }
+  .chart-scroll::-webkit-scrollbar { height:8px; }
+  .chart-scroll::-webkit-scrollbar-track { background:#f1f5f9; border-radius:4px; }
+  .chart-scroll::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:4px; }
+  .chart-scroll::-webkit-scrollbar-thumb:hover { background:#94a3b8; }
+  .chart-wrap-wide { height:420px; }
+  .chart-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:768px) { .chart-row { grid-template-columns:1fr; } }
+
+  /* Map */
+  .map-wrap { height:450px; border-radius:8px; overflow:hidden; }
+  .map-legend { display:flex; gap:16px; margin-top:10px; font-size:12px; color:var(--muted); }
+  .map-legend span { display:flex; align-items:center; gap:4px; }
+  .map-legend .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .dot-supply { background:#e74c3c; }
+  .dot-deal { background:#2ecc71; }
+
+  /* Tabs */
+  .tabs { display:flex; gap:0; margin-bottom:16px; }
+  .tab-btn {
+    padding:8px 20px; border:1px solid var(--border); background:white; cursor:pointer;
+    font-size:13px; font-weight:500; transition:all 0.2s;
+  }
+  .tab-btn:first-child { border-radius:6px 0 0 6px; }
+  .tab-btn:last-child { border-radius:0 6px 6px 0; }
+  .tab-btn.active { background:var(--primary); color:white; border-color:var(--primary); }
+
+  /* Policy cards */
+  .policy-item {
+    padding:16px 0; border-bottom:1px solid var(--border);
+    display:flex; gap:14px; align-items:flex-start;
+  }
+  .policy-item:last-child { border-bottom:none; }
+  .policy-date { font-size:11px; color:var(--muted); white-space:nowrap; min-width:80px; padding-top:2px; }
+  .policy-content h4 { font-size:15px; margin-bottom:4px; }
+  .policy-content p { font-size:13px; color:#555; }
+  .policy-source { font-size:11px; color:var(--muted); margin-top:4px; }
+  .policy-source a { color:#2980b9; text-decoration:none; }
+  .policy-source a:hover { text-decoration:underline; }
+  .no-policy { text-align:center; padding:32px 20px; color:var(--muted); font-size:14px; }
+  .no-policy .icon { font-size:36px; display:block; margin-bottom:10px; opacity:0.5; }
+
+  /* Footer */
+  .footer { text-align:center; padding:24px; color:var(--muted); font-size:12px; border-top:1px solid var(--border); margin-top:40px; }
+
+  /* Popup styles */
+  .amap-info-content { font-size:12px; line-height:1.6; }
+  .amap-info-content strong { color:var(--primary); }
+
+  /* ===== 响应式布局 ===== */
+  @media (max-width:768px) {
+    /* Header */
+    .header { padding:20px 16px; }
+    .header h1 { font-size:20px; letter-spacing:1px; }
+    .header .sub { font-size:12px; }
+    .header .meta { flex-wrap:wrap; gap:12px; font-size:11px; }
+
+    /* Nav - 横向滚动 */
+    .nav { padding:0 8px; overflow-x:auto; -webkit-overflow-scrolling:touch; white-space:nowrap; }
+    .nav a { padding:12px 12px; font-size:12px; flex-shrink:0; }
+
+    /* Container */
+    .container { padding:16px 12px; }
+
+    /* Section title */
+    .section-title { font-size:17px; }
+    .section-title .icon { font-size:18px; }
+
+    /* KPI - 2列网格 */
+    .kpi-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .kpi { min-width:0; padding:14px 12px; }
+    .kpi .value { font-size:22px; }
+    .kpi .label { font-size:11px; }
+    .kpi .change { font-size:11px; }
+
+    /* Card grid */
+    .card-grid { grid-template-columns:1fr; gap:12px; }
+
+    /* Charts */
+    .chart-wrap { height:260px; }
+    .chart-wrap.tall { height:300px; }
+    .chart-wrap-wide { height:300px; }
+    .chart-row { grid-template-columns:1fr; gap:12px; }
+    .beike-charts { grid-template-columns:1fr; gap:16px; }
+    .beike-chart-card { padding:12px; }
+    .beike-chart-card h4 { font-size:13px; }
+    .beike-chart-card .chart-wrap { height:230px; }
+    .beike-chart-card .chart-note { font-size:10px; }
+
+    /* Maps */
+    .map-wrap { height:320px; }
+    .rank-layout { grid-template-columns:1fr; gap:12px; }
+    .rank-map { height:350px; }
+    .rank-table-wrap { max-height:400px; }
+
+    /* Tables */
+    table { font-size:11px; }
+    th, td { padding:7px 8px; }
+    .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+    /* Tabs */
+    .tabs { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .tab-btn { padding:6px 14px; font-size:12px; white-space:nowrap; flex-shrink:0; }
+
+    /* Policy */
+    .policy-item { flex-direction:column; gap:4px; padding:12px 0; }
+    .policy-date { min-width:auto; }
+    .policy-content h4 { font-size:14px; }
+
+    /* Card */
+    .card { padding:16px; }
+
+    /* Footer */
+    .footer { padding:16px; font-size:11px; margin-top:24px; }
+  }
+
+  /* 小屏手机 (<=480px) */
+  @media (max-width:480px) {
+    .header h1 { font-size:18px; }
+    .kpi-row { grid-template-columns:1fr 1fr; gap:8px; }
+    .kpi { padding:10px 8px; }
+    .kpi .value { font-size:20px; }
+    .map-wrap { height:250px; }
+    .rank-map { height:280px; }
+    .beike-chart-card .chart-wrap { height:200px; }
+    .chart-wrap { height:220px; }
+    .nav a { padding:10px 10px; font-size:11px; }
+    .section-title { font-size:15px; }
+  }
+
+  /* Ranking section */
+  .rank-layout { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .rank-map { height:520px; border-radius:8px; overflow:hidden; }
+  .rank-table-wrap { max-height:520px; overflow-y:auto; }
+  .rank-table-wrap table { font-size:12px; }
+  .rank-table-wrap th { position:sticky; top:0; z-index:1; }
+  .plate-section { margin-top:24px; }
+  .plate-section h4 { font-size:14px; color:var(--primary); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  @media (max-width:768px) { .rank-layout { grid-template-columns:1fr; } .rank-map { height:350px; } }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>成都房地产市场周报</h1>
+  <div class="sub">Chengdu Real Estate Market Weekly Report</div>
+  <div class="meta">
+    <span>报告期：2026年第19周（5月4日 - 5月10日）</span>
+    <span>发布日期：2026年5月11日 周一</span>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <a href="#policy" class="active" onclick="scrollToSection('policy')">政策动态</a>
+  <a href="#newhome" onclick="scrollToSection('newhome')">新房市场</a>
+  <a href="#ranking" onclick="scrollToSection('ranking')">成交排名</a>
+  <a href="#beike-new" onclick="scrollToSection('beike-new')">贝壳新房</a>
+  <a href="#secondhand" onclick="scrollToSection('secondhand')">二手房市场</a>
+  <a href="#beike-old" onclick="scrollToSection('beike-old')">贝壳二手</a>
+  <a href="#land" onclick="scrollToSection('land')">土地市场</a>
+  <a href="#planning" onclick="scrollToSection('planning')">规证公示</a>
+  <a href="#summary" onclick="scrollToSection('summary')">本周小结</a>
+</div>
+
+<div class="container">
+
+<!-- ====== 1. 政策动态 ====== -->
+<section id="policy" class="section">
+  <div class="section-title"><span class="icon">📋</span>一、政策动态</div>
+  <div class="card" id="policyCard">
+    <!-- 每周编辑时：如果上周无政策，删除所有 .policy-item 元素，空状态提示会自动显示 -->
+    <div id="policyList">
+    <div class="policy-item">
+      <span class="policy-date">5月9日</span>
+      <div class="policy-content">
+        <h4>
+          <span class="tag tag-policy">中央</span>
+          <span class="impact impact-high">★★★ 重大影响</span>
+          国常会：持续推进房地产领域风险化解
+        </h4>
+        <p>国务院总理李强5月9日主持召开国务院常务会议，强调"要有力有效应对风险挑战，持续推进房地产、地方政府债务、中小金融机构等领域风险化解"，要求宏观政策靠前发力、不断提升实施效能。这是继4月28日政治局会议定调"努力稳定房地产市场"后，中央再次对房地产风险化解作出部署，信号意义强烈。</p>
+        <div class="policy-source">
+          来源：<a href="http://www.fangchan.com/news/6/2026-05-11/7459418896995783382.html" target="_blank" rel="noopener">中房网报道</a> ｜ <a href="https://www.sohu.com/a/1020839364_415900" target="_blank" rel="noopener">中指·政策要闻汇总（5.6-5.10）</a>
+        </div>
+      </div>
+    </div>
+    <div class="policy-item">
+      <span class="policy-date">5月7日</span>
+      <div class="policy-content">
+        <h4>
+          <span class="tag tag-policy">中央</span>
+          <span class="impact impact-mid">★★☆ 较大影响</span>
+          住建部+财政部：2026年中央财政支持城市更新行动
+        </h4>
+        <p>住建部、财政部联合印发通知，2026年中央财政继续支持不超过15个城市实施城市更新行动。补助标准：东部不超过8亿元/城，中部不超过10亿元/城，西部不超过12亿元/城。成都作为西部中心城市，若入选将获最高12亿元资金支持，重点投向城市基础设施提升、完整社区建设、老旧片区更新及存量土地盘活。</p>
+        <div class="policy-source">
+          来源：<a href="https://www.cinic.org.cn/hy/yw/1634533.html" target="_blank" rel="noopener">中国产业经济信息网</a>
+        </div>
+      </div>
+    </div>
+    <div class="policy-item">
+      <span class="policy-date">5月8日</span>
+      <div class="policy-content">
+        <h4>
+          <span class="tag tag-policy">成都</span>
+          <span class="impact impact-mid">★★☆ 较大影响</span>
+          金牛区出台购房补贴新政：人才/多子女家庭最高补6万元
+        </h4>
+        <p>成都市金牛区发布《促进房地产市场健康发展的若干措施》，有效期至2026年12月31日。人才购房（中级职称/区级荣誉/2024年后毕业大专及以上）及二孩及以上家庭购新房享消费券补贴：小于140㎡补2万元，140-160㎡补3万元，160㎡以上补5万元；尾盘项目最高补6万元。同步出台商业购买补贴（300元/㎡）、车位补贴（3%-15%）、企业开发激励（最高150万元）等配套措施。</p>
+        <div class="policy-source">
+          来源：<a href="https://news.qq.com/rain/a/20260508A05Z5Z00" target="_blank" rel="noopener">腾讯新闻</a> ｜ <a href="https://www.163.com/dy/article/KSDVBTAV0514FD4Q.html" target="_blank" rel="noopener">网易房产</a>
+        </div>
+      </div>
+    </div>
+    </div><!-- #policyList -->
+    <div id="noPolicy" class="no-policy" style="display:none;">
+      <span class="icon">📭</span>
+      本周无重大房地产政策发布
+      <p style="font-size:12px;margin-top:6px;">上周（5.4-5.10）中央及成都均未出台直接面向房地产市场的新政策</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 2. 新房市场 ====== -->
+<section id="newhome" class="section">
+  <div class="section-title"><span class="icon">🏠</span>二、新房市场（商品住宅）</div>
+
+  <!-- KPI Cards -->
+  <div class="kpi-row" style="margin-bottom:20px;" id="kpiRow">
+    <div class="kpi">
+      <div class="label">本周供应套数</div>
+      <div class="value" id="kpiSupply">142<span style="font-size:16px;font-weight:400;"> 套</span></div>
+      <div class="change" id="kpiSupplyChg">↓ 93.2% 环比</div>
+    </div>
+    <div class="kpi">
+      <div class="label">本周成交套数</div>
+      <div class="value" id="kpiSales">1,178<span style="font-size:16px;font-weight:400;"> 套</span></div>
+      <div class="change" id="kpiSalesChg">↓ 0.3% 环比</div>
+    </div>
+    <div class="kpi">
+      <div class="label">成交均价</div>
+      <div class="value" id="kpiPrice">21,743<span style="font-size:16px;font-weight:400;"> 元/㎡</span></div>
+      <div class="change" id="kpiPriceChg">↓ 5.2% 环比</div>
+    </div>
+    <div class="kpi">
+      <div class="label">供销比</div>
+      <div class="value" id="kpiRatio">0.12</div>
+      <div class="change" id="kpiRatioNote" style="color:var(--muted);">供远小于求</div>
+    </div>
+    <div class="kpi">
+      <div class="label">取证项目数（上周）</div>
+      <div class="value">4<span style="font-size:16px;font-weight:400;"> 个</span></div>
+      <div class="change down">↓ 2个 环比</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="card" style="margin-bottom:20px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+      <h4 style="font-size:14px;color:var(--muted);margin:0;">商品住宅供销套数及成交均价走势（近53周）<span style="font-weight:400;font-size:11px;color:#94a3b8;margin-left:8px;">← 拖动下方滚动条查看历史 →</span></h4>
+      <div class="tabs" style="margin:0;" id="newHomeTabs">
+        <button class="tab-btn active" data-region="all">主城+近郊</button>
+        <button class="tab-btn" data-region="urban">主城</button>
+        <button class="tab-btn" data-region="suburb">近郊</button>
+      </div>
+    </div>
+    <div class="chart-scroll" id="newHomeScroll">
+      <div class="chart-wrap-wide"><canvas id="chartNewCombo"></canvas></div>
+    </div>
+  </div>
+
+  <!-- 取证项目 -->
+  <div class="card" style="margin-top:20px;">
+    <h4 style="font-size:14px;color:var(--muted);margin-bottom:4px;">本周取证项目（住宅）</h4>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">数据来源：房小团微信小程序 → 最新取证列表 → 各项目详情。仅统计上周（5.4-5.10）新获预售许可证的住宅项目。</p>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>项目名称</th><th>区域</th><th>取证日期</th><th>销售范围</th><th>房源总数</th><th>户型建面(㎡)</th><th>取证价格区间(元/㎡)</th><th>开发商</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>旭辉江与山苑<span style="font-size:10px;color:var(--muted);"><br>（推广名：旭辉恒基·江与山）</span></td>
+          <td>新都区</td>
+          <td>5月7日</td>
+          <td>待确认楼栋</td>
+          <td><strong>36套</strong></td>
+          <td>约128-189㎡</td>
+          <td>待确认</td>
+          <td>成都兴哲房地产开发有限公司</td>
+        </tr>
+        <tr>
+          <td colspan="8" style="text-align:center;color:var(--muted);padding:16px;">
+            <em>注：图片为列表页汇总视图，单个项目的楼栋、户型明细、一房一价需进入项目详情页「历史开盘」查看。<br>请补充截图（点击项目卡片 → 历史开盘 → 对应批次），我将继续完善上表。</em>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- 开盘项目 -->
+  <div class="card" style="margin-top:20px;">
+    <h4 style="font-size:14px;color:var(--muted);margin-bottom:4px;">本周开盘项目</h4>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">统计范围：上周（5.4-5.10）新开盘/加推项目 — 数据为模拟数据，待替换</p>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>项目名称</th><th>区域</th><th>物业类型</th><th>供应套数</th><th>供应面积(㎡)</th><th>备案均价(元/㎡)</th><th>去化率</th></tr></thead>
+      <tbody>
+        <tr><td>龙湖·天府云璟</td><td>天府新区</td><td>高层+洋房</td><td>312</td><td>38,500</td><td>26,800</td><td>72%</td></tr>
+        <tr><td>万科·高线公园</td><td>高新区</td><td>高层</td><td>208</td><td>23,200</td><td>31,500</td><td>65%</td></tr>
+        <tr><td>保利·锦江序</td><td>锦江区</td><td>高层</td><td>186</td><td>21,800</td><td>29,200</td><td>58%</td></tr>
+        <tr><td>华润·未来之城</td><td>龙泉驿区</td><td>高层+小高</td><td>260</td><td>28,600</td><td>15,800</td><td>81%</td></tr>
+        <tr><td>中海·天府里</td><td>天府新区</td><td>高层</td><td>168</td><td>19,200</td><td>24,500</td><td>55%</td></tr>
+        <tr><td>绿城·金沙凤起</td><td>青羊区</td><td>洋房</td><td>96</td><td>13,400</td><td>35,800</td><td>43%</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 周度成交排名 ====== -->
+<section id="ranking" class="section">
+  <div class="section-title"><span class="icon">🏆</span>周度成交排名（商品住宅）</div>
+
+  <div class="tabs" id="rankingTabs">
+    <button class="tab-btn active" data-view="district">行政区排名</button>
+    <button class="tab-btn" data-view="plate">板块排名</button>
+  </div>
+
+  <!-- 行政区视图：左侧热力图 + 右侧表格 -->
+  <div id="rankDistrict">
+    <div class="rank-layout">
+      <div class="card" style="padding:0;">
+        <div id="rankMap" class="rank-map"></div>
+      </div>
+      <div class="card rank-table-wrap">
+        <table>
+          <thead><tr><th>区域</th><th>供应套数</th><th>成交套数</th><th>成交均价(元/㎡)</th><th>存量套数</th></tr></thead>
+          <tbody>
+            <tr><td>成华区</td><td>0</td><td><strong>95</strong></td><td>23,000</td><td>3,200</td></tr>
+            <tr><td>天府新区</td><td>0</td><td><strong>91</strong></td><td>26,000</td><td>4,500</td></tr>
+            <tr><td>高新区</td><td>0</td><td><strong>85</strong></td><td>32,000</td><td>2,800</td></tr>
+            <tr><td>金牛区</td><td>0</td><td><strong>70</strong></td><td>25,000</td><td>3,500</td></tr>
+            <tr><td>锦江区</td><td>0</td><td><strong>65</strong></td><td>34,000</td><td>2,100</td></tr>
+            <tr><td>武侯区</td><td>0</td><td><strong>60</strong></td><td>28,000</td><td>2,600</td></tr>
+            <tr><td>青羊区</td><td>0</td><td><strong>55</strong></td><td>33,000</td><td>1,900</td></tr>
+            <tr style="border-top:2px solid var(--border);"><td style="font-weight:700;">主城合计</td><td style="font-weight:700;">0</td><td style="font-weight:700;">521</td><td style="font-weight:700;">28,518</td><td style="font-weight:700;">20,600</td></tr>
+            <tr><td>龙泉驿区</td><td>56</td><td><strong>160</strong></td><td>16,000</td><td>5,200</td></tr>
+            <tr><td>双流区</td><td>0</td><td><strong>145</strong></td><td>16,800</td><td>4,800</td></tr>
+            <tr><td>新都区</td><td>36</td><td><strong>122</strong></td><td>12,500</td><td>6,500</td></tr>
+            <tr><td>温江区</td><td>0</td><td><strong>120</strong></td><td>14,000</td><td>4,200</td></tr>
+            <tr><td>郫都区</td><td>50</td><td><strong>110</strong></td><td>13,500</td><td>5,800</td></tr>
+            <tr style="border-top:2px solid var(--border);"><td style="font-weight:700;">近郊合计</td><td style="font-weight:700;">142</td><td style="font-weight:700;">657</td><td style="font-weight:700;">15,129</td><td style="font-weight:700;">26,500</td></tr>
+            <tr style="border-top:2px solid var(--border); background:#f8f9fa;"><td style="font-weight:700;">总计</td><td style="font-weight:700;">142</td><td style="font-weight:700;">1,178</td><td style="font-weight:700;">21,743</td><td style="font-weight:700;">47,100</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:12px;">注：分区数据为基于市场公开信息的估算值，实际数据以成都市住建局网签为准。存量套数为截至5月10日的预售未售套数（取证未售+在售）。行政区划填色以成交套数为依据，颜色越深表示成交越活跃。坐标系统：GCJ-02。</p>
+  </div>
+
+  <!-- 板块视图：左侧百度地图 + 右侧排名表 -->
+  <div id="rankPlate" style="display:none;">
+    <div class="rank-layout">
+      <div class="card" style="padding:0;">
+        <div id="plateMap" class="rank-map"></div>
+      </div>
+      <div class="card rank-table-wrap">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">本周成交套数排名前15板块（数据为估算值）：</p>
+        <table>
+          <thead><tr><th>排名</th><th>板块</th><th>所属区域</th><th>供应套数</th><th>成交套数</th><th>成交均价(元/㎡)</th><th>存量套数</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>大面</td><td>龙泉驿区</td><td>0</td><td><strong>68</strong></td><td>16,200</td><td>1,800</td></tr>
+            <tr><td>2</td><td>东升</td><td>双流区</td><td>0</td><td><strong>55</strong></td><td>15,800</td><td>2,100</td></tr>
+            <tr><td>3</td><td>犀浦</td><td>郫都区</td><td>22</td><td><strong>48</strong></td><td>13,200</td><td>2,400</td></tr>
+            <tr><td>4</td><td>大丰</td><td>新都区</td><td>0</td><td><strong>45</strong></td><td>12,500</td><td>2,800</td></tr>
+            <tr><td>5</td><td>光华新城</td><td>温江区</td><td>0</td><td><strong>43</strong></td><td>14,000</td><td>1,600</td></tr>
+            <tr><td>6</td><td>二八板块</td><td>成华区</td><td>0</td><td><strong>38</strong></td><td>22,500</td><td>1,200</td></tr>
+            <tr><td>7</td><td>麓湖</td><td>天府新区</td><td>0</td><td><strong>35</strong></td><td>32,000</td><td>900</td></tr>
+            <tr><td>8</td><td>十陵</td><td>龙泉驿区</td><td>28</td><td><strong>32</strong></td><td>14,800</td><td>1,500</td></tr>
+            <tr><td>9</td><td>怡心湖</td><td>双流区</td><td>0</td><td><strong>30</strong></td><td>18,500</td><td>1,100</td></tr>
+            <tr><td>10</td><td>杉板桥</td><td>成华区</td><td>0</td><td><strong>28</strong></td><td>24,000</td><td>800</td></tr>
+            <tr><td>11</td><td>国宾</td><td>金牛区</td><td>0</td><td><strong>26</strong></td><td>23,500</td><td>1,000</td></tr>
+            <tr><td>12</td><td>锦江生态带</td><td>天府新区</td><td>0</td><td><strong>25</strong></td><td>21,000</td><td>1,300</td></tr>
+            <tr><td>13</td><td>航空港</td><td>双流区</td><td>0</td><td><strong>24</strong></td><td>14,500</td><td>1,400</td></tr>
+            <tr><td>14</td><td>三圣乡</td><td>锦江区</td><td>0</td><td><strong>22</strong></td><td>28,000</td><td>700</td></tr>
+            <tr><td>15</td><td>新川</td><td>高新区</td><td>0</td><td><strong>20</strong></td><td>26,500</td><td>900</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:12px;">注：板块地图使用百度地图底图（BD-09坐标系）。东升、二八板块、杉板桥、航空港4个板块暂无板块坐标数据，未在地图上显示。板块填色以成交套数为依据。</p>
+  </div>
+</section>
+
+<!-- ====== 3. 二手房市场 ====== -->
+<section id="secondhand" class="section">
+  <div class="section-title"><span class="icon">🔄</span>三、二手房市场</div>
+
+  <div class="kpi-row" style="margin-bottom:20px;">
+    <div class="kpi">
+      <div class="label">本周新增挂牌</div>
+      <div class="value">3,826<span style="font-size:16px;font-weight:400;"> 套</span></div>
+      <div class="change up">↑ 5.8% 环比</div>
+    </div>
+    <div class="kpi">
+      <div class="label">本周成交套数</div>
+      <div class="value">2,103<span style="font-size:16px;font-weight:400;"> 套</span></div>
+      <div class="change up">↑ 3.2% 环比</div>
+    </div>
+    <div class="kpi">
+      <div class="label">成交均价</div>
+      <div class="value">16,250<span style="font-size:16px;font-weight:400;"> 元/㎡</span></div>
+      <div class="change down">↓ 0.8% 环比</div>
+    </div>
+    <div class="kpi">
+      <div class="label">挂牌均价</div>
+      <div class="value">18,420<span style="font-size:16px;font-weight:400;"> 元/㎡</span></div>
+      <div class="change down">↓ 1.1% 环比</div>
+    </div>
+    <div class="kpi">
+      <div class="label">议价空间</div>
+      <div class="value">11.8<span style="font-size:16px;font-weight:400;">%</span></div>
+      <div class="change" style="color:var(--muted);">扩大0.3pp</div>
+    </div>
+  </div>
+
+  <div class="chart-row">
+    <div class="card">
+      <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">近12周二手房挂牌/成交走势（套）</h4>
+      <div class="chart-wrap"><canvas id="chartSHListing"></canvas></div>
+    </div>
+    <div class="card">
+      <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">近12周二手房成交均价走势（元/㎡）</h4>
+      <div class="chart-wrap"><canvas id="chartSHPrice"></canvas></div>
+    </div>
+  </div>
+
+  <!-- District breakdown -->
+  <div class="card" style="margin-top:20px;">
+    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周各区域二手房成交情况</h4>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>区域</th><th>成交套数</th><th>环比</th><th>成交均价(元/㎡)</th><th>环比</th><th>套均面积(㎡)</th><th>套均总价(万元)</th></tr></thead>
+      <tbody>
+        <tr><td>高新区</td><td>286</td><td class="up">↑ 6.3%</td><td>22,400</td><td class="down">↓ 1.2%</td><td>98.5</td><td>220.6</td></tr>
+        <tr><td>天府新区</td><td>245</td><td class="up">↑ 4.7%</td><td>19,800</td><td class="down">↓ 0.5%</td><td>105.2</td><td>208.3</td></tr>
+        <tr><td>锦江区</td><td>198</td><td class="up">↑ 2.1%</td><td>21,600</td><td class="down">↓ 1.8%</td><td>92.8</td><td>200.4</td></tr>
+        <tr><td>成华区</td><td>312</td><td class="up">↑ 8.7%</td><td>16,200</td><td class="up">↑ 0.3%</td><td>88.6</td><td>143.5</td></tr>
+        <tr><td>武侯区</td><td>205</td><td class="down">↓ 2.3%</td><td>17,800</td><td class="down">↓ 0.9%</td><td>91.2</td><td>162.3</td></tr>
+        <tr><td>龙泉驿区</td><td>268</td><td class="up">↑ 5.5%</td><td>13,500</td><td class="down">↓ 0.6%</td><td>95.8</td><td>129.3</td></tr>
+        <tr><td>双流区</td><td>189</td><td class="up">↑ 1.8%</td><td>14,200</td><td class="up">↑ 0.2%</td><td>102.3</td><td>145.3</td></tr>
+        <tr><td>温江区</td><td>142</td><td class="down">↓ 3.5%</td><td>11,800</td><td class="down">↓ 0.4%</td><td>96.5</td><td>113.9</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 贝壳新房数据 ====== -->
+<section id="beike-new" class="section">
+  <div class="section-title"><span class="icon">📊</span>贝壳新房市场监测</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：贝壳找房 · 成都新房 · 近20周趋势</p>
+  <div class="beike-charts">
+    <div class="beike-chart-card">
+      <h4>新房成交量价走势</h4>
+      <div class="chart-wrap"><canvas id="chartNewVolumePrice"></canvas></div>
+      <div class="chart-note">柱状：成销量(套) · 折线：成销均价(元/㎡)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>新房渠道势能</h4>
+      <div class="chart-wrap"><canvas id="chartNewChannel"></canvas></div>
+      <div class="chart-note">柱状：合作项目数(个) · 折线：合作项目占比(%)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>渠道佣金点位走势</h4>
+      <div class="chart-wrap"><canvas id="chartNewCommission"></canvas></div>
+      <div class="chart-note">折线：成销佣金点位(%)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>需求量走势（需求-转化）</h4>
+      <div class="chart-wrap"><canvas id="chartNewDemand"></canvas></div>
+      <div class="chart-note">柱状：商机量 · 折线①：带看量 · 折线②：认购量(套)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 贝壳二手数据 ====== -->
+<section id="beike-old" class="section">
+  <div class="section-title"><span class="icon">📈</span>贝壳二手市场监测</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：贝壳找房 · 成都二手 · 近20周趋势（部分月度数据）</p>
+  <div class="beike-charts">
+    <div class="beike-chart-card">
+      <h4>供销量价走势</h4>
+      <div class="chart-wrap"><canvas id="chartOldSupplyDemand"></canvas></div>
+      <div class="chart-note">柱状：新增房源量+成交量(套) · 折线：新增挂牌均价+成交均价(元/㎡)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>成交议价幅度（买卖博弈）</h4>
+      <div class="chart-wrap"><canvas id="chartOldBargain"></canvas></div>
+      <div class="chart-note">折线：二手成交房源议价幅度 vs 30天前挂牌价(%) · 数值越大买方议价空间越大</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>买方情绪 · 看房次数</h4>
+      <div class="chart-wrap"><canvas id="chartOldViewing"></canvas></div>
+      <div class="chart-note">折线：成交客户平均有效带看次数(次)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>房源/客源成交周期</h4>
+      <div class="chart-wrap"><canvas id="chartOldCycle"></canvas></div>
+      <div class="chart-note">折线：房源平均成交天数 · 客源平均成交天数</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>新增客房比走势（月度）</h4>
+      <div class="chart-wrap"><canvas id="chartOldRatio"></canvas></div>
+      <div class="chart-note">柱状：新增有效客户量+新增房源量(套) · 折线：新增有效客房比</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>潜客走势（月度）</h4>
+      <div class="chart-wrap"><canvas id="chartOldPotential"></canvas></div>
+      <div class="chart-note">柱状：新二潜客量 · 折线：潜客支付力(万元)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>需求量走势（需求-转化）</h4>
+      <div class="chart-wrap"><canvas id="chartOldDemand"></canvas></div>
+      <div class="chart-note">柱状：商机量 · 折线①：带看量 · 折线②：认购量(套)</div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 4. 土地市场 ====== -->
+<section id="land" class="section">
+  <div class="section-title"><span class="icon">📍</span>四、土地市场</div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchLandTab('supply')">新增挂牌（供地）</button>
+    <button class="tab-btn" onclick="switchLandTab('deal')">土地成交</button>
+  </div>
+
+  <!-- Map -->
+  <div class="card" style="margin-bottom:20px;">
+    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周土地分布示意图</h4>
+    <div id="landMap" class="map-wrap"></div>
+    <div class="map-legend">
+      <span><span class="dot dot-supply"></span> 新增挂牌地块</span>
+      <span><span class="dot dot-deal"></span> 成交地块</span>
+    </div>
+  </div>
+
+  <!-- Supply Table -->
+  <div class="card" id="landSupplyTable">
+    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周新增挂牌地块（来源：成都市公共资源交易服务中心、中国土地市场网）</h4>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>地块编号</th><th>区域</th><th>板块</th><th>用地性质</th><th>土地面积(亩)</th><th>容积率</th><th>起始楼面价(元/㎡)</th><th>起始总价(万元)</th><th>竞拍日期</th></tr></thead>
+      <tbody>
+        <tr><td>SLG-(07)-2026-002</td><td>双流区</td><td>东升街道花园社区</td><td>二类住宅</td><td>36.45</td><td>≤2.5</td><td>7,300</td><td>44,345</td><td>5月29日</td></tr>
+        <tr><td>LQ07(252):2025-07</td><td>龙泉驿区</td><td>大面街道东洪社区</td><td>二类住宅</td><td>61.35</td><td>≤2.5</td><td>10,504</td><td>107,400</td><td>5月29日</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;">本周适逢五一节后首周，新增供应较少。上述两宗地为5月10日公告（成公资土拍告[2026]14号），合计起始价约15.17亿元，将于5月29日集中拍卖。另5月15日还有3宗宅地待拍（天府新区27.94亩、青羊区68.41亩、新都区30.39亩），系4月22日公告。</p>
+  </div>
+
+  <!-- Deal Table -->
+  <div class="card" id="landDealTable" style="display:none;">
+    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周土地成交结果（来源：成都市公共资源交易服务中心）</h4>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>地块编号</th><th>区域</th><th>板块</th><th>用地性质</th><th>土地面积(亩)</th><th>容积率</th><th>成交楼面价(元/㎡)</th><th>溢价率</th><th>竞得人</th><th>成交日期</th></tr></thead>
+      <tbody>
+        <tr><td>JN01(070102):2026-012</td><td>金牛区</td><td>国际商贸城片区</td><td>二类住宅</td><td>74.28</td><td>2.5</td><td>7,050</td><td>0.0%</td><td>金牛国投产业投资开发有限公司</td><td>5月8日</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:11px;color:var(--muted);margin-top:8px;">金牛区国际商贸城片区为八年来首次供地，由区属国资平台以底价8.73亿元托底摘得。本周仅此一宗宅地成交，五一节后土地市场整体平淡。五月中下旬将迎来本月供地高峰，5月15日、29日共有5宗宅地陆续拍卖。</p>
+  </div>
+</section>
+
+<!-- ====== 5. 规证公示 ====== -->
+<section id="planning" class="section">
+  <div class="section-title"><span class="icon">📐</span>五、规划许可公示（规证）</div>
+  <div class="card">
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：成都市规划和自然资源局 (mpnr.chengdu.gov.cn) — 建设工程规划许可公告。注：该网站有反爬保护（WAF），当前通过搜索索引获取。本周仅1个住宅项目公示（5月9日），节后首周公示量较少。</p>
+    <div style="overflow-x:auto;">
+    <table>
+      <thead><tr><th>项目名称</th><th>建设单位</th><th>建设位置</th><th>总建筑面积(㎡)</th><th>发证日期</th><th>许可证号</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>武侯区金花桥住宅、商业及配套设施项目</td>
+          <td>成都武侯宜居瑞业房地产开发有限公司</td>
+          <td>武侯区金花桥街道花龙门社区3、7组</td>
+          <td>110,441.09</td>
+          <td>5月9日</td>
+          <td>5101072026600042616</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 6. 本周小结 ====== -->
+<section id="summary" class="section">
+  <div class="section-title"><span class="icon">📝</span>六、本周小结与展望</div>
+  <div class="card">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div>
+        <h4 style="color:var(--primary);margin-bottom:12px;font-size:15px;">本周要点</h4>
+        <ul style="font-size:13px;color:#555;line-height:2.2;padding-left:20px;">
+          <li><strong>政策面：</strong>国常会再提化解房地产风险，住建部+财政部联合推进城市更新财政支持。金牛区率先出台购房补贴细则（人才/多子女家庭最高补6万），政策宽松基调延续。</li>
+          <li><strong>新房端：</strong>上周供应142套（↓93%，节后供应骤降）、成交1,178套（↓0.3%），供销比0.12极低。五一假期后供应节奏尚未恢复，但成交端保持平稳。</li>
+          <li><strong>二手端：</strong>挂牌量稳步增长，成交量温和回升，议价空间扩大至11.8%，买方市场特征明显。</li>
+          <li><strong>土地端：</strong>本周新增2宗宅地挂牌（双流东升36.45亩+龙泉驿大面61.35亩，5月29日拍卖），金牛区国际商贸城74.28亩宅地底价成交（金牛国投8.73亿摘得，楼面价7,050元/㎡）。节后首周土地市场平淡，5月中下旬将迎供地高峰。</li>
+          <li><strong>规证端：</strong>本周仅武侯区金花桥1个住宅项目取得工程规划许可（建面11.04万㎡，成都武侯宜居瑞业），节后首周公示量偏少。</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="color:var(--primary);margin-bottom:12px;font-size:15px;">下周关注</h4>
+        <ul style="font-size:13px;color:#555;line-height:2.2;padding-left:20px;">
+          <li>5月15日国家统计局发布1-4月全国房地产数据，关注成都表现。</li>
+          <li>公积金新政后首个完整周，观察对市场成交的提振效果。</li>
+          <li>月底集中土拍（5月28-30日），6宗地块将陆续成交。</li>
+          <li>关注"好房子"标准对开发商产品策略的影响。</li>
+          <li>持续跟踪二手挂牌量变化，判断市场情绪拐点。</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="footer">
+  <p>本报告由AI辅助生成，数据来源包括成都市住建局、成都市规划和自然资源局、贝壳找房、中指研究院等。</p>
+  <p>部分数据为模拟数据，实际使用时请替换为真实数据。 © 2026 Chengdu Real Estate Weekly</p>
+</div>
+
+<script>
+// ===== 贝壳新房 & 贝壳二手 数据 (Excel 自动提取) =====
+const NEW_VOLUME_PRICE = [["2025W51",102,20362],["2025W52",164,22901],["2026W01",1205,17777],["2026W02",17,17030],["2026W03",86,20070],["2026W04",149,17521],["2026W05",659,19153],["2026W06",29,16374],["2026W07",76,16440],["2026W09",397,19000],["2026W10",62,17131],["2026W11",76,16718],["2026W12",185,15176],["2026W13",462,18135],["2026W14",1148,18634],["2026W15",31,14971],["2026W16",90,16692],["2026W17",233,16020],["2026W18",1367,19020],["2026W19",46,16618]];
+const NEW_CHANNEL = [["2025W52",342,0.755],["2026W01",274,0.6049],["2026W02",282,0.6171],["2026W03",287,0.635],["2026W04",296,0.6534],["2026W05",295,0.6484],["2026W06",301,0.6586],["2026W07",301,0.6586],["2026W08",300,0.6565],["2026W09",288,0.6372],["2026W10",290,0.6402],["2026W11",299,0.6571],["2026W12",299,0.66],["2026W13",300,0.6608],["2026W14",287,0.6294],["2026W15",288,0.6344],["2026W16",291,0.6396],["2026W17",298,0.6521],["2026W18",306,0.674],["2026W19",300,0.6608]];
+const NEW_COMMISSION = [["2025W51",0.0332],["2025W52",0.0323],["2026W01",0.0361],["2026W02",0.034],["2026W03",0.0375],["2026W04",0.0344],["2026W05",0.0325],["2026W06",0.0347],["2026W07",0.0353],["2026W09",0.0316],["2026W10",0.0312],["2026W11",0.0328],["2026W12",0.0383],["2026W13",0.0371],["2026W14",0.0337],["2026W15",0.0461],["2026W16",0.0369],["2026W17",0.0367],["2026W18",0.0329],["2026W19",0.0372]];
+const NEW_DEMAND = [["2025W52",16439,8311,379],["2026W01",17610,6522,324],["2026W02",17366,8078,278],["2026W03",19011,7786,252],["2026W04",17355,7182,261],["2026W05",16168,6590,276],["2026W06",14446,5209,205],["2026W07",12480,2294,84],["2026W08",14528,1159,14],["2026W09",26342,9576,460],["2026W10",24301,9803,461],["2026W11",27004,11928,576],["2026W12",23982,11531,501],["2026W13",22770,9515,492],["2026W14",20837,9313,535],["2026W15",22542,10631,492],["2026W16",21250,9232,352],["2026W17",18897,8782,351],["2026W18",19376,10525,536],["2026W19",21359,11390,592]];
+const OLD_BARGAIN = [["2025W52",0.112],["2026W01",0.113],["2026W02",0.11],["2026W03",0.109],["2026W04",0.109],["2026W05",0.105],["2026W06",0.106],["2026W07",0.097],["2026W08",0.093],["2026W09",0.088],["2026W10",0.093],["2026W11",0.1],["2026W12",0.105],["2026W13",0.108],["2026W14",0.108],["2026W15",0.106],["2026W16",0.106],["2026W17",0.106],["2026W18",0.105],["2026W19",0.106]];
+const OLD_VIEWING = [["2025W52",38],["2026W01",40],["2026W02",40],["2026W03",38],["2026W04",38],["2026W05",39],["2026W06",38],["2026W07",34],["2026W08",34],["2026W09",32],["2026W10",34],["2026W11",34],["2026W12",34],["2026W13",35],["2026W14",34],["2026W15",35],["2026W16",35],["2026W17",35],["2026W18",36],["2026W19",34]];
+const OLD_SUPPLY_DEMAND = [["2025W52",5318,1347,17199,12972],["2026W01",5051,1240,17867,12836],["2026W02",6054,1553,17448,13110],["2026W03",5581,1640,16970,13041],["2026W04",4978,1560,17219,13135],["2026W05",4914,1418,16994,12976],["2026W06",3630,1263,16404,13684],["2026W07",1379,552,16653,13971],["2026W08",556,41,15784,12343],["2026W09",8624,1605,16314,12389],["2026W10",7912,2413,16893,12778],["2026W11",7622,2641,16690,12709],["2026W12",7217,2536,17226,12951],["2026W13",6602,2414,16592,12979],["2026W14",5858,1924,16636,12883],["2026W15",6826,2413,16804,12775],["2026W16",6370,2098,16982,12929],["2026W17",6007,1905,17614,13122],["2026W18",4669,1451,17006,12923],["2026W19",6198,2057,17277,12918]];
+const OLD_CYCLE = [["2025W52",131,103],["2026W01",140,102],["2026W02",138,106],["2026W03",145,97],["2026W04",136,99],["2026W05",147,100],["2026W06",140,98],["2026W07",164,91],["2026W08",134,113],["2026W09",158,102],["2026W10",154,103],["2026W11",157,97],["2026W12",163,96],["2026W13",153,91],["2026W14",151,90],["2026W15",153,97],["2026W16",153,90],["2026W17",151,94],["2026W18",150,97],["2026W19",152,96]];
+const OLD_RATIO = [["2025-05",1.9874,57936,29152],["2025-06",1.7733,52294,29489],["2025-07",1.5079,47048,31202],["2025-08",1.6225,47608,29343],["2025-09",1.5971,49647,31086],["2025-10",1.8304,51107,27921],["2025-11",1.7428,47691,27365],["2025-12",1.7277,45258,26196],["2026-01",1.9163,48339,25225],["2026-02",1.8309,26443,14443],["2026-03",2.0773,71584,34460],["2026-04",1.9918,56170,28200]];
+const OLD_POTENTIAL = [["2025-05",223217,161.9],["2025-06",222399,160.2],["2025-07",222307,155.9],["2025-08",221909,155.6],["2025-09",220696,149.8],["2025-10",219058,153.4],["2025-11",215258,150.5],["2025-12",221423,154.6],["2026-01",218249,147.8],["2026-02",206941,146.4]];
+const OLD_DEMAND = [["2025W52",18024,8830,425],["2026W01",19250,7103,390],["2026W02",18971,8645,354],["2026W03",21003,8567,325],["2026W04",19285,7761,357],["2026W05",18046,7084,329],["2026W06",16059,5673,248],["2026W07",14055,2583,97],["2026W08",16554,1296,14],["2026W09",29319,10342,596],["2026W10",26651,10609,538],["2026W11",29719,12716,662],["2026W12",26481,12259,562],["2026W13",25113,10152,559],["2026W14",23031,10010,602],["2026W15",24803,11356,538],["2026W16",23540,9914,393],["2026W17",20985,9473,389],["2026W18",21450,11459,638],["2026W19",23563,12120,719]];
+
+// ===== Smooth scroll =====
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+  document.querySelector(`.nav a[href="#${id}"]`)?.classList.add('active');
+}
+
+// Highlight nav on scroll
+window.addEventListener('scroll', () => {
+  const sections = document.querySelectorAll('.section');
+  let current = '';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) current = s.id; });
+  document.querySelectorAll('.nav a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+});
+
+// ===== Auto-detect empty policy =====
+(function() {
+  const list = document.getElementById('policyList');
+  const empty = document.getElementById('noPolicy');
+  if (list && empty) {
+    const items = list.querySelectorAll('.policy-item');
+    if (items.length === 0) {
+      list.style.display = 'none';
+      empty.style.display = '';
+    }
+  }
+})();
+
+// ===== Land Tab Switch =====
+function switchLandTab(tab) {
+  document.getElementById('landSupplyTable').style.display = tab === 'supply' ? '' : 'none';
+  document.getElementById('landDealTable').style.display = tab === 'deal' ? '' : 'none';
+  if (tab === 'supply') showSupplyMarkers(); else showDealMarkers();
+}
+// Set active tab button
+document.querySelectorAll('#land .tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#land .tab-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ===== Charts =====
+// 12-week labels with date ranges (for second-hand mock charts)
+const weeksShort = ['W08\n2/16-2/22','W09\n2/23-3/1','W10\n3/2-3/8','W11\n3/9-3/15','W12\n3/16-3/22','W13\n3/23-3/29','W14\n3/30-4/5','W15\n4/6-4/12','W16\n4/13-4/19','W17\n4/20-4/26','W18\n4/27-5/3','W19\n5/4-5/10'];
+
+// ===== Full historical data (53 weeks, from Excel) =====
+const BAR_WIDTH = 48; // px per bar
+const DEFAULT_VISIBLE = 12; // default visible bars
+
+const newHomeData = {
+  all: {
+    labels: ["2025W19","2025W20","2025W21","2025W22","2025W23","2025W24","2025W25","2025W26","2025W27","2025W28","2025W29","2025W30","2025W31","2025W32","2025W33","2025W34","2025W35","2025W36","2025W37","2025W38","2025W39","2025W40","2025W41","2025W42","2025W43","2025W44","2025W45","2025W46","2025W47","2025W48","2025W49","2025W50","2025W51","2025W52","2026W01","2026W02","2026W03","2026W04","2026W05","2026W06","2026W07","2026W08","2026W09","2026W10","2026W11","2026W12","2026W13","2026W14","2026W15","2026W16","2026W17","2026W18","2026W19"],
+    supply:   [0,1670,440,1744,960,496,1322,1997,1190,555,901,1377,619,1646,585,1158,551,178,1188,1286,2884,1547,258,874,1882,908,1677,581,997,1353,1429,1563,553,1682,835,581,880,577,934,565,945,0,0,363,363,1625,2012,948,938,804,1054,2082,142],
+    sales:    [663,1364,1576,1321,1280,1208,1088,1716,1050,1178,967,915,1295,861,1085,1408,1204,844,855,1084,1511,881,1352,1247,1343,1370,854,953,861,1079,769,866,1086,1840,1211,712,797,845,1025,694,598,67,1130,1070,1028,1615,1849,1572,1215,1193,1316,1181,1178],
+    price:    [21476,21080,20532,22014,18622,20546,20293,21490,21719,18932,22225,20531,23020,20913,20235,21281,21258,21175,20671,20619,19835,21632,23142,22640,22370,21772,22013,22213,24500,23109,20840,20944,20976,19676,21819,21564,23807,23538,24324,22601,22024,21424,21245,20457,21980,22817,22034,21503,23239,21557,22329,22942,21743],
+    priceMin: 18500
+  },
+  urban: {
+    labels: ["2025W19","2025W20","2025W21","2025W22","2025W23","2025W24","2025W25","2025W26","2025W27","2025W28","2025W29","2025W30","2025W31","2025W32","2025W33","2025W34","2025W35","2025W36","2025W37","2025W38","2025W39","2025W40","2025W41","2025W42","2025W43","2025W44","2025W45","2025W46","2025W47","2025W48","2025W49","2025W50","2025W51","2025W52","2026W01","2026W02","2026W03","2026W04","2026W05","2026W06","2026W07","2026W08","2026W09","2026W10","2026W11","2026W12","2026W13","2026W14","2026W15","2026W16","2026W17","2026W18","2026W19"],
+    supply:   [0,471,344,833,449,435,522,838,965,173,775,522,457,176,155,697,360,32,859,706,1152,664,94,243,1043,376,1147,236,445,702,691,1009,263,675,215,432,442,270,550,278,476,0,0,72,197,997,1471,306,277,256,571,796,0],
+    sales:    [321,637,594,589,426,515,488,816,471,686,461,418,674,456,573,595,633,455,423,505,626,452,664,592,635,569,448,543,491,580,340,404,563,743,601,349,358,409,452,355,281,26,391,379,460,750,1110,600,572,458,697,587,521],
+    price:    [26828,26796,26336,28368,27217,26185,25895,27247,28455,22068,27993,25875,29057,25796,24921,27751,26244,26126,25929,25920,27681,27663,30110,29268,28070,28227,27202,26868,30373,28360,29140,26485,25371,26134,27234,28421,32276,30294,32353,28542,28644,30345,30708,29637,29082,29008,26472,30043,30666,29224,27753,28834,28518],
+    priceMin: 21500
+  },
+  suburb: {
+    labels: ["2025W19","2025W20","2025W21","2025W22","2025W23","2025W24","2025W25","2025W26","2025W27","2025W28","2025W29","2025W30","2025W31","2025W32","2025W33","2025W34","2025W35","2025W36","2025W37","2025W38","2025W39","2025W40","2025W41","2025W42","2025W43","2025W44","2025W45","2025W46","2025W47","2025W48","2025W49","2025W50","2025W51","2025W52","2026W01","2026W02","2026W03","2026W04","2026W05","2026W06","2026W07","2026W08","2026W09","2026W10","2026W11","2026W12","2026W13","2026W14","2026W15","2026W16","2026W17","2026W18","2026W19"],
+    supply:   [0,1199,96,911,511,61,800,1159,225,382,126,855,162,1470,430,461,191,146,329,580,1732,883,164,631,839,532,530,345,552,651,738,554,290,1007,620,149,438,307,384,287,469,0,0,291,166,628,541,642,661,548,483,1286,142],
+    sales:    [342,727,982,732,854,693,600,900,579,492,506,497,621,405,512,813,571,389,432,579,885,429,688,655,708,801,406,410,370,499,429,462,523,1097,610,363,439,436,573,339,317,41,739,691,568,865,739,972,643,735,619,594,657],
+    price:    [15893,15329,16252,15867,14200,15794,15090,15187,15308,14645,15861,15230,15380,14940,14612,15763,15086,14103,14800,15093,13339,15324,14981,15325,15763,15985,14953,15143,14453,15377,13094,14936,15244,14235,14623,13790,14587,15496,15385,14699,14768,14767,14789,14420,14691,16153,14817,14600,14518,15559,15054,15666,15129],
+    priceMin: 12800
+  }
+};
+
+// ===== Setup chart container width =====
+const fullLabels = newHomeData.all.labels;
+const totalBars = fullLabels.length;
+const chartWideDiv = document.querySelector('.chart-wrap-wide');
+chartWideDiv.style.width = (totalBars * BAR_WIDTH) + 'px';
+
+// New home combo chart (single instance, data updated on tab switch)
+const ctxNew = document.getElementById('chartNewCombo').getContext('2d');
+let newHomeChart = new Chart(ctxNew, {
+  type: 'bar',
+  data: {
+    labels: fullLabels,
+    datasets: [
+      {
+        label:'供应套数', data:newHomeData.all.supply,
+        backgroundColor:'rgba(14,165,233,0.75)', borderColor:'#0ea5e9', borderWidth:1,
+        borderRadius:3, order:2, hoverBackgroundColor:'rgba(14,165,233,0.95)'
+      },
+      {
+        label:'成交套数', data:newHomeData.all.sales,
+        backgroundColor:'rgba(99,102,241,0.75)', borderColor:'#6366f1', borderWidth:1,
+        borderRadius:3, order:2, hoverBackgroundColor:'rgba(99,102,241,0.95)'
+      },
+      {
+        label:'成交均价(元/㎡)', data:newHomeData.all.price,
+        borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.06)',
+        fill:false, tension:0.35, pointRadius:5, pointBackgroundColor:'#f59e0b',
+        pointBorderColor:'#fff', pointBorderWidth:2, pointHoverRadius:7,
+        type:'line', order:1, yAxisID:'y1'
+      }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{ position:'top', labels:{ usePointStyle:true, padding:24, pointStyleWidth:10 } },
+      tooltip:{
+        backgroundColor:'rgba(15,23,42,0.92)',
+        titleColor:'#94a3b8',
+        bodyColor:'#e2e8f0',
+        borderColor:'#334155',
+        borderWidth:1,
+        padding:14,
+        callbacks:{
+          label:function(ctx){
+            const idx = ctx.dataIndex;
+            const curr = ctx.parsed.y;
+            const data = ctx.dataset.data;
+            const unit = ctx.dataset.yAxisID === 'y1' ? ' 元/㎡' : ' 套';
+            const lines = [ctx.dataset.label + ': ' + curr.toLocaleString() + unit];
+            if (idx > 0 && data[idx-1] && data[idx-1] !== 0) {
+              const prev = data[idx-1];
+              const chg = ((curr - prev) / prev * 100);
+              const arrow = chg >= 0 ? '↑' : '↓';
+              lines.push('环比 ' + arrow + ' ' + Math.abs(chg).toFixed(1) + '%');
+              this._chgDir = chg >= 0 ? 'up' : 'down';
+            } else { this._chgDir = null; }
+            return lines;
+          },
+          labelTextColor:function(ctx){
+            if (this._chgDir === 'up') return ['#e2e8f0', '#ef4444'];
+            if (this._chgDir === 'down') return ['#e2e8f0', '#22c55e'];
+            return '#e2e8f0';
+          }
+        }
+      }
+    },
+    scales:{
+      y:{ type:'linear', position:'left', title:{ display:true, text:'套数', color:'#64748b' }, beginAtZero:true, min:0, grid:{ color:'#f1f5f9' }, ticks:{ color:'#94a3b8' } },
+      y1:{ type:'linear', position:'right', title:{ display:true, text:'均价(元/㎡)', color:'#64748b' }, beginAtZero:true, min:0, grid:{ display:false }, ticks:{ color:'#94a3b8', callback:v=>v.toLocaleString() } },
+      x:{ grid:{ display:false }, ticks:{ color:'#64748b', font:{ size:11 }, maxTicksLimit:Math.min(totalBars, 26) } }
+    }
+  }
+});
+
+// Scroll to right (most recent data) on load
+const scrollContainer = document.getElementById('newHomeScroll');
+scrollContainer.scrollLeft = scrollContainer.scrollWidth;
+
+// ===== KPI update function =====
+function updateKPIs(region) {
+  const d = newHomeData[region];
+  const n = d.supply.length;
+  const curS = d.supply[n-1], prevS = d.supply[n-2];
+  const curX = d.sales[n-1],  prevX = d.sales[n-2];
+  const curP = d.price[n-1],  prevP = d.price[n-2];
+
+  function fmtChg(cur, prev) {
+    const chg = ((cur - prev) / prev * 100);
+    const cls = chg >= 0 ? 'up' : 'down';
+    const arrow = chg >= 0 ? '↑' : '↓';
+    return { html: arrow + ' ' + Math.abs(chg).toFixed(1) + '% 环比', cls: cls };
+  }
+
+  document.getElementById('kpiSupply').innerHTML = curS.toLocaleString() + '<span style="font-size:16px;font-weight:400;"> 套</span>';
+  const sChg = fmtChg(curS, prevS);
+  const sEl = document.getElementById('kpiSupplyChg');
+  sEl.textContent = sChg.html; sEl.className = 'change ' + sChg.cls;
+
+  document.getElementById('kpiSales').innerHTML = curX.toLocaleString() + '<span style="font-size:16px;font-weight:400;"> 套</span>';
+  const xChg = fmtChg(curX, prevX);
+  const xEl = document.getElementById('kpiSalesChg');
+  xEl.textContent = xChg.html; xEl.className = 'change ' + xChg.cls;
+
+  document.getElementById('kpiPrice').innerHTML = Math.round(curP).toLocaleString() + '<span style="font-size:16px;font-weight:400;"> 元/㎡</span>';
+  const pChg = fmtChg(curP, prevP);
+  const pEl = document.getElementById('kpiPriceChg');
+  pEl.textContent = pChg.html; pEl.className = 'change ' + pChg.cls;
+
+  const ratio = curS / (curX || 1);
+  document.getElementById('kpiRatio').textContent = ratio.toFixed(2);
+  const rNote = document.getElementById('kpiRatioNote');
+  rNote.textContent = ratio < 0.5 ? '供远小于求' : ratio < 0.8 ? '供小于求' : ratio < 1.2 ? '供需平衡' : '供大于求';
+  rNote.style.color = 'var(--muted)';
+}
+
+// Region tab switch (includes KPI + chart update)
+document.querySelectorAll('#newHomeTabs .tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#newHomeTabs .tab-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const region = this.dataset.region;
+    const d = newHomeData[region];
+    newHomeChart.data.labels = d.labels;
+    newHomeChart.data.datasets[0].data = d.supply;
+    newHomeChart.data.datasets[1].data = d.sales;
+    newHomeChart.data.datasets[2].data = d.price;
+    newHomeChart.update();
+    updateKPIs(region);
+    setTimeout(() => { scrollContainer.scrollLeft = scrollContainer.scrollWidth; }, 50);
+  });
+});
+
+// Second-hand listing/sales chart
+new Chart(document.getElementById('chartSHListing'), {
+  type: 'bar',
+  data: {
+    labels: weeksShort,
+    datasets: [
+      { label:'新增挂牌(套)', data:[3200,3450,3610,3350,3520,3780,3400,3560,3700,3410,3615,3826], backgroundColor:'rgba(14,165,233,0.75)', borderColor:'#0ea5e9', borderWidth:1, borderRadius:3, hoverBackgroundColor:'rgba(14,165,233,0.95)' },
+      { label:'成交套数', data:[1850,1920,1880,1950,1900,2050,1980,2010,2080,1950,2036,2103], backgroundColor:'rgba(99,102,241,0.75)', borderColor:'#6366f1', borderWidth:1, borderRadius:3, hoverBackgroundColor:'rgba(99,102,241,0.95)' }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{ position:'top', labels:{ usePointStyle:true, padding:24, pointStyleWidth:10 } },
+      tooltip:{
+        backgroundColor:'rgba(15,23,42,0.92)', titleColor:'#94a3b8', bodyColor:'#e2e8f0', borderColor:'#334155', borderWidth:1, padding:14,
+        callbacks:{
+          label:function(ctx){
+            const idx=ctx.dataIndex; const curr=ctx.parsed.y; const data=ctx.dataset.data;
+            const lines=[ctx.dataset.label+': '+curr.toLocaleString()+' 套'];
+            if(idx>0&&data[idx-1]&&data[idx-1]!==0){
+              const prev=data[idx-1]; const chg=((curr-prev)/prev*100);
+              lines.push('环比 '+(chg>=0?'↑':'↓')+' '+Math.abs(chg).toFixed(1)+'%');
+              this._chgDir = chg>=0?'up':'down';
+            }else{this._chgDir=null;}
+            return lines;
+          },
+          labelTextColor:function(ctx){if(this._chgDir==='up')return['#e2e8f0','#ef4444'];if(this._chgDir==='down')return['#e2e8f0','#22c55e'];return'#e2e8f0';}
+        }
+      }
+    },
+    scales:{ y:{ beginAtZero:false, min:1500, grid:{ color:'#f1f5f9' }, ticks:{ color:'#94a3b8' } }, x:{ grid:{ display:false }, ticks:{ color:'#64748b', font:{ size:11 } } } }
+  }
+});
+
+// Second-hand price chart
+new Chart(document.getElementById('chartSHPrice'), {
+  type: 'line',
+  data: {
+    labels: weeksShort,
+    datasets: [
+      { label:'成交均价(元/㎡)', data:[16700,16580,16450,16320,16400,16280,16350,16300,16200,16280,16380,16250], borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.06)', fill:true, tension:0.35, pointRadius:5, pointBackgroundColor:'#f59e0b', pointBorderColor:'#fff', pointBorderWidth:2, pointHoverRadius:7 },
+      { label:'挂牌均价(元/㎡)', data:[19200,19050,18900,18750,18680,18550,18500,18480,18400,18450,18620,18420], borderColor:'#94a3b8', borderDash:[5,5], backgroundColor:'transparent', fill:false, tension:0.35, pointRadius:4, pointBackgroundColor:'#94a3b8', pointBorderColor:'#fff', pointBorderWidth:2 }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    interaction:{ mode:'index', intersect:false },
+    plugins:{
+      legend:{ position:'top', labels:{ usePointStyle:true, padding:24, pointStyleWidth:10 } },
+      tooltip:{
+        backgroundColor:'rgba(15,23,42,0.92)', titleColor:'#94a3b8', bodyColor:'#e2e8f0', borderColor:'#334155', borderWidth:1, padding:14,
+        callbacks:{
+          label:function(ctx){
+            const idx=ctx.dataIndex; const curr=ctx.parsed.y; const data=ctx.dataset.data;
+            const lines=[ctx.dataset.label+': '+curr.toLocaleString()+' 元/㎡'];
+            if(idx>0&&data[idx-1]&&data[idx-1]!==0){
+              const prev=data[idx-1]; const chg=((curr-prev)/prev*100);
+              lines.push('环比 '+(chg>=0?'↑':'↓')+' '+Math.abs(chg).toFixed(1)+'%');
+              this._chgDir = chg>=0?'up':'down';
+            }else{this._chgDir=null;}
+            return lines;
+          },
+          labelTextColor:function(ctx){if(this._chgDir==='up')return['#e2e8f0','#ef4444'];if(this._chgDir==='down')return['#e2e8f0','#22c55e'];return'#e2e8f0';}
+        }
+      }
+    },
+    scales:{ y:{ beginAtZero:false, min:15000, grid:{ color:'#f1f5f9' }, ticks:{ color:'#94a3b8', callback:v=>v.toLocaleString() } }, x:{ grid:{ display:false }, ticks:{ color:'#64748b', font:{size:11} } } }
+  }
+});
+
+// ===== Map (高德地图) =====
+const chengduCenter = [104.0668, 30.5728]; // 高德: [lng, lat]
+
+// Ensure container is rendered and has size before init
+const mapContainer = document.getElementById('landMap');
+if (!mapContainer || mapContainer.offsetHeight === 0) {
+  console.error('Map container not ready or has zero height');
+}
+
+const map = new AMap.Map('landMap', {
+  center: chengduCenter,
+  zoom: 11,
+  viewMode: '2D',
+  resizeEnable: true
+});
+
+// Supply parcels (挂牌) — geocoded coordinates from AMap
+const supplyParcels = [
+  {name:'SLG-(07)-2026-002', area:'双流·东升街道花园社区<br>36.45亩 二类住宅', pos:[103.901150, 30.591859], price:'7,300元/㎡', type:'supply', plate:'东升街道花园社区', landArea:'36.45亩'},
+  {name:'LQ07(252):2025-07', area:'龙泉驿·大面街道东洪社区<br>61.35亩 二类住宅', pos:[104.150808, 30.617232], price:'10,504元/㎡', type:'supply', plate:'大面街道东洪社区', landArea:'61.35亩'},
+];
+
+// Deal parcels (成交) — geocoded coordinates from AMap
+const dealParcels = [
+  {name:'JN01(070102):2026-012', area:'金牛·国际商贸城片区<br>74.28亩 二类住宅', pos:[104.082935, 30.793435], price:'7,050元/㎡', buyer:'金牛国投', type:'deal', landArea:'74.28亩'},
+];
+
+let supplyCircles = [], dealCircles = [];
+let currentInfoWindow = null;
+
+function createParcelOverlay(parcel) {
+  const color = parcel.type === 'supply' ? '#e74c3c' : '#2ecc71';
+  const strokeColor = parcel.type === 'supply' ? '#c0392b' : '#27ae60';
+
+  // Use AMap.Circle for reliable rendering
+  const circle = new AMap.Circle({
+    center: parcel.pos,
+    radius: 800,
+    fillColor: color,
+    fillOpacity: 0.85,
+    strokeColor: '#fff',
+    strokeWeight: 2,
+    strokeOpacity: 1,
+    zIndex: 100,
+  });
+
+  let content = `<div class="amap-info-content"><strong>${parcel.name}</strong><br/>${parcel.area}`;
+  if (parcel.type === 'supply') {
+    content += `<br/>起始楼面价：${parcel.price}<br/><em>新增挂牌</em>`;
+  } else {
+    content += `<br/>成交楼面价：${parcel.price}<br/>竞得人：${parcel.buyer}<br/><em>已成交</em>`;
+  }
+  content += '</div>';
+
+  circle.on('click', () => {
+    if (currentInfoWindow) { currentInfoWindow.close(); }
+    currentInfoWindow = new AMap.InfoWindow({
+      content: content,
+      offset: new AMap.Pixel(0, -18),
+    });
+    currentInfoWindow.open(map, parcel.pos);
+  });
+
+  // Build text label: supply=板块+面积+楼面价, deal=竞得人+面积
+  let labelText;
+  if (parcel.type === 'supply') {
+    labelText = parcel.plate + '\n' + parcel.landArea + ' ' + parcel.price;
+  } else {
+    labelText = parcel.buyer + '\n' + parcel.landArea;
+  }
+  const textMarker = new AMap.Text({
+    text: labelText,
+    position: parcel.pos,
+    offset: new AMap.Pixel(18, -22),
+    style: {
+      'text-align': 'left',
+      'font-size': '11px',
+      'font-weight': '600',
+      'color': '#333',
+      'text-shadow': '0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff',
+      'line-height': '1.4',
+      'white-space': 'pre-line',
+      'pointer-events': 'none'
+    },
+    zIndex: 110,
+  });
+
+  return { circle, label: textMarker };
+}
+
+supplyParcels.forEach(p => {
+  const ov = createParcelOverlay(p);
+  supplyCircles.push(ov);
+  map.add(ov.circle);
+  map.add(ov.label);
+});
+
+dealParcels.forEach(p => {
+  const ov = createParcelOverlay(p);
+  dealCircles.push(ov);
+  map.add(ov.circle);
+  map.add(ov.label);
+});
+
+// Initially deal markers hidden (supply tab is active)
+dealCircles.forEach(ov => { ov.circle.hide(); ov.label.hide(); });
+
+function showSupplyMarkers() {
+  dealCircles.forEach(ov => { ov.circle.hide(); ov.label.hide(); });
+  supplyCircles.forEach(ov => { ov.circle.show(); ov.label.show(); });
+  if (currentInfoWindow) currentInfoWindow.close();
+}
+function showDealMarkers() {
+  supplyCircles.forEach(ov => { ov.circle.hide(); ov.label.hide(); });
+  dealCircles.forEach(ov => { ov.circle.show(); ov.label.show(); });
+  if (currentInfoWindow) currentInfoWindow.close();
+}
+
+// ===== Ranking Section =====
+// Tab switching
+document.querySelectorAll('#rankingTabs .tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('#rankingTabs .tab-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const view = this.dataset.view;
+    document.getElementById('rankDistrict').style.display = view === 'district' ? '' : 'none';
+    document.getElementById('rankPlate').style.display = view === 'plate' ? '' : 'none';
+    if (view === 'district' && rankMap) {
+      setTimeout(() => { rankMap.setFitView(null, false, [60,60,60,60]); }, 100);
+    }
+  });
+});
+
+// District polygon paths (GCJ-02) + transaction data
+const districtSales = {
+  '金牛区':   { supply:0,   sales:70,  price:25000, inventory:3500 },
+  '青羊区':   { supply:0,   sales:55,  price:33000, inventory:1900 },
+  '成华区':   { supply:0,   sales:95,  price:23000, inventory:3200 },
+  '龙泉驿区': { supply:56,  sales:160, price:16000, inventory:5200 },
+  '新都区':   { supply:36,  sales:122, price:12500, inventory:6500 },
+  '温江区':   { supply:0,   sales:120, price:14000, inventory:4200 },
+  '郫都区':   { supply:50,  sales:110, price:13500, inventory:5800 },
+  '高新区':   { supply:0,   sales:85,  price:32000, inventory:2800 },
+  '武侯区':   { supply:0,   sales:60,  price:28000, inventory:2600 },
+  '天府新区': { supply:0,   sales:91,  price:26000, inventory:4500 },
+  '双流区':   { supply:0,   sales:145, price:16800, inventory:4800 },
+  '锦江区':   { supply:0,   sales:65,  price:34000, inventory:2100 },
+};
+
+const districtPaths = {
+'金牛区':   [[103.971945,30.732969],[103.967767,30.727734],[103.961374,30.726814],[103.960258,30.723196],[103.967253,30.721844],[103.968413,30.717112],[103.977298,30.716679],[103.98042295,30.71064045],[103.98002,30.704626],[103.987279,30.698494],[103.997826,30.70062],[103.996493,30.709755],[104.004608,30.710404],[104.00764,30.704035],[104.015532,30.705029],[104.012753,30.698368],[104.018402,30.695204],[104.010221,30.69211],[104.02713148,30.68960618],[104.03858402,30.68594432],[104.040865,30.675366],[104.05330196,30.66995231],[104.059575,30.681934],[104.067932,30.684477],[104.069547,30.688568],[104.081079,30.68380343],[104.09619762,30.67605749],[104.1009202,30.68240901],[104.09525345,30.68521449],[104.100431,30.693001],[104.09783,30.69610658],[104.09933286,30.70289955],[104.07863056,30.70355313],[104.07845939,30.71942568],[104.08885644,30.72127915],[104.09525503,30.71962069],[104.094775,30.724733],[104.09920522,30.72774128],[104.10959135,30.72999101],[104.108867,30.735109],[104.121901,30.735906],[104.12871,30.745246],[104.133293,30.74581],[104.133765,30.755287],[104.1414936,30.75413126],[104.146088,30.750148],[104.145437,30.764399],[104.138824,30.77161],[104.128621,30.771537],[104.124185,30.777103],[104.132176,30.783365],[104.130764,30.788432],[104.12589275,30.79144785],[104.11748763,30.79267217],[104.109459,30.796679],[104.10680551,30.80079147],[104.09849,30.799172],[104.100476,30.804192],[104.09375646,30.81222367],[104.079237,30.80826848],[104.07824837,30.80314127],[104.06775987,30.8042347],[104.067541,30.798521],[104.06328708,30.79050749],[104.069204,30.786339],[104.072232,30.78992],[104.079622,30.784243],[104.075758,30.773619],[104.078839,30.767177],[104.086985,30.767417],[104.087865,30.770763],[104.095665,30.774032],[104.10268418,30.77209455],[104.10319,30.766407],[104.09800477,30.76187498],[104.08580836,30.75806986],[104.081764,30.7474],[104.07375,30.746571],[104.06122111,30.75593698],[104.055015,30.758797],[104.043166,30.752233],[104.03794124,30.75145918],[104.042971,30.744752],[104.03963,30.738021],[104.034319,30.740524],[104.031769,30.747732],[104.027234,30.747573],[104.027774,30.754166],[104.019321,30.754466],[104.023355,30.759932],[104.018213,30.764515],[104.00607394,30.76269623],[104.00357509,30.74977464],[104.00826988,30.74436443],[104.00094694,30.73482128],[103.99254768,30.73427933],[103.988781,30.737948],[103.98225419,30.73369559],[103.991516,30.724119],[103.979836,30.72077],[103.98066039,30.72429823],[103.972803,30.728487]],
+'青羊区':   [[104.066433,30.65317],[104.060399,30.657959],[104.032974,30.657034],[104.028735,30.657771],[104.025243,30.663496],[104.014364,30.658788],[104.011467,30.665648],[104.004385,30.666015],[104.003861,30.661256],[103.997443,30.666463],[103.991959,30.667299],[103.988246,30.663482],[103.984358,30.666499],[103.975832,30.661977],[103.976183,30.668651],[103.965471,30.669533],[103.956347,30.664593],[103.94156,30.666756],[103.935168,30.665055],[103.932982,30.671715],[103.930576,30.674305],[103.913979,30.678263],[103.905885,30.681499],[103.902684,30.685993],[103.909015,30.687715],[103.917047,30.692987],[103.925342,30.702461],[103.925483,30.707447],[103.931302,30.710073],[103.93325,30.714977],[103.94022,30.717513],[103.937903,30.726764],[103.943315,30.723089],[103.944386,30.727391],[103.950635,30.729916],[103.954366,30.726402],[103.961374,30.726814],[103.960258,30.723196],[103.967253,30.721844],[103.968413,30.717112],[103.977298,30.716679],[103.980381,30.710669],[103.98002,30.704626],[103.987279,30.698494],[103.997826,30.70062],[103.996493,30.709755],[104.004608,30.710404],[104.00764,30.704035],[104.015532,30.705029],[104.012753,30.698368],[104.018402,30.695204],[104.010221,30.69211],[104.026621,30.689806],[104.038394,30.685966],[104.040865,30.675366],[104.053177,30.669378],[104.059575,30.681934],[104.067932,30.684477],[104.069547,30.688568],[104.080776,30.683991],[104.096193,30.675823],[104.092371,30.66953],[104.085816,30.671218],[104.082516,30.665158],[104.072598,30.662395],[104.066433,30.65317]],
+'成华区':   [[104.146801,30.623381],[104.139449,30.623319],[104.130923,30.62771],[104.133298,30.633014],[104.12811,30.634011],[104.134342,30.640811],[104.095097,30.659314],[104.103031,30.670653],[104.096193,30.675823],[104.101285,30.68242],[104.095349,30.685414],[104.100431,30.693001],[104.097992,30.696257],[104.099567,30.703109],[104.078655,30.703728],[104.078711,30.719558],[104.088806,30.721136],[104.095191,30.719457],[104.094775,30.724733],[104.099307,30.727647],[104.109584,30.729869],[104.108867,30.735109],[104.121901,30.735906],[104.12871,30.745246],[104.133293,30.74581],[104.133765,30.755287],[104.141428,30.754184],[104.146088,30.750148],[104.147317,30.747275],[104.139903,30.744376],[104.144802,30.741896],[104.149268,30.744773],[104.164148,30.745168],[104.170508,30.743065],[104.169396,30.736296],[104.172206,30.730318],[104.183074,30.736468],[104.188701,30.734921],[104.187884,30.728358],[104.192807,30.731536],[104.198094,30.729793],[104.196403,30.718408],[104.210028,30.716907],[104.217586,30.713019],[104.221969,30.719354],[104.231032,30.720502],[104.235809,30.717906],[104.229976,30.713754],[104.235159,30.70758],[104.234612,30.701574],[104.242795,30.695177],[104.242804,30.692748],[104.23937,30.693275],[104.231736,30.687795],[104.21534,30.687197],[104.205319,30.690082],[104.198797,30.688048],[104.194486,30.680666],[104.180504,30.675798],[104.170527,30.68001],[104.16484,30.673555],[104.165628,30.667884],[104.161582,30.671813],[104.155158,30.672972],[104.154769,30.668633],[104.161662,30.668004],[104.162023,30.659548],[104.166657,30.654855],[104.171109,30.642111],[104.16815,30.634532],[104.168662,30.625444],[104.162475,30.628549],[104.151984,30.628045],[104.146801,30.623381]],
+'龙泉驿区': [[104.254343,30.469939],[104.234209,30.473881],[104.22975,30.476021],[104.22928,30.481038],[104.221119,30.485874],[104.212704,30.486723],[104.207049,30.495803],[104.208621,30.498072],[104.205278,30.508892],[104.194616,30.524223],[104.192383,30.532739],[104.188156,30.539219],[104.184485,30.539009],[104.178348,30.547801],[104.168807,30.55021],[104.159923,30.558277],[104.160497,30.567991],[104.171413,30.570871],[104.167252,30.57344],[104.17474,30.573546],[104.174188,30.579236],[104.165744,30.58237],[104.16937,30.584233],[104.174046,30.594199],[104.178074,30.597375],[104.175854,30.600605],[104.171214,30.595719],[104.163053,30.59892],[104.159709,30.603917],[104.164926,30.610259],[104.156086,30.613029],[104.146801,30.623381],[104.151984,30.628045],[104.162475,30.628549],[104.168662,30.625444],[104.16815,30.634532],[104.171109,30.642111],[104.166657,30.654855],[104.162023,30.659548],[104.161662,30.668004],[104.154769,30.668633],[104.155158,30.672972],[104.161582,30.671813],[104.165628,30.667884],[104.16484,30.673555],[104.170527,30.68001],[104.180504,30.675798],[104.194486,30.680666],[104.198797,30.688048],[104.205319,30.690082],[104.21534,30.687197],[104.231736,30.687795],[104.23937,30.693275],[104.242804,30.692748],[104.241862,30.686166],[104.252703,30.682323],[104.259224,30.68705],[104.259707,30.697063],[104.263594,30.701794],[104.270582,30.699326],[104.271352,30.703634],[104.266908,30.707452],[104.271806,30.710745],[104.276845,30.722769],[104.291964,30.719234],[104.294358,30.723436],[104.299893,30.721819],[104.30904,30.724717],[104.325944,30.720402],[104.327226,30.725877],[104.334057,30.726809],[104.346173,30.716031],[104.377895,30.704007],[104.381514,30.705362],[104.400322,30.701335],[104.400529,30.690357],[104.403639,30.685448],[104.420176,30.678742],[104.424508,30.691628],[104.430174,30.691961],[104.44256,30.685588],[104.44627,30.674309],[104.438994,30.655988],[104.437687,30.641693],[104.44625,30.643125],[104.448743,30.65196],[104.456286,30.659307],[104.460809,30.648858],[104.461021,30.637469],[104.455479,30.629485],[104.454076,30.622051],[104.442575,30.616129],[104.43481,30.617246],[104.432438,30.607822],[104.426315,30.603829],[104.416767,30.602485],[104.411846,30.597728],[104.4089,30.589156],[104.409442,30.577394],[104.414184,30.569159],[104.409005,30.560951],[104.408525,30.543573],[104.404984,30.53905],[104.410621,30.531058],[104.419358,30.529672],[104.422226,30.525297],[104.417708,30.518134],[104.402198,30.510617],[104.403782,30.502999],[104.402397,30.496208],[104.396511,30.492584],[104.37984,30.495857],[104.373166,30.495646],[104.369627,30.489991],[104.359529,30.490005],[104.348902,30.486556],[104.346887,30.490299],[104.351704,30.497189],[104.343429,30.51606],[104.333827,30.522402],[104.329951,30.515896],[104.338435,30.51424],[104.336156,30.507039],[104.33992,30.501394],[104.334082,30.498758],[104.321246,30.49801],[104.305869,30.510229],[104.301337,30.511157],[104.29583,30.502703],[104.279965,30.493799],[104.264994,30.489391],[104.261371,30.480897],[104.26587,30.474281],[104.254343,30.469939]],
+'新都区':   [[104.242804,30.692748],[104.242795,30.695177],[104.234612,30.701574],[104.235159,30.70758],[104.229976,30.713754],[104.235809,30.717906],[104.231032,30.720502],[104.221969,30.719354],[104.217586,30.713019],[104.210028,30.716907],[104.196403,30.718408],[104.198094,30.729793],[104.192807,30.731536],[104.187884,30.728358],[104.188701,30.734921],[104.183074,30.736468],[104.172206,30.730318],[104.169396,30.736296],[104.170508,30.743065],[104.164148,30.745168],[104.149268,30.744773],[104.144802,30.741896],[104.139903,30.744376],[104.147317,30.747275],[104.146088,30.750148],[104.145437,30.764399],[104.138824,30.77161],[104.128621,30.771537],[104.124185,30.777103],[104.132176,30.783365],[104.130764,30.788432],[104.125856,30.791536],[104.117468,30.792756],[104.109459,30.796679],[104.1069,30.800936],[104.09849,30.799172],[104.100476,30.804192],[104.093761,30.812441],[104.079079,30.808281],[104.078268,30.803287],[104.067607,30.804301],[104.067541,30.798521],[104.063172,30.790426],[104.069204,30.786339],[104.072232,30.78992],[104.079622,30.784243],[104.075758,30.773619],[104.078839,30.767177],[104.086985,30.767417],[104.087865,30.770763],[104.095665,30.774032],[104.102577,30.771877],[104.10319,30.766407],[104.097891,30.761884],[104.085559,30.757995],[104.081764,30.7474],[104.07375,30.746571],[104.061233,30.756078],[104.055015,30.758797],[104.039032,30.768182],[104.036263,30.785841],[104.046912,30.783025],[104.052528,30.786966],[104.049035,30.793767],[104.038663,30.793222],[104.041326,30.801136],[104.034701,30.8057],[104.030817,30.811449],[104.02581,30.813517],[104.02647,30.820204],[104.011045,30.829344],[104.004928,30.827513],[103.997146,30.829177],[103.995551,30.833374],[103.98932,30.832893],[103.981349,30.839457],[103.972524,30.841944],[103.974134,30.845836],[103.970046,30.851806],[103.955888,30.853234],[103.951015,30.85789],[103.950484,30.863336],[103.943283,30.874178],[103.952717,30.882427],[103.948992,30.888296],[103.953926,30.893001],[103.94305,30.901433],[103.94184,30.908503],[103.947003,30.912018],[103.914449,30.926532],[103.909542,30.933188],[103.919095,30.92838],[103.93298,30.929171],[103.9482,30.927485],[103.959848,30.921762],[103.961287,30.925716],[103.968232,30.922713],[103.97093,30.92581],[103.972963,30.935576],[103.984823,30.942892],[103.997058,30.945063],[104.002643,30.943151],[104.008111,30.947045],[104.018066,30.948263],[104.02067,30.952605],[104.029749,30.958094],[104.034433,30.963179],[104.04539,30.964796],[104.05261,30.971398],[104.057671,30.964763],[104.067395,30.958333],[104.073543,30.943801],[104.073437,30.933302],[104.075439,30.928952],[104.088189,30.921604],[104.10808,30.918544],[104.120619,30.920474],[104.127578,30.917402],[104.138044,30.920537],[104.150876,30.921984],[104.156427,30.91936],[104.163089,30.918854],[104.167409,30.924005],[104.17447,30.924935],[104.179261,30.918681],[104.18708,30.919707],[104.195018,30.91617],[104.192537,30.904817],[104.188384,30.898278],[104.176485,30.892196],[104.177288,30.885683],[104.174711,30.878044],[104.169401,30.877341],[104.168004,30.872178],[104.173106,30.868634],[104.175892,30.861555],[104.180367,30.869429],[104.190917,30.870834],[104.200813,30.864546],[104.206638,30.865783],[104.212242,30.871546],[104.216813,30.866816],[104.226928,30.868765],[104.240363,30.862188],[104.246453,30.855609],[104.245691,30.848462],[104.248515,30.849228],[104.25375,30.842316],[104.252776,30.83659],[104.243869,30.839306],[104.238189,30.831029],[104.239248,30.823722],[104.24739,30.815309],[104.246863,30.810471],[104.258426,30.80837],[104.263679,30.797692],[104.261702,30.793932],[104.265727,30.790561],[104.268095,30.783318],[104.275012,30.774875],[104.271674,30.767043],[104.266283,30.763768],[104.265904,30.757922],[104.272861,30.750377],[104.285803,30.74268],[104.294595,30.745778],[104.296691,30.751818],[104.308729,30.751884],[104.317339,30.746828],[104.324161,30.752484],[104.333288,30.745419],[104.331165,30.742767],[104.334057,30.726809],[104.327226,30.725877],[104.325944,30.720402],[104.30904,30.724717],[104.299893,30.721819],[104.294358,30.723436],[104.291964,30.719234],[104.276845,30.722769],[104.271806,30.710745],[104.266908,30.707452],[104.271352,30.703634],[104.270582,30.699326],[104.263594,30.701794],[104.259707,30.697063],[104.259224,30.68705],[104.252703,30.682323],[104.241862,30.686166],[104.242804,30.692748]],
+'温江区':   [[103.79883,30.627969],[103.794187,30.631276],[103.791003,30.639146],[103.784135,30.649344],[103.779976,30.651186],[103.770713,30.665888],[103.771997,30.678414],[103.761333,30.699469],[103.759064,30.719792],[103.756981,30.726543],[103.74222,30.737362],[103.736638,30.755284],[103.735535,30.760909],[103.728569,30.77535],[103.730525,30.785589],[103.724978,30.799265],[103.724924,30.807171],[103.72136,30.816988],[103.721823,30.821258],[103.717331,30.824378],[103.706931,30.843061],[103.706654,30.853921],[103.694174,30.888806],[103.700408,30.890454],[103.722379,30.867163],[103.729095,30.858069],[103.73008,30.850699],[103.7341,30.843732],[103.745812,30.84037],[103.76271,30.833774],[103.766498,30.829228],[103.767503,30.821177],[103.775965,30.813721],[103.789902,30.816768],[103.79437,30.812687],[103.79508,30.805637],[103.804264,30.793224],[103.802624,30.7894],[103.824931,30.7833],[103.828946,30.777934],[103.841775,30.767156],[103.847214,30.766213],[103.86321,30.75535],[103.886553,30.751758],[103.882735,30.759243],[103.884826,30.761549],[103.898564,30.756276],[103.908498,30.748287],[103.917387,30.745257],[103.91927,30.750123],[103.926249,30.749116],[103.935877,30.742135],[103.938353,30.738234],[103.945088,30.73802],[103.950603,30.734317],[103.950635,30.729916],[103.944386,30.727391],[103.943315,30.723089],[103.937903,30.726764],[103.94022,30.717513],[103.93325,30.714977],[103.931302,30.710073],[103.925483,30.707447],[103.925342,30.702461],[103.917047,30.692987],[103.909015,30.687715],[103.902684,30.685993],[103.905885,30.681499],[103.913979,30.678263],[103.930576,30.674305],[103.932982,30.671715],[103.924205,30.672929],[103.921333,30.670317],[103.904231,30.671357],[103.899717,30.667888],[103.899887,30.661095],[103.89528,30.658293],[103.896198,30.65346],[103.882559,30.6556],[103.884998,30.665553],[103.879939,30.669348],[103.873202,30.655588],[103.863209,30.648522],[103.864123,30.635699],[103.860897,30.634441],[103.854966,30.639615],[103.848655,30.638738],[103.852565,30.625707],[103.842758,30.620052],[103.832436,30.622079],[103.820075,30.622],[103.812363,30.623559],[103.806572,30.629134],[103.79883,30.627969]],
+'郫都区':   [[103.961374,30.726814],[103.954366,30.726402],[103.950635,30.729916],[103.950603,30.734317],[103.945088,30.73802],[103.938353,30.738234],[103.935877,30.742135],[103.926249,30.749116],[103.91927,30.750123],[103.917387,30.745257],[103.908498,30.748287],[103.898564,30.756276],[103.884826,30.761549],[103.882735,30.759243],[103.886553,30.751758],[103.86321,30.75535],[103.847214,30.766213],[103.841775,30.767156],[103.828946,30.777934],[103.824931,30.7833],[103.802624,30.7894],[103.804264,30.793224],[103.79508,30.805637],[103.79437,30.812687],[103.789902,30.816768],[103.775965,30.813721],[103.767503,30.821177],[103.766498,30.829228],[103.76271,30.833774],[103.745812,30.84037],[103.7341,30.843732],[103.73008,30.850699],[103.729095,30.858069],[103.722379,30.867163],[103.732739,30.869041],[103.737193,30.87235],[103.742155,30.883715],[103.758537,30.885251],[103.766245,30.888475],[103.763107,30.897431],[103.754609,30.903979],[103.760956,30.905107],[103.76671,30.912297],[103.768398,30.920914],[103.773745,30.929012],[103.774492,30.948363],[103.77356,30.959863],[103.779158,30.965953],[103.785517,30.963995],[103.791499,30.961658],[103.805746,30.949477],[103.818808,30.951187],[103.831777,30.943785],[103.835192,30.935396],[103.846698,30.933093],[103.851204,30.941472],[103.860931,30.94134],[103.867625,30.943618],[103.877402,30.937531],[103.893741,30.935305],[103.898738,30.932117],[103.909542,30.933188],[103.914449,30.926532],[103.947003,30.912018],[103.94184,30.908503],[103.94305,30.901433],[103.953926,30.893001],[103.948992,30.888296],[103.952717,30.882427],[103.943283,30.874178],[103.950484,30.863336],[103.951015,30.85789],[103.955888,30.853234],[103.970046,30.851806],[103.974134,30.845836],[103.972524,30.841944],[103.981349,30.839457],[103.98932,30.832893],[103.995551,30.833374],[103.997146,30.829177],[104.004928,30.827513],[104.011045,30.829344],[104.02647,30.820204],[104.02581,30.813517],[104.030817,30.811449],[104.034701,30.8057],[104.041326,30.801136],[104.038663,30.793222],[104.049035,30.793767],[104.052528,30.786966],[104.046912,30.783025],[104.036263,30.785841],[104.039032,30.768182],[104.055015,30.758797],[104.043166,30.752233],[104.037861,30.751351],[104.042971,30.744752],[104.03963,30.738021],[104.034319,30.740524],[104.031769,30.747732],[104.027234,30.747573],[104.027774,30.754166],[104.019321,30.754466],[104.023355,30.759932],[104.018213,30.764515],[104.005934,30.76265],[104.003625,30.749862],[104.008317,30.74424],[104.00095,30.734946],[103.992711,30.73429],[103.988781,30.737948],[103.982126,30.733639],[103.991516,30.724119],[103.979836,30.72077],[103.980676,30.724207],[103.972803,30.728487],[103.971945,30.732969],[103.967767,30.727734],[103.961374,30.726814]],
+'高新区':   [[104.06976,30.6338],[104.070299,30.612778],[104.07034,30.61118],[104.07638,30.61242],[104.09621,30.60944],[104.09822,30.60869],[104.09132,30.60247],[104.09477,30.59651],[104.08845,30.59104],[104.09161,30.58134],[104.08529,30.57711],[104.09103,30.57711],[104.09387,30.57452],[104.10828,30.57701],[104.11978,30.57338],[104.12179,30.5689],[104.11789,30.56467],[104.11519,30.55535],[104.11949,30.55647],[104.13041,30.54801],[104.12725,30.54552],[104.13041,30.53806],[104.1284,30.53532],[104.12524,30.53407],[104.12553,30.53159],[104.13041,30.52935],[104.12783,30.52213],[104.1284,30.51765],[104.12696,30.51317],[104.1307,30.51093],[104.12955,30.50595],[104.12294,30.50795],[104.12035,30.50645],[104.11403,30.50944],[104.11144,30.5062],[104.11633,30.50222],[104.11144,30.49724],[104.0896,30.50745],[104.08816,30.50446],[104.08141446,30.50305887],[104.07049777,30.50424881],[104.06953208,30.54004339],[104.06402,30.5393],[104.06236,30.54239],[104.0597,30.54229],[104.05568,30.5388],[104.05367,30.53582],[104.0504,30.53735],[104.03384,30.53283],[104.03068,30.53641],[104.03125,30.5398],[104.02809,30.54079],[104.03642,30.54527],[104.03585,30.55],[104.02837,30.55174],[104.03412,30.55547],[104.03613,30.55995],[104.03624,30.56949],[104.04476,30.56915],[104.0462,30.57313],[104.04275,30.57636],[104.04303,30.57935],[104.03995,30.58081],[104.03613,30.58059],[104.02982,30.58426],[104.02744,30.58725],[104.03843,30.59576],[104.04246,30.59601],[104.04217,30.60223],[104.037,30.6062],[104.04016,30.62286],[104.05453,30.64076],[104.06976,30.6338]],
+'武侯区':   [[104.05453,30.64076],[104.04016,30.62286],[104.03579,30.603281],[104.04217,30.60223],[104.04246,30.59601],[104.03843,30.595761],[104.02524,30.590021],[104.01617,30.59254],[104.01033,30.58686],[104.00372,30.58824],[103.99312,30.59045],[103.98815,30.58672],[103.98497,30.57869],[103.97729,30.57785],[103.97288,30.580721],[103.97214,30.589431],[103.97334,30.612341],[103.96425,30.613471],[103.96225,30.625001],[103.96828,30.630841],[103.95968,30.639021],[103.95938,30.64758],[103.95441,30.65433],[103.95804,30.65893],[103.95635,30.66459],[103.96547,30.669531],[103.97618,30.668651],[103.97583,30.661981],[103.98436,30.6665],[103.98825,30.66348],[103.99196,30.6673],[103.99744,30.666459],[104.00386,30.661259],[104.00439,30.666019],[104.00877,30.665789],[104.01147,30.66565],[104.01436,30.65879],[104.02524,30.663501],[104.02874,30.657771],[104.03297,30.657031],[104.0604,30.657959],[104.06643,30.65317],[104.0852,30.651161],[104.0943,30.646991],[104.09306,30.631801],[104.09228,30.628011],[104.0911,30.622321],[104.09463,30.614641],[104.09421,30.611691],[104.07638,30.61242],[104.07034,30.61118],[104.06976,30.6338],[104.05453,30.64076]],
+'天府新区': [[104.04742,30.53283],[104.022456,30.463572],[104.027055,30.444656],[104.012107,30.446648],[104.014407,30.434699],[104.025905,30.428724],[104.013257,30.423745],[104.017856,30.41279],[103.99486,30.386891],[104.002909,30.376928],[104.000609,30.361982],[103.986811,30.363975],[103.984511,30.353013],[103.986811,30.337066],[103.96967,30.32558],[103.98308,30.31041],[103.98089,30.29866],[103.99135,30.28683],[104.00365,30.27112],[104.00979,30.270895],[104.02413,30.2753],[104.03377,30.27824],[104.03737,30.2707],[104.05385,30.27665],[104.05943,30.26922],[104.067659,30.271498],[104.07468,30.26211],[104.08711,30.26046],[104.08894,30.25442],[104.09821,30.25448],[104.10179,30.24703],[104.113857,30.24284],[104.12315,30.23297],[104.131088,30.233584],[104.151195,30.246084],[104.157907,30.262636],[104.1587,30.27162],[104.16261,30.27522],[104.16628,30.2841],[104.17532,30.30003],[104.18047,30.30486],[104.18577,30.31937],[104.18499,30.3244],[104.19817,30.33596],[104.20487,30.34562],[104.20284,30.35477],[104.20432,30.35938],[104.21364,30.36817],[104.2248,30.38101],[104.22614,30.39951],[104.23372,30.40188],[104.23573,30.41836],[104.24008,30.42379],[104.2563,30.42683],[104.25534,30.43456],[104.27485,30.46041],[104.2668,30.46516],[104.2539,30.46394],[104.25434,30.46994],[104.23421,30.47388],[104.22928,30.48104],[104.22112,30.48587],[104.2127,30.48672],[104.20705,30.4958],[104.207286,30.502392],[104.20528,30.50889],[104.201364,30.514522],[104.198315,30.518907],[104.19462,30.52422],[104.193489,30.528521],[104.19238,30.53274],[104.189538,30.537105],[104.18449,30.53901],[104.182154,30.542355],[104.17835,30.5478],[104.165067,30.553608],[104.15992,30.55828],[104.160203,30.563016],[104.1605,30.56799],[104.15522,30.56725],[104.150244,30.571047],[104.143382,30.572089],[104.138024,30.569948],[104.13197,30.56753],[104.130846,30.564575],[104.130334,30.563228],[104.13503,30.55735],[104.13333,30.55374],[104.122069,30.554472],[104.13041,30.54801],[104.12725,30.54552],[104.13041,30.53806],[104.12524,30.53407],[104.12562353,30.5316037],[104.13041,30.52935],[104.12783,30.52213],[104.1284,30.51765],[104.12696,30.51317],[104.1307,30.51093],[104.12955,30.50595],[104.12294,30.50795],[104.12035,30.50645],[104.11403,30.50944],[104.11144,30.5062],[104.11633,30.50222],[104.11144,30.49724],[104.08816,30.50446],[104.08141446,30.50305887],[104.07041179,30.50419322],[104.06955336,30.5354032],[104.0693601,30.53998769],[104.06402,30.5393],[104.062612,30.542186],[104.0597,30.54229],[104.056235,30.539282],[104.05367,30.53582],[104.0504,30.53735],[104.04742,30.53283]],
+'双流区':   [[103.96967,30.32558],[103.94203,30.35242],[103.94231,30.35802],[103.94878,30.36285],[103.93601,30.365784],[103.93185,30.36674],[103.92545,30.36501],[103.930469,30.378346],[103.937631,30.397375],[103.94014,30.40404],[103.939663,30.409887],[103.93928,30.41459],[103.94085,30.41928],[103.93976,30.424039],[103.93841,30.42993],[103.93312,30.4342],[103.930632,30.440253],[103.92866,30.44505],[103.925268,30.447896],[103.91562,30.45599],[103.92246,30.4728],[103.918999,30.478545],[103.91711,30.48168],[103.91253,30.49467],[103.89995,30.50186],[103.88993,30.50005],[103.886908,30.505721],[103.88507,30.50917],[103.87782,30.51332],[103.86549,30.5141],[103.85592,30.51117],[103.84538,30.51255],[103.836854,30.510006],[103.83142,30.52388],[103.82681,30.53243],[103.8223,30.53742],[103.82136,30.54943],[103.82727,30.56177],[103.82733,30.57983],[103.816687,30.59441],[103.812795,30.59851],[103.80444,30.61323],[103.80424,30.62062],[103.79883,30.62797],[103.80657,30.62913],[103.81236,30.62356],[103.82008,30.622],[103.83244,30.62208],[103.84276,30.62005],[103.85257,30.62571],[103.84866,30.63874],[103.85497,30.63962],[103.8609,30.63444],[103.86412,30.6357],[103.86321,30.64852],[103.8732,30.65559],[103.87994,30.66935],[103.885,30.66555],[103.88256,30.6556],[103.8962,30.65346],[103.89528,30.65829],[103.89972,30.66789],[103.905058,30.66998],[103.92133,30.67032],[103.92421,30.67293],[103.93298,30.67172],[103.93517,30.66506],[103.94156,30.66676],[103.954846,30.66481],[103.957636,30.660282],[103.95441,30.65433],[103.959423,30.646363],[103.95968,30.63902],[103.96828,30.63084],[103.96225,30.625],[103.96425,30.61347],[103.97334,30.61234],[103.97214,30.58943],[103.97234,30.587072],[103.97288,30.58072],[103.97729,30.57785],[103.98497,30.57869],[103.987659,30.586348],[103.99312,30.59045],[104.01033,30.58686],[104.01617,30.59254],[104.02524,30.59002],[104.02982,30.58426],[104.03778,30.58372],[104.04303,30.57935],[104.04275,30.57636],[104.044875,30.574371],[104.0462,30.57313],[104.04476,30.56915],[104.0371,30.569652],[104.035294,30.558086],[104.03412,30.55547],[104.02837,30.55174],[104.03585,30.55],[104.03125,30.5398],[104.030396,30.536415],[104.03384,30.53283],[104.048619,30.536864],[104.02246,30.46357],[104.02706,30.44466],[104.01211,30.44665],[104.01441,30.4347],[104.02591,30.42872],[104.01326,30.42375],[104.01786,30.41279],[103.99486,30.38689],[104.00291,30.37693],[103.98681,30.36398],[103.984953,30.355122],[103.98681,30.33707],[103.96967,30.32558]],
+'锦江区':   [[104.08582,30.671221],[104.08252,30.66516],[104.0726,30.6624],[104.066433,30.65317],[104.07401,30.65236],[104.0852,30.651161],[104.0943,30.646991],[104.09282,30.630641],[104.0911,30.622321],[104.09463,30.614641],[104.09416,30.609751],[104.09621,30.609441],[104.09822,30.608691],[104.09132,30.602471],[104.09477,30.596511],[104.08845,30.591041],[104.09161,30.581341],[104.08529,30.57711],[104.09103,30.577111],[104.09387,30.574521],[104.10828,30.57701],[104.11978,30.573379],[104.12179,30.568899],[104.11789,30.564669],[104.11519,30.555349],[104.11949,30.556469],[104.12207,30.554469],[104.13333,30.55374],[104.13503,30.55735],[104.13033,30.56323],[104.13197,30.56753],[104.14338,30.572091],[104.15024,30.571051],[104.15522,30.567251],[104.17141,30.57087],[104.16736,30.57252],[104.16725,30.57344],[104.17466,30.574369],[104.17419,30.579239],[104.16574,30.58237],[104.16937,30.58423],[104.17405,30.594199],[104.17807,30.597379],[104.17585,30.600609],[104.17121,30.59572],[104.16305,30.59892],[104.15971,30.60392],[104.16493,30.61026],[104.15609,30.613031],[104.1468,30.62338],[104.13945,30.62332],[104.13092,30.627709],[104.1333,30.633009],[104.12811,30.634009],[104.13434,30.64081],[104.0951,30.659311],[104.10303,30.67065],[104.09619,30.675821],[104.09237,30.669531],[104.08582,30.671221]],
+};
+
+// Color scale for choropleth (成交套数 -> fill color)
+function getFillColor(sales) {
+  if (sales >= 140) return '#b2182b';
+  if (sales >= 115) return '#ef8a62';
+  if (sales >= 100) return '#f4a582';
+  if (sales >= 80)  return '#fddbc7';
+  if (sales >= 60)  return '#f7e1d7';
+  return '#f7f7f7';
+}
+
+let rankMap = null;
+let rankPolygons = [];
+let rankInfoWindow = null;
+
+const rankMapContainer = document.getElementById('rankMap');
+if (rankMapContainer && rankMapContainer.offsetHeight > 0) {
+  initRankMap();
+} else {
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        initRankMap();
+        obs.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+  observer.observe(rankMapContainer);
+}
+
+function initRankMap() {
+  if (rankMap) return;
+  rankMap = new AMap.Map('rankMap', {
+    center: [104.0668, 30.5728],
+    zoom: 10,
+    viewMode: '2D',
+    resizeEnable: true,
+    mapStyle: 'amap://styles/light',
+  });
+
+  // Draw district polygons
+  Object.keys(districtPaths).forEach(function(name) {
+    var path = districtPaths[name];
+    var data = districtSales[name];
+    if (!path || !data) return;
+
+    var fillColor = getFillColor(data.sales);
+    var polygon = new AMap.Polygon({
+      path: path,
+      fillColor: fillColor,
+      fillOpacity: 0.65,
+      strokeColor: '#ffffff',
+      strokeWeight: 1.5,
+      strokeOpacity: 1,
+      zIndex: 10,
+    });
+
+    // Hover effects
+    polygon.on('mouseover', function() {
+      polygon.setOptions({ fillOpacity: 0.85, strokeWeight: 3 });
+    });
+    polygon.on('mouseout', function() {
+      polygon.setOptions({ fillOpacity: 0.65, strokeWeight: 1.5 });
+    });
+
+    // Click -> InfoWindow
+    polygon.on('click', function(e) {
+      if (rankInfoWindow) rankInfoWindow.close();
+      var content = '<div class="amap-info-content">' +
+        '<strong>' + name + '</strong><br/>' +
+        '供应套数：' + data.supply + '<br/>' +
+        '成交套数：' + data.sales + '<br/>' +
+        '成交均价：' + data.price.toLocaleString() + ' 元/㎡<br/>' +
+        '存量套数：' + data.inventory.toLocaleString() +
+        '</div>';
+      rankInfoWindow = new AMap.InfoWindow({
+        content: content,
+        offset: new AMap.Pixel(0, -10),
+      });
+      rankInfoWindow.open(rankMap, e.lnglat);
+    });
+
+    rankMap.add(polygon);
+    rankPolygons.push(polygon);
+  });
+
+  // Add text labels at district centroids
+  Object.keys(districtPaths).forEach(function(name) {
+    var path = districtPaths[name];
+    var data = districtSales[name];
+    if (!path || !data) return;
+
+    // Compute centroid
+    var sumLng = 0, sumLat = 0;
+    path.forEach(function(p) { sumLng += p[0]; sumLat += p[1]; });
+    var center = [sumLng / path.length, sumLat / path.length];
+
+    var labelText = name + '\n' + data.sales + '套';
+    var textMarker = new AMap.Text({
+      text: labelText,
+      position: center,
+      offset: new AMap.Pixel(0, 0),
+      style: {
+        'text-align': 'center',
+        'font-size': '12px',
+        'font-weight': '700',
+        'color': '#1a1a2e',
+        'text-shadow': '0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff',
+        'line-height': '1.35',
+        'white-space': 'pre-line',
+        'pointer-events': 'none'
+      },
+      zIndex: 120
+    });
+    rankMap.add(textMarker);
+  });
+
+  // Add legend control
+  var legendHTML = '<div style="background:rgba(255,255,255,0.92);padding:10px 12px;border-radius:6px;font-size:11px;line-height:1.8;box-shadow:0 1px 6px rgba(0,0,0,0.15);position:absolute;bottom:20px;left:10px;z-index:1000;">' +
+    '<strong style="font-size:12px;">成交套数</strong><br/>' +
+    '<span style="display:inline-block;width:14px;height:14px;background:#b2182b;margin-right:4px;vertical-align:middle;border-radius:2px;"></span>140+<br/>' +
+    '<span style="display:inline-block;width:14px;height:14px;background:#ef8a62;margin-right:4px;vertical-align:middle;border-radius:2px;"></span>115-139<br/>' +
+    '<span style="display:inline-block;width:14px;height:14px;background:#f4a582;margin-right:4px;vertical-align:middle;border-radius:2px;"></span>100-114<br/>' +
+    '<span style="display:inline-block;width:14px;height:14px;background:#fddbc7;margin-right:4px;vertical-align:middle;border-radius:2px;"></span>80-99<br/>' +
+    '<span style="display:inline-block;width:14px;height:14px;background:#f7e1d7;margin-right:4px;vertical-align:middle;border-radius:2px;"></span>60-79<br/>' +
+    '<span style="display:inline-block;width:14px;height:14px;background:#f7f7f7;margin-right:4px;vertical-align:middle;border-radius:2px;border:1px solid #ddd;"></span>&lt;60' +
+    '</div>';
+  var legendDom = document.createElement('div');
+  legendDom.innerHTML = legendHTML;
+  rankMapContainer.appendChild(legendDom.firstElementChild);
+
+  // Auto-fit bounds to show all districts
+  rankMap.setFitView(null, false, [60, 60, 60, 60]);
+}
+
+// ===== Plate Map (Baidu) =====
+const plateSales = {
+  '大面':       { supply:0,  sales:68, price:16200, inventory:1800 },
+  '犀浦':       { supply:22, sales:48, price:13200, inventory:2400 },
+  '大丰':       { supply:0,  sales:45, price:12500, inventory:2800 },
+  '光华新城':   { supply:0,  sales:43, price:14000, inventory:1600 },
+  '麓湖':       { supply:0,  sales:35, price:32000, inventory:900 },
+  '十陵':       { supply:28, sales:32, price:14800, inventory:1500 },
+  '怡心湖':     { supply:0,  sales:30, price:18500, inventory:1100 },
+  '国宾':       { supply:0,  sales:26, price:23500, inventory:1000 },
+  '锦江生态带': { supply:0,  sales:25, price:21000, inventory:1300 },
+  '三圣乡':     { supply:0,  sales:22, price:28000, inventory:700 },
+  '新川':       { supply:0,  sales:20, price:26500, inventory:900 },
+};
+
+const platePaths = {
+'大面':       [[104.19187,30.60258],[104.19146,30.60219],[104.18997,30.60086],[104.18607,30.59627],[104.18499,30.59473],[104.18159,30.58954],[104.18015,30.58752],[104.17875,30.58603],[104.17667,30.58440],[104.17448,30.58314],[104.17232,30.58233],[104.16722,30.58064],[104.15958,30.57815],[104.15470,30.57697],[104.15177,30.57650],[104.14718,30.57594],[104.15669,30.55797],[104.15994,30.56332],[104.16169,30.56571],[104.16612,30.56907],[104.17629,30.56405],[104.18316,30.56129],[104.19223,30.57420],[104.19976,30.57032],[104.21172,30.56406],[104.22143,30.56015],[104.22748,30.57165],[104.22895,30.57097],[104.23179,30.57651],[104.22865,30.57866],[104.22464,30.58043],[104.22043,30.58155],[104.22155,30.58410],[104.22339,30.58827],[104.22480,30.59128],[104.21268,30.59594],[104.20728,30.59867],[104.20210,30.60109],[104.19187,30.60258]],
+'犀浦':       [[103.95461,30.76357],[103.95737,30.76683],[103.95876,30.76829],[103.96393,30.77305],[103.96758,30.77645],[103.97155,30.77988],[103.97541,30.78208],[103.98081,30.78366],[103.99236,30.78515],[103.99384,30.78541],[103.99603,30.78304],[103.99659,30.78207],[103.99698,30.78056],[103.99739,30.77976],[103.99802,30.77902],[103.99878,30.77831],[103.99969,30.77755],[104.00039,30.77646],[104.00085,30.77517],[104.00355,30.76790],[104.00482,30.76403],[104.00522,30.76123],[104.00301,30.75575],[104.00210,30.75436],[104.00164,30.75369],[104.00095,30.75257],[104.00226,30.75129],[104.00866,30.74569],[104.01036,30.74380],[104.00658,30.74234],[104.00129,30.74029],[104.00127,30.74013],[104.00005,30.73974],[103.99995,30.73970],[103.99950,30.73954],[103.99785,30.73899],[103.99597,30.73837],[103.99446,30.73787],[103.99228,30.73714],[103.99130,30.73681],[103.98996,30.73638],[103.98831,30.73583],[103.98520,30.73472],[103.98276,30.73390],[103.98204,30.73371],[103.98095,30.73509],[103.98527,30.73957],[103.98215,30.74262],[103.98531,30.74580],[103.98435,30.74661],[103.98094,30.74934],[103.97704,30.75225],[103.97611,30.75277],[103.97035,30.75572],[103.96667,30.75740],[103.96129,30.75995],[103.95791,30.76156],[103.95574,30.76282]],
+'大丰':       [[104.03551,30.78610],[104.03544,30.78460],[104.03541,30.78240],[104.03755,30.77898],[104.03875,30.77638],[104.03914,30.77396],[104.03816,30.77044],[104.03873,30.76820],[104.04691,30.76304],[104.04797,30.76239],[104.04900,30.76176],[104.05411,30.76092],[104.05594,30.75935],[104.05698,30.75830],[104.05804,30.75784],[104.06075,30.75757],[104.06614,30.75432],[104.06794,30.75192],[104.07231,30.74835],[104.07402,30.74787],[104.07696,30.74745],[104.07793,30.74892],[104.08206,30.75040],[104.10649,30.76297],[104.10705,30.76489],[104.10683,30.76528],[104.10555,30.76526],[104.10318,30.76642],[104.10130,30.76712],[104.10128,30.76882],[104.10339,30.77054],[104.10295,30.77185],[104.10247,30.77196],[104.10155,30.77134],[104.10053,30.77113],[104.09625,30.77117],[104.09588,30.77165],[104.09600,30.77265],[104.09579,30.77291],[104.09225,30.77349],[104.09147,30.77321],[104.08912,30.77394],[104.08795,30.77223],[104.08671,30.76899],[104.08713,30.76770],[104.08599,30.76718],[104.08553,30.76756],[104.08474,30.76795],[104.08390,30.76731],[104.08319,30.76715],[104.08172,30.76809],[104.08210,30.76965],[104.08168,30.76993],[104.08093,30.76970],[104.08007,30.76757],[104.07969,30.76740],[104.07847,30.76754],[104.07649,30.76888],[104.07644,30.76970],[104.07584,30.77015],[104.07584,30.77055],[104.07678,30.77128],[104.07782,30.77058],[104.07849,30.77060],[104.07893,30.77096],[104.07906,30.77153],[104.07893,30.77223],[104.07748,30.77381],[104.07627,30.77393],[104.07732,30.77552],[104.07752,30.77981],[104.07841,30.78039],[104.07940,30.78029],[104.08127,30.78200],[104.08048,30.78234],[104.07998,30.78197],[104.07967,30.78126],[104.07883,30.78144],[104.07849,30.78200],[104.07917,30.78394],[104.07908,30.78467],[104.07760,30.78620],[104.07748,30.78627],[104.07755,30.79050],[104.06861,30.79096],[104.06468,30.79090],[104.06080,30.79064],[104.05630,30.79014]],
+'光华新城':   [[103.87204,30.70528],[103.86894,30.70254],[103.86848,30.70202],[103.86728,30.70073],[103.86632,30.69976],[103.86559,30.69894],[103.86386,30.69696],[103.86311,30.69602],[103.86187,30.69461],[103.86119,30.69379],[103.85961,30.69145],[103.85880,30.69043],[103.85801,30.68977],[103.85729,30.68915],[103.85545,30.68764],[103.85479,30.68717],[103.86298,30.67714],[103.86843,30.67124],[103.87480,30.66433],[103.87951,30.65937],[103.88314,30.65518],[103.88388,30.65366],[103.88404,30.65297],[103.90694,30.65847],[103.90602,30.66624],[103.90559,30.66906],[103.90536,30.66993],[103.90518,30.67042],[103.91245,30.67151],[103.91259,30.67106],[103.91324,30.67087],[103.91400,30.67080],[103.91481,30.67084],[103.91561,30.67104],[103.91615,30.67110],[103.91698,30.67075],[103.91770,30.67062],[103.91894,30.67066],[103.91972,30.67058],[103.92055,30.67016],[103.92113,30.67021],[103.92162,30.67052],[103.92226,30.67129],[103.92293,30.67169],[103.92360,30.67220],[103.92410,30.67296],[103.92464,30.67312],[103.92543,30.67259],[103.92622,30.67165],[103.92682,30.67135],[103.92753,30.67127],[103.92805,30.67135],[103.92858,30.67157],[103.92946,30.67227],[103.92921,30.67383],[103.92840,30.67488],[103.92744,30.67545],[103.92172,30.67705],[103.92087,30.67710],[103.91979,30.67671],[103.91921,30.67675],[103.91830,30.67735],[103.91700,30.67744],[103.91712,30.67801],[103.91692,30.67810],[103.91710,30.67849],[103.91672,30.67878],[103.91620,30.67844],[103.91584,30.67879],[103.91556,30.67863],[103.91537,30.67882],[103.91475,30.67873],[103.91429,30.68043],[103.91412,30.68055],[103.91391,30.68025],[103.91324,30.68198],[103.91309,30.68137],[103.91281,30.68117],[103.91304,30.68088],[103.91253,30.68077],[103.91248,30.68098],[103.91213,30.68094],[103.91215,30.68059],[103.91103,30.68030],[103.91104,30.68049],[103.91066,30.68051],[103.91052,30.68120],[103.91008,30.68162],[103.90923,30.68171],[103.90708,30.68122],[103.90589,30.68159],[103.90533,30.68212],[103.90428,30.68416],[103.90287,30.68548],[103.90286,30.68622],[103.90370,30.68779],[103.90440,30.68798],[103.90487,30.68797],[103.90622,30.68716],[103.90792,30.68678],[103.90851,30.68725],[103.90871,30.68793],[103.90933,30.68808],[103.90989,30.68781],[103.91020,30.68742],[103.91023,30.68632],[103.91119,30.68647],[103.91139,30.68677],[103.91094,30.68706],[103.91119,30.68719],[103.91111,30.68741],[103.91160,30.68722],[103.91159,30.68753],[103.91179,30.68752],[103.91193,30.68797],[103.91297,30.68797],[103.91299,30.68821],[103.91259,30.68825],[103.91258,30.68843],[103.91289,30.69041],[103.91185,30.69095],[103.91242,30.69205],[103.91221,30.69257],[103.91242,30.69246],[103.91273,30.69270],[103.91302,30.69237],[103.91332,30.69251],[103.91492,30.69140],[103.91518,30.69171],[103.91487,30.69201],[103.91478,30.69245],[103.91479,30.69337],[103.91500,30.69373],[103.91560,30.69368],[103.91595,30.69337],[103.91645,30.69326],[103.91698,30.69277],[103.91759,30.69314],[103.92229,30.69851],[103.92211,30.69885],[103.92234,30.69921],[103.92276,30.69929],[103.92288,30.69949],[103.92323,30.69930],[103.92369,30.69958],[103.92401,30.69934],[103.92393,30.69919],[103.92452,30.69888],[103.92490,30.69879],[103.92512,30.69898],[103.92597,30.69842],[103.92735,30.70073],[103.92486,30.70097],[103.92373,30.70097],[103.92122,30.70086],[103.91855,30.70071],[103.91724,30.70067],[103.91627,30.70067],[103.91510,30.70082],[103.91278,30.70127],[103.90914,30.70195],[103.90676,30.70240],[103.90484,30.70275],[103.90296,30.70311],[103.90146,30.70320],[103.89905,30.70313],[103.89635,30.70306],[103.89365,30.70290],[103.88961,30.70253],[103.88664,30.70229],[103.88282,30.70189],[103.88070,30.70198],[103.87926,30.70226],[103.87767,30.70289]],
+'麓湖':       [[104.06106,30.47663],[104.05409,30.46997],[104.05080,30.46558],[104.04983,30.46538],[104.04606,30.46526],[104.04404,30.46338],[104.04505,30.45994],[104.04775,30.45441],[104.05059,30.45562],[104.05261,30.45570],[104.05339,30.45548],[104.05459,30.45515],[104.05612,30.45435],[104.05736,30.45321],[104.06046,30.44980],[104.06168,30.44903],[104.06386,30.44845],[104.06768,30.44838],[104.06992,30.44888],[104.07247,30.44983],[104.07879,30.45060],[104.08036,30.45077],[104.08243,30.45087],[104.08679,30.45042],[104.08814,30.45034],[104.09101,30.45084],[104.09292,30.45086],[104.10246,30.44980],[104.09237,30.46396],[104.08982,30.46777],[104.08894,30.46973],[104.08833,30.47198],[104.08815,30.47699],[104.07802,30.47719],[104.07596,30.47727],[104.07310,30.47727],[104.06739,30.47660],[104.06558,30.47645]],
+'十陵':       [[104.21244,30.67804],[104.21354,30.67082],[104.21418,30.66663],[104.21436,30.66249],[104.21393,30.65743],[104.21337,30.65409],[104.20759,30.65488],[104.20565,30.65476],[104.19350,30.65336],[104.17859,30.65218],[104.17550,30.65207],[104.16416,30.65487],[104.16169,30.65491],[104.15989,30.65532],[104.15673,30.65623],[104.16045,30.66641],[104.16312,30.67394],[104.16358,30.67489],[104.16930,30.67594],[104.17937,30.67767],[104.18589,30.67834],[104.19604,30.67840],[104.20295,30.67844],[104.20741,30.67832]],
+'怡心湖':     [[104.02186,30.45579],[104.00978,30.46032],[104.01287,30.46432],[104.01616,30.46847],[104.01830,30.47269],[104.02110,30.47859],[104.01758,30.47882],[104.01445,30.47916],[104.00873,30.47998],[104.00915,30.48067],[104.00944,30.48118],[104.01030,30.48281],[104.01132,30.48543],[104.01221,30.48779],[104.01340,30.49091],[104.01347,30.49108],[104.03226,30.49186],[104.03896,30.49185],[104.03743,30.48724],[104.03423,30.47763],[104.02631,30.46365]],
+'国宾':       [[103.98204,30.73371],[103.98276,30.73390],[103.98520,30.73472],[103.98831,30.73583],[103.98996,30.73638],[103.99130,30.73681],[103.99228,30.73714],[103.99446,30.73787],[103.99597,30.73837],[103.99785,30.73899],[103.99950,30.73954],[103.99995,30.73970],[104.00005,30.73974],[104.00127,30.74013],[104.00129,30.74029],[104.00658,30.74234],[104.01036,30.74380],[104.01058,30.74388],[104.01252,30.74219],[104.01430,30.74063],[104.01413,30.74045],[104.01893,30.73690],[104.02024,30.73594],[104.02324,30.73352],[104.02146,30.73242],[104.02314,30.73081],[104.02988,30.72477],[104.02988,30.72469],[104.02985,30.72464],[104.02949,30.72439],[104.02947,30.72423],[104.02925,30.72392],[104.02927,30.72374],[104.02935,30.72363],[104.03060,30.72272],[104.03060,30.72262],[104.03055,30.72255],[104.02975,30.72162],[104.03064,30.72113],[104.03068,30.72104],[104.03066,30.72096],[104.02979,30.72054],[104.03069,30.71905],[104.03255,30.71594],[104.02710,30.71299],[104.02345,30.71122],[104.01913,30.70987],[104.01656,30.70905],[104.01501,30.70809],[104.01361,30.70709],[104.01259,30.70791],[104.00685,30.71287],[104.00335,30.71585],[104.00125,30.71757],[103.99922,30.71872],[103.99543,30.72092],[103.99327,30.72213],[103.99139,30.72400],[103.98869,30.72682]],
+'锦江生态带': [[104.03896,30.49185],[104.03743,30.48724],[104.03423,30.47763],[104.02631,30.46365],[104.02186,30.45579],[104.02017,30.45266],[104.02391,30.45075],[104.02545,30.45107],[104.02671,30.45068],[104.02739,30.45129],[104.02833,30.45185],[104.02936,30.45235],[104.03094,30.45192],[104.03338,30.45080],[104.03599,30.44942],[104.03877,30.44763],[104.04177,30.44779],[104.04623,30.44832],[104.04941,30.45091],[104.04775,30.45441],[104.04505,30.45993],[104.04404,30.46338],[104.04606,30.46526],[104.04983,30.46538],[104.05080,30.46558],[104.05409,30.46997],[104.06106,30.47663],[104.06179,30.47968],[104.06019,30.48369],[104.05984,30.48582],[104.06117,30.48763],[104.06359,30.48797],[104.06867,30.48662],[104.07148,30.48758],[104.07238,30.48984],[104.07184,30.49286],[104.06770,30.49215],[104.06504,30.49165],[104.06286,30.49142],[104.06115,30.49147],[104.05437,30.49164],[104.04763,30.49176]],
+'三圣乡':     [[104.14746,30.61775],[104.14217,30.61055],[104.13362,30.60583],[104.13206,30.60501],[104.12967,30.60384],[104.12792,30.60308],[104.12518,30.60278],[104.12576,30.60162],[104.12832,30.59889],[104.13047,30.59665],[104.13245,30.59459],[104.13397,30.59300],[104.13517,30.59173],[104.13730,30.58933],[104.13986,30.58634],[104.14260,30.58267],[104.14490,30.57924],[104.14718,30.57594],[104.15177,30.57650],[104.15470,30.57697],[104.15958,30.57815],[104.16722,30.58064],[104.17232,30.58233],[104.16912,30.58416],[104.16985,30.58596],[104.17060,30.58723],[104.17186,30.58766],[104.17254,30.58853],[104.17308,30.58887],[104.17318,30.58922],[104.17351,30.58917],[104.17407,30.58958],[104.17356,30.59004],[104.17359,30.59047],[104.17313,30.59139],[104.17331,30.59210],[104.17369,30.59255],[104.17441,30.59189],[104.17813,30.59648],[104.17634,30.59766],[104.17485,30.59595],[104.17294,30.59715],[104.17220,30.59616],[104.17185,30.59652],[104.17153,30.59636],[104.17122,30.59649],[104.17109,30.59592],[104.16934,30.59517],[104.16901,30.59484],[104.16818,30.59510],[104.16809,30.59493],[104.16777,30.59553],[104.16656,30.59629],[104.16664,30.59660],[104.16640,30.59671],[104.16621,30.59754],[104.16620,30.59848],[104.16589,30.59849],[104.16569,30.59812],[104.16449,30.59858],[104.16417,30.59891],[104.16310,30.59896],[104.16340,30.60127],[104.16141,30.60231],[104.16066,30.60275],[104.15962,30.60360],[104.16178,30.60649],[104.16489,30.61058],[104.16393,30.61130],[104.16264,30.61213],[104.16194,30.61253],[104.15939,30.61379],[104.15688,30.61507],[104.15506,30.61577],[104.15109,30.61699],[104.14869,30.61740]],
+'新川':       [[104.09390,30.54717],[104.09141,30.54551],[104.09023,30.54496],[104.08939,30.54490],[104.08848,30.54503],[104.08781,30.54456],[104.08583,30.54275],[104.08231,30.54259],[104.08019,30.54260],[104.07608,30.53918],[104.07629,30.53293],[104.07642,30.52905],[104.07651,30.52267],[104.07681,30.51641],[104.07690,30.51291],[104.07720,30.50230],[104.08298,30.50226],[104.08315,30.50291],[104.08339,30.50296],[104.08464,30.50474],[104.08411,30.50492],[104.08403,30.50515],[104.08486,30.50569],[104.08555,30.50536],[104.08666,30.50520],[104.08675,30.50473],[104.09084,30.50476],[104.09077,30.50440],[104.09217,30.50335],[104.09294,30.50240],[104.09385,30.50201],[104.09404,30.50173],[104.09509,30.50137],[104.09595,30.50156],[104.09617,30.50130],[104.09642,30.50144],[104.09594,30.50190],[104.09598,30.50207],[104.09647,30.50194],[104.09681,30.50160],[104.09725,30.50172],[104.09770,30.50158],[104.09790,30.50179],[104.09894,30.50138],[104.09930,30.50079],[104.09986,30.50077],[104.10020,30.50014],[104.10130,30.49956],[104.10193,30.49939],[104.10289,30.49955],[104.10381,30.49883],[104.10435,30.49871],[104.10499,30.49894],[104.10656,30.49910],[104.10701,30.49814],[104.10777,30.49760],[104.10825,30.49634],[104.10907,30.49605],[104.11028,30.49613],[104.11063,30.49631],[104.11116,30.49613],[104.11185,30.49618],[104.11280,30.49740],[104.11367,30.49767],[104.11402,30.49871],[104.11488,30.49919],[104.11579,30.49930],[104.11528,30.50002],[104.11476,30.50021],[104.11302,30.50174],[104.11248,30.50195],[104.11194,30.50179],[104.11222,30.50207],[104.11212,30.50226],[104.11172,30.50224],[104.11196,30.50337],[104.11254,30.50388],[104.11321,30.50517],[104.11308,30.50663],[104.11329,30.50716],[104.11366,30.50767],[104.11435,30.50800],[104.11489,30.50789],[104.11576,30.50731],[104.11648,30.50609],[104.11686,30.50585],[104.11842,30.50637],[104.11907,30.50718],[104.11957,30.50727],[104.11909,30.50884],[104.11836,30.52905],[104.11817,30.53894],[104.11795,30.54106],[104.11633,30.54548],[104.09778,30.54551],[104.09593,30.54602],[104.09508,30.54645]],
+};
+
+function getPlateFillColor(sales) {
+  if (sales >= 55) return '#b2182b';
+  if (sales >= 42) return '#ef8a62';
+  if (sales >= 32) return '#f4a582';
+  if (sales >= 25) return '#fddbc7';
+  if (sales >= 20) return '#f7e1d7';
+  return '#f7f7f7';
+}
+
+let plateMap = null;
+let plateMapInitialized = false;
+
+function initPlateMap() {
+  if (plateMapInitialized) return;
+  var container = document.getElementById('plateMap');
+  if (!container || container.offsetHeight === 0) return;
+
+  plateMap = new BMap.Map('plateMap');
+  plateMap.centerAndZoom(new BMap.Point(104.0668, 30.5728), 11);
+  plateMap.enableScrollWheelZoom(true);
+  plateMap.addControl(new BMap.NavigationControl());
+
+  Object.keys(platePaths).forEach(function(name) {
+    var path = platePaths[name];
+    var data = plateSales[name];
+    if (!path || !data) return;
+
+    var points = path.map(function(p) { return new BMap.Point(p[0], p[1]); });
+    var fillColor = getPlateFillColor(data.sales);
+
+    var polygon = new BMap.Polygon(points, {
+      fillColor: fillColor,
+      fillOpacity: 0.65,
+      strokeColor: '#ffffff',
+      strokeWeight: 1.5,
+      strokeOpacity: 1,
+    });
+
+    // Hover effects
+    polygon.addEventListener('mouseover', function() {
+      polygon.setFillOpacity(0.85);
+      polygon.setStrokeWeight(3);
+    });
+    polygon.addEventListener('mouseout', function() {
+      polygon.setFillOpacity(0.65);
+      polygon.setStrokeWeight(1.5);
+    });
+
+    // Click -> InfoWindow
+    var infoContent = '<div style="font-size:12px;line-height:1.6;">' +
+      '<strong>' + name + '</strong><br/>' +
+      '供应套数：' + data.supply + '<br/>' +
+      '成交套数：' + data.sales + '<br/>' +
+      '成交均价：' + data.price.toLocaleString() + ' 元/㎡<br/>' +
+      '存量套数：' + data.inventory.toLocaleString() +
+      '</div>';
+
+    polygon.addEventListener('click', function(e) {
+      var infoWindow = new BMap.InfoWindow(infoContent, {width: 180});
+      plateMap.openInfoWindow(infoWindow, e.point);
+    });
+
+    plateMap.addOverlay(polygon);
+
+    // Compute centroid for label
+    var sumLng = 0, sumLat = 0;
+    path.forEach(function(p) { sumLng += p[0]; sumLat += p[1]; });
+    var center = new BMap.Point(sumLng / path.length, sumLat / path.length);
+
+    var label = new BMap.Label(name + '\n' + data.sales + '套', {
+      position: center,
+      offset: new BMap.Size(0, 0)
+    });
+    label.setStyle({
+      color: '#1a1a2e',
+      fontSize: '11px',
+      fontWeight: '700',
+      textAlign: 'center',
+      lineHeight: '1.35',
+      whiteSpace: 'pre-line',
+      border: 'none',
+      background: 'none',
+      textShadow: '0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff',
+      pointerEvents: 'none'
+    });
+    plateMap.addOverlay(label);
+  });
+
+  // Add legend
+  var legendHTML = '<div style="background:rgba(255,255,255,0.92);padding:8px 10px;border-radius:6px;font-size:10px;line-height:1.7;box-shadow:0 1px 6px rgba(0,0,0,0.15);">' +
+    '<strong style="font-size:11px;">成交套数</strong><br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#b2182b;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>55+<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#ef8a62;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>42-54<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#f4a582;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>32-41<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#fddbc7;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>25-31<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#f7e1d7;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>20-24<br/>' +
+    '</div>';
+  var legendCtrl = new BMap.Control();
+  legendCtrl.defaultAnchor = BMAP_ANCHOR_BOTTOM_LEFT;
+  legendCtrl.defaultOffset = new BMap.Size(10, 20);
+  legendCtrl.initialize = function(map) {
+    var div = document.createElement('div');
+    div.innerHTML = legendHTML;
+    map.getContainer().appendChild(div.firstElementChild);
+    return div;
+  };
+  plateMap.addControl(legendCtrl);
+
+  plateMapInitialized = true;
+}
+
+// ===== 贝壳数据 Chart.js 图表 =====
+function getLabels(data) { return data.map(function(r) { return r[0]; }); }
+
+var COLORS = {
+  blue: '#3498db', blueLight: '#85c1e9',
+  red: '#c41230', redLight: '#e74c3c',
+  green: '#2e7d32', greenLight: '#58d68d',
+  orange: '#e67e22', orangeLight: '#f0b27a',
+  purple: '#8e44ad', purpleLight: '#bb8fce',
+  teal: '#1abc9c',
+  grey: '#888888'
+};
+
+(function() {
+  var ctx = document.getElementById('chartNewVolumePrice').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getLabels(NEW_VOLUME_PRICE),
+      datasets: [
+        { type: 'bar', label: '成销量(套)', data: NEW_VOLUME_PRICE.map(function(r){return r[1];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 2 },
+        { type: 'line', label: '成销均价(元/㎡)', data: NEW_VOLUME_PRICE.map(function(r){return r[2];}), borderColor: COLORS.red, borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, yAxisID: 'y1', order: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 }, callback: function(v) { return (v/1000).toFixed(0)+'k'; } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartNewChannel').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getLabels(NEW_CHANNEL),
+      datasets: [
+        { type: 'bar', label: '合作项目数(个)', data: NEW_CHANNEL.map(function(r){return r[1];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 2 },
+        { type: 'line', label: '合作项目占比(%)', data: NEW_CHANNEL.map(function(r){return Math.round(r[2]*10000)/100;}), borderColor: COLORS.orange, borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, yAxisID: 'y1', order: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        y1: { type: 'linear', position: 'right', min: 50, max: 85, grid: { drawOnChartArea: false }, ticks: { font: { size: 10 }, callback: function(v) { return v+'%'; } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartNewCommission').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: getLabels(NEW_COMMISSION),
+      datasets: [
+        { label: '成销佣金点位(%)', data: NEW_COMMISSION.map(function(r){return Math.round(r[1]*10000)/100;}), borderColor: COLORS.purple, backgroundColor: 'rgba(142,68,173,0.08)', borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, fill: true }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { grid: { color: '#eee' }, ticks: { font: { size: 10 }, callback: function(v) { return v+'%'; } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartNewDemand').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getLabels(NEW_DEMAND),
+      datasets: [
+        { type: 'bar', label: '商机量', data: NEW_DEMAND.map(function(r){return r[1];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 3 },
+        { type: 'line', label: '带看量', data: NEW_DEMAND.map(function(r){return r[2];}), borderColor: COLORS.orange, borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, yAxisID: 'y', order: 2 },
+        { type: 'line', label: '认购量(套)', data: NEW_DEMAND.map(function(r){return r[3];}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, yAxisID: 'y1', order: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+// ===== 贝壳二手 =====
+
+(function() {
+  var ctx = document.getElementById('chartOldSupplyDemand').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getLabels(OLD_SUPPLY_DEMAND),
+      datasets: [
+        { type: 'bar', label: '新增房源量(套)', data: OLD_SUPPLY_DEMAND.map(function(r){return r[1];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 3 },
+        { type: 'bar', label: '成交量(套)', data: OLD_SUPPLY_DEMAND.map(function(r){return r[2];}), backgroundColor: COLORS.greenLight, borderRadius: 3, yAxisID: 'y', order: 2 },
+        { type: 'line', label: '新增挂牌均价', data: OLD_SUPPLY_DEMAND.map(function(r){return r[3];}), borderColor: COLORS.orange, borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, yAxisID: 'y1', order: 1 },
+        { type: 'line', label: '成交均价', data: OLD_SUPPLY_DEMAND.map(function(r){return r[4];}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, yAxisID: 'y1', order: 1, borderDash: [5,3] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 }, callback: function(v) { return (v/1000).toFixed(0)+'k'; } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartOldBargain').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: getLabels(OLD_BARGAIN),
+      datasets: [
+        { label: '议价幅度(%)', data: OLD_BARGAIN.map(function(r){return Math.round(r[1]*10000)/100;}), borderColor: COLORS.red, backgroundColor: 'rgba(196,18,48,0.06)', borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, fill: true }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { grid: { color: '#eee' }, ticks: { font: { size: 10 }, callback: function(v) { return v+'%'; } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartOldViewing').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: getLabels(OLD_VIEWING),
+      datasets: [
+        { label: '成交客户平均有效带看次数(次)', data: OLD_VIEWING.map(function(r){return r[1];}), borderColor: COLORS.teal, backgroundColor: 'rgba(26,188,156,0.06)', borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, fill: true }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartOldCycle').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: getLabels(OLD_CYCLE),
+      datasets: [
+        { label: '房源平均成交天数(天)', data: OLD_CYCLE.map(function(r){return r[1];}), borderColor: COLORS.purple, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3 },
+        { label: '客源平均成交天数(天)', data: OLD_CYCLE.map(function(r){return r[2];}), borderColor: COLORS.orange, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartOldRatio').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getLabels(OLD_RATIO),
+      datasets: [
+        { type: 'bar', label: '新增有效客户量', data: OLD_RATIO.map(function(r){return r[2];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 3 },
+        { type: 'bar', label: '新增房源量(套)', data: OLD_RATIO.map(function(r){return r[3];}), backgroundColor: COLORS.greenLight, borderRadius: 3, yAxisID: 'y', order: 2 },
+        { type: 'line', label: '新增有效客房比', data: OLD_RATIO.map(function(r){return Math.round(r[1]*100)/100;}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 7, tension: 0.3, yAxisID: 'y1', order: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
+        x: { ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 0 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartOldPotential').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getLabels(OLD_POTENTIAL),
+      datasets: [
+        { type: 'bar', label: '潜客量', data: OLD_POTENTIAL.map(function(r){return r[1];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 2 },
+        { type: 'line', label: '潜客支付力(万元)', data: OLD_POTENTIAL.map(function(r){return r[2];}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 7, tension: 0.3, yAxisID: 'y1', order: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
+        x: { ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 0 } }
+      }
+    }
+  });
+})();
+
+(function() {
+  var ctx = document.getElementById('chartOldDemand').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: getLabels(OLD_DEMAND),
+      datasets: [
+        { type: 'bar', label: '商机量', data: OLD_DEMAND.map(function(r){return r[1];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 3 },
+        { type: 'line', label: '带看量', data: OLD_DEMAND.map(function(r){return r[2];}), borderColor: COLORS.orange, borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: 0.3, yAxisID: 'y', order: 2 },
+        { type: 'line', label: '认购量(套)', data: OLD_DEMAND.map(function(r){return r[3];}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, yAxisID: 'y1', order: 1 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
+      scales: {
+        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
+        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
+        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
+      }
+    }
+  });
+})();
+
+// Hook into ranking tab switch to init plate map lazily
+document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    if (this.dataset.view === 'plate') {
+      setTimeout(function() { initPlateMap(); }, 150);
+    }
+  });
+});
+</script>
+
+</body>
+</html>
