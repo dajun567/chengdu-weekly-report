@@ -303,6 +303,11 @@ window._AMapSecurityConfig = {
 </head>
 <body>
 
+<script>
+// Auth guard — 检查登录状态
+if (!sessionStorage.getItem('cdre_auth')) { window.location.replace('login.html'); }
+</script>
+
 <!-- Header -->
 <div class="header">
   <h1>成都房地产市场周报</h1>
@@ -822,6 +827,7 @@ window._AMapSecurityConfig = {
 <div class="footer">
   <p>本报告由AI辅助生成，数据来源包括成都市住建局、成都市规划和自然资源局、贝壳找房、中指研究院等。</p>
   <p>部分数据为模拟数据，实际使用时请替换为真实数据。 © 2026 Chengdu Real Estate Weekly</p>
+  <p style="margin-top:8px;"><a href="login.html" style="color:var(--muted);font-size:11px;text-decoration:none;" onclick="sessionStorage.removeItem('cdre_auth');">退出登录</a></p>
 </div>
 
 <script>
