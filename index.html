@@ -96,6 +96,21 @@ window._AMapSecurityConfig = {
   .beike-chart-card .chart-wrap { position:relative; width:100%; height:280px; }
   .beike-chart-card .chart-wrap canvas { width:100% !important; }
   .beike-chart-card .chart-note { font-size:11px; color:var(--muted); margin-top:4px; }
+
+  /* ===== 规划许可项目详情 ===== */
+  .project-top-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .project-map { width:100%; height:380px; border-radius:8px; }
+  .project-info-card { font-size:13px; }
+  .project-info-table { width:100%; border-collapse:collapse; }
+  .project-info-table td { padding:7px 10px; border-bottom:1px solid var(--border); font-size:12px; vertical-align:top; }
+  .project-info-table .pi-label { color:var(--muted); white-space:nowrap; width:90px; font-weight:500; }
+  .project-img-wrap { text-align:center; overflow-x:auto; }
+  @media (max-width:768px) {
+    .project-top-row { grid-template-columns:1fr; }
+    .project-map { height:280px; }
+    .project-info-table td { padding:5px 8px; font-size:11px; }
+    .project-info-table .pi-label { width:70px; }
+  }
   @media (max-width:768px) { .beike-charts { grid-template-columns:1fr; } }
   .impact-mid { background:#e67e22; color:#fff; }
   .impact-low { background:#f0ad4e; color:#fff; }
@@ -683,27 +698,53 @@ window._AMapSecurityConfig = {
 </section>
 
 <!-- ====== 5. 规证公示 ====== -->
+<!-- ====== 6. 规划许可公示（规证） ====== -->
 <section id="planning" class="section">
   <div class="section-title"><span class="icon">📐</span>六、规划许可公示（规证）</div>
-  <div class="card">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：成都市规划和自然资源局 (mpnr.chengdu.gov.cn) — 建设工程规划许可公告。注：该网站有反爬保护（WAF），当前通过搜索索引获取。本周仅1个住宅项目公示（5月9日），节后首周公示量较少。</p>
-    <div style="overflow-x:auto;">
-    <table>
-      <thead><tr><th>项目名称</th><th>建设单位</th><th>建设位置</th><th>总建筑面积(㎡)</th><th>发证日期</th><th>许可证号</th></tr></thead>
-      <tbody>
-        <tr>
-          <td>武侯区金花桥住宅、商业及配套设施项目</td>
-          <td>成都武侯宜居瑞业房地产开发有限公司</td>
-          <td>武侯区金花桥街道花龙门社区3、7组</td>
-          <td>110,441.09</td>
-          <td>5月9日</td>
-          <td>5101072026600042616</td>
-        </tr>
-      </tbody>
-    </table>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：成都市规划和自然资源局 (mpnr.chengdu.gov.cn) · 业务编号：2026043001509</p>
+
+  <div class="project-detail">
+    <div class="project-top-row">
+      <div class="card" style="padding:0; min-height:380px;">
+        <div id="projectMap" class="project-map"></div>
+      </div>
+      <div class="card project-info-card">
+        <h4 style="font-size:16px;color:var(--primary);margin-bottom:4px;">金茂 · 外金沙43亩住宅项目</h4>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">青羊区苏坡街道清波社区 · 清百路东侧</p>
+        <table class="project-info-table">
+          <tbody>
+            <tr><td class="pi-label">建设单位</td><td>成都金枝置业有限公司<strong>（中国金茂）</strong></td></tr>
+            <tr><td class="pi-label">所属区域</td><td>青羊区 · 外金沙板块</td></tr>
+            <tr><td class="pi-label">地块编号</td><td>QY04(070102):2026-006</td></tr>
+            <tr><td class="pi-label">拿地时间</td><td><strong>2026年3月31日</strong></td></tr>
+            <tr><td class="pi-label">成交楼面价</td><td><strong style="color:var(--accent);">15,500 元/㎡</strong></td></tr>
+            <tr><td class="pi-label">成交总价</td><td>8.91亿元（溢价率2.65%）</td></tr>
+            <tr><td class="pi-label">用地面积</td><td>28,736.94 ㎡（43.11亩）</td></tr>
+            <tr><td class="pi-label">容积率</td><td><strong>2.0</strong></td></tr>
+            <tr><td class="pi-label">计容总建筑面积</td><td><strong>57,473.88 ㎡</strong></td></tr>
+            <tr><td class="pi-label">户数</td><td><strong id="projectUnits">437 户</strong>（指标表：机动车停车位 &gt; 住宅建筑，90-144㎡户型437户）</td></tr>
+            <tr><td class="pi-label">套均面积</td><td><strong id="projectAvgArea">131.52 ㎡</strong>（计容总建筑面积 57,473.88 ÷ 437 户）</td></tr>
+            <tr><td class="pi-label">用地性质</td><td>二类城镇住宅用地</td></tr>
+            <tr><td class="pi-label">竞得方式</td><td>拍卖（参拍：绿城、金茂）</td></tr>
+            <tr><td class="pi-label">业务状态</td><td><span class="tag tag-plan">报建方案证后抽查 · 在办</span></td></tr>
+            <tr><td class="pi-label">接件时间</td><td>2026年4月30日</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+      <h4 style="font-size:14px;color:var(--primary);margin-bottom:12px;">📋 综合技术经济指标表</h4>
+      <div class="project-img-wrap">
+        <img src="planning_indicators.png" alt="综合技术经济指标表 - 金茂外金沙43亩" style="max-width:100%;border:1px solid var(--border);border-radius:4px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <div class="no-policy" style="display:none;"><span class="icon" style="font-size:36px;display:block;margin-bottom:10px;opacity:0.5;">📷</span>指标表图片待上传<br><small style="color:var(--muted);">请将图片保存为 planning_indicators.png 并放置于项目目录</small></div>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;">注：以上为报规方案综合技术经济指标，最终数据以成都市规自局颁发的《建设工程规划许可证》为准。本表由用户提供，金茂于2026年3月31日首入青羊区拿地，此为其在成都的第三个住宅项目（继武侯金茂府、锦江金茂府之后）。</p>
     </div>
   </div>
 </section>
+
+
 
 <!-- ====== 6. 本周小结 ====== -->
 <section id="summary" class="section">
@@ -717,7 +758,7 @@ window._AMapSecurityConfig = {
           <li><strong>新房端：</strong>上周供应142套（↓93%，节后供应骤降）、成交1,178套（↓0.3%），供销比0.12极低。五一假期后供应节奏尚未恢复，但成交端保持平稳。</li>
           <li><strong>二手端：</strong>挂牌量稳步增长，成交量温和回升，议价空间扩大至11.8%，买方市场特征明显。</li>
           <li><strong>土地端：</strong>本周新增2宗宅地挂牌（双流东升36.45亩+龙泉驿大面61.35亩，5月29日拍卖），金牛区国际商贸城74.28亩宅地底价成交（金牛国投8.73亿摘得，楼面价7,050元/㎡）。节后首周土地市场平淡，5月中下旬将迎供地高峰。</li>
-          <li><strong>规证端：</strong>本周仅武侯区金花桥1个住宅项目取得工程规划许可（建面11.04万㎡，成都武侯宜居瑞业），节后首周公示量偏少。</li>
+          <li><strong>规证端：</strong>本周仅金茂外金沙43亩项目报建方案证后抽查中（建面11.04万㎡，成都武侯宜居瑞业），节后首周公示量偏少。</li>
         </ul>
       </div>
       <div>
@@ -1792,6 +1833,48 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
     }
   });
 });
+  
+// ===== Project Map (金茂外金沙43亩 高德地图) =====
+(function() {
+  var mapContainer = document.getElementById('projectMap');
+  if (!mapContainer || mapContainer.offsetHeight === 0) return;
+  
+  var projectMap = new AMap.Map('projectMap', {
+    center: [103.9835, 30.6902],
+    zoom: 15,
+    viewMode: '2D',
+    resizeEnable: true
+  });
+  
+  var marker = new AMap.Marker({
+    position: [103.9835, 30.6902],
+    title: '金茂外金沙43亩',
+    map: projectMap
+  });
+  
+  var infoContent = '<div style="padding:8px 12px;font-size:12px;line-height:1.6;">'
+    + '<strong style="font-size:14px;color:#c0392b;">金茂 · 外金沙43亩</strong><br>'
+    + '青羊区苏坡街道清波社区清百路东侧<br>'
+    + '计容建面: 57,473.88 ㎡ | 容积率: 2.0<br>'
+    + '楼面价: 15,500 元/㎡ (2026.3.31)</div>';
+  
+  marker.on('click', function() {
+    var infoWin = new AMap.InfoWindow({
+      content: infoContent,
+      offset: new AMap.Pixel(0, -30)
+    });
+    infoWin.open(projectMap, marker.getPosition());
+  });
+  
+  setTimeout(function() {
+    var infoWin = new AMap.InfoWindow({
+      content: infoContent,
+      offset: new AMap.Pixel(0, -30)
+    });
+    infoWin.open(projectMap, [103.9835, 30.6902]);
+  }, 500);
+})();
+
 </script>
 
 </body>
