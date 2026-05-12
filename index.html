@@ -639,44 +639,7 @@ window._AMapSecurityConfig = {
             <th style="width:36px;"></th>
           </tr>
         </thead>
-        <tbody id="launchTableBody">
-          <tr>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true" oninput="recalcRow(this)"></td>
-            <td contenteditable="true" oninput="recalcRow(this)"></td>
-            <td class="launch-rate"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true" oninput="recalcRow(this)"></td>
-            <td contenteditable="true" oninput="recalcRow(this)"></td>
-            <td class="launch-rate"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>
-          </tr>
-          <tr>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true" oninput="recalcRow(this)"></td>
-            <td contenteditable="true" oninput="recalcRow(this)"></td>
-            <td class="launch-rate"></td>
-            <td contenteditable="true"></td>
-            <td contenteditable="true"></td>
-            <td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>
-          </tr>
-        </tbody>
+        <tbody id="launchTableBody"></tbody>
       </table>
     </div>
   </div>
@@ -1926,7 +1889,7 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
   }, 500);
 })();
 
-// ===== Launch Map (本周开盘项目 高德地图) =====
+// ===== Launch Map (本周开盘项目 高德地图 + localStorage) =====
 (function() {
   var mapContainer = document.getElementById('launchMap');
   if (!mapContainer || mapContainer.offsetHeight === 0) return;
@@ -1938,22 +1901,27 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
     resizeEnable: true
   });
 
-  var markers = [];
+  var STORAGE_KEY = 'launch_markers_v1';
+  var allMarkers = [];
 
-  launchMap.on('click', function(e) {
-    var name = prompt('请输入项目名称：', '');
-    if (!name) return;
+  function saveMarkers() {
+    var data = allMarkers.map(function(m) {
+      return { lng: m.getPosition().getLng(), lat: m.getPosition().getLat(), name: m._launchName };
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+  }
 
+  function createMarker(lng, lat, name) {
     var marker = new AMap.Marker({
-      position: [e.lnglat.getLng(), e.lnglat.getLat()],
+      position: [lng, lat],
       title: name,
       map: launchMap
     });
 
     var infoContent = '<div style="padding:6px 10px;font-size:12px;">'
       + '<strong>' + name + '</strong><br>'
-      + '<span style="color:#999;">坐标: ' + e.lnglat.getLng().toFixed(4) + ', ' + e.lnglat.getLat().toFixed(4) + '</span><br>'
-      + '<a href="javascript:void(0)" onclick="removeLaunchMarker(this)" style="color:#c0392b;font-size:11px;">删除此标记</a></div>';
+      + '<span style="color:#999;">坐标: ' + lng.toFixed(4) + ', ' + lat.toFixed(4) + '</span><br>'
+      + '<a href="javascript:void(0)" onclick="window._deleteLaunchMarker(' + lng + ',' + lat + ')" style="color:#c0392b;font-size:11px;">删除此标记</a></div>';
 
     marker.on('click', function() {
       var infoWin = new AMap.InfoWindow({
@@ -1963,11 +1931,11 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
       infoWin.open(launchMap, marker.getPosition());
     });
 
-    marker.infoContent = infoContent;
     marker._launchName = name;
-    markers.push(marker);
+    allMarkers.push(marker);
+    saveMarkers();
 
-    // Auto open info window
+    // Auto open
     setTimeout(function() {
       var infoWin = new AMap.InfoWindow({
         content: infoContent,
@@ -1975,67 +1943,149 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
       });
       infoWin.open(launchMap, marker.getPosition());
     }, 300);
+  }
+
+  window._deleteLaunchMarker = function(lng, lat) {
+    // Close info windows
+    var aw = document.querySelectorAll('.amap-info-window');
+    aw.forEach(function(w) { w.remove && w.remove(); });
+    // Remove marker from map and array
+    for (var i = allMarkers.length - 1; i >= 0; i--) {
+      var m = allMarkers[i];
+      if (Math.abs(m.getPosition().getLng() - lng) < 0.0001 && Math.abs(m.getPosition().getLat() - lat) < 0.0001) {
+        m.setMap(null);
+        allMarkers.splice(i, 1);
+        break;
+      }
+    }
+    saveMarkers();
+    alert('标记已删除。');
+  };
+
+  // Click to add
+  launchMap.on('click', function(e) {
+    var name = prompt('请输入项目名称：', '');
+    if (!name) return;
+    createMarker(e.lnglat.getLng(), e.lnglat.getLat(), name);
   });
 
-  window.removeLaunchMarker = function(el) {
-    // Find and remove marker - close all info windows first
-    var allWindows = document.querySelectorAll('.amap-info-window');
-    allWindows.forEach(function(w) { w.remove && w.remove(); });
-
-    // Rebuild without the deleted marker
-    // Simple approach: just alert the user to re-add
-    alert('请在地图上重新点击添加项目标记。如需清除所有标记，请刷新页面。');
-  };
+  // Restore saved markers
+  try {
+    var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (saved && saved.length) {
+      saved.forEach(function(item) {
+        createMarker(item.lng, item.lat, item.name);
+      });
+    }
+  } catch(e) {}
 })();
 
-// ===== Launch Table: row add/delete & auto calc =====
-function addLaunchRow() {
+// ===== Launch Table: localStorage 持久化 + 自动计算 =====
+(function() {
+  var STORAGE_KEY = 'launch_table_v1';
   var tbody = document.getElementById('launchTableBody');
   if (!tbody) return;
-  var tr = document.createElement('tr');
-  tr.innerHTML = '<td contenteditable="true"></td>'
-    + '<td contenteditable="true"></td>'
-    + '<td contenteditable="true"></td>'
-    + '<td contenteditable="true"></td>'
-    + '<td contenteditable="true" oninput="recalcRow(this)"></td>'
-    + '<td contenteditable="true" oninput="recalcRow(this)"></td>'
-    + '<td class="launch-rate"></td>'
-    + '<td contenteditable="true"></td>'
-    + '<td contenteditable="true"></td>'
-    + '<td><button class="del-btn" onclick="deleteLaunchRow(this)" title="删除行">×</button></td>';
-  tbody.appendChild(tr);
-  // Scroll to new row
-  tr.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
 
-function deleteLaunchRow(btn) {
-  var tbody = document.getElementById('launchTableBody');
-  if (!tbody || tbody.children.length <= 1) {
-    alert('至少保留一行');
-    return;
+  function saveTable() {
+    var rows = [];
+    tbody.querySelectorAll('tr').forEach(function(tr) {
+      var cells = tr.querySelectorAll('td[contenteditable]');
+      var row = [];
+      cells.forEach(function(td) { row.push(td.textContent.trim()); });
+      rows.push(row);
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch(e) {}
   }
-  btn.closest('tr').remove();
-}
 
-function recalcRow(cell) {
-  var row = cell.closest('tr');
-  var cells = row.querySelectorAll('td[contenteditable]');
-  var supply = parseFloat(cells[4].textContent.trim()) || 0;
-  var sub = parseFloat(cells[5].textContent.trim()) || 0;
-  var rateCell = row.querySelector('.launch-rate');
-  if (rateCell) {
-    if (supply > 0 && sub >= 0) {
-      var rate = (sub / supply * 100);
-      rateCell.textContent = rate.toFixed(1) + '%';
-      rateCell.style.color = rate >= 80 ? '#27ae60' : rate >= 50 ? '#e67e22' : '#c0392b';
-      rateCell.style.fontWeight = '600';
-    } else {
-      rateCell.textContent = '—';
-      rateCell.style.color = '';
-      rateCell.style.fontWeight = '';
+  function loadTable() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (saved && saved.length) {
+        // Clear existing rows
+        tbody.innerHTML = '';
+        saved.forEach(function(rowData) {
+          addRow(rowData);
+        });
+        return;
+      }
+    } catch(e) {}
+    // No saved data: add 3 default empty rows
+    for (var i = 0; i < 3; i++) { addRow(null); }
+  }
+
+  function makeCell(val, isSupplyOrSub, colIdx) {
+    var td = document.createElement('td');
+    td.setAttribute('contenteditable', 'true');
+    if (val) td.textContent = val;
+    if (isSupplyOrSub) {
+      td.oninput = function() { recalcRow(this); saveTable(); };
+    }
+    td.onblur = function() { saveTable(); };
+    return td;
+  }
+
+  function addRow(data) {
+    var tr = document.createElement('tr');
+    var editableCols = [false, false, false, false, true, true, false, false, false];
+    for (var i = 0; i < 9; i++) {
+      tr.appendChild(makeCell(data && data[i] ? data[i] : '', editableCols[i], i));
+    }
+    // 去化率 cell
+    var rateTd = document.createElement('td');
+    rateTd.className = 'launch-rate';
+    tr.appendChild(rateTd);
+    // Delete button
+    var delTd = document.createElement('td');
+    var delBtn = document.createElement('button');
+    delBtn.className = 'del-btn';
+    delBtn.textContent = '×';
+    delBtn.title = '删除行';
+    delBtn.onclick = function() { deleteLaunchRow(this); };
+    delTd.appendChild(delBtn);
+    tr.appendChild(delTd);
+    tbody.appendChild(tr);
+    // Recalc if data has supply/sub values
+    if (data && (data[4] || data[5])) {
+      var cells = tr.querySelectorAll('td[contenteditable]');
+      recalcRow(cells[4]); // trigger recalc on supply cell
     }
   }
-}
+
+  window.addLaunchRow = function() {
+    addRow(null);
+    tbody.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    saveTable();
+  };
+
+  window.deleteLaunchRow = function(btn) {
+    if (tbody.children.length <= 1) { alert('至少保留一行'); return; }
+    btn.closest('tr').remove();
+    saveTable();
+  };
+
+  window.recalcRow = function(cell) {
+    var row = cell.closest('tr');
+    var cells = row.querySelectorAll('td[contenteditable]');
+    var supply = parseFloat(cells[4].textContent.trim()) || 0;
+    var sub = parseFloat(cells[5].textContent.trim()) || 0;
+    var rateCell = row.querySelector('.launch-rate');
+    if (rateCell) {
+      if (supply > 0 && sub >= 0) {
+        var rate = (sub / supply * 100);
+        rateCell.textContent = rate.toFixed(1) + '%';
+        rateCell.style.color = rate >= 80 ? '#27ae60' : rate >= 50 ? '#e67e22' : '#c0392b';
+        rateCell.style.fontWeight = '600';
+      } else {
+        rateCell.textContent = '—';
+        rateCell.style.color = '';
+        rateCell.style.fontWeight = '';
+      }
+    }
+  };
+
+  // Load saved data on page init
+  loadTable();
+})();
 
 </script>
 
