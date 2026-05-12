@@ -12,6 +12,7 @@ window._AMapSecurityConfig = {
 <script src="https://webapi.amap.com/maps?v=2.0&key=37b06865a18c74420f8b2724427bd812"></script>
 <script src="https://api.map.baidu.com/api?v=3.0&ak=gbBJzz3WNdYUfFkX2n2m3RxDHMp1lmoJ"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --primary: #1a3a5c;
@@ -90,9 +91,9 @@ window._AMapSecurityConfig = {
   .chart-stats .stat-item { display:flex; align-items:center; gap:4px; }
   .chart-stats .stat-val { font-weight:700; color:var(--primary); }
   .chart-stats .stat-chg { font-size:10px; padding:1px 5px; border-radius:3px; }
-  .chart-stats .stat-chg.up { background:#fde8e8; color:var(--up); }
-  .chart-stats .stat-chg.down { background:#e8f5e9; color:var(--down); }
-  .chart-stats .stat-chg.flat { background:#f5f5f5; color:var(--muted); }
+  .chart-stats .stat-chg.up { background:#fff0f0; color:#e74c3c; font-weight:600; }
+  .chart-stats .stat-chg.down { background:#f0fff0; color:#27ae60; font-weight:600; }
+  .chart-stats .stat-chg.flat { background:#fafafa; color:#999; }
   .beike-chart-card .chart-wrap { position:relative; width:100%; height:280px; }
   .beike-chart-card .chart-wrap canvas { width:100% !important; }
   .beike-chart-card .chart-note { font-size:11px; color:var(--muted); margin-top:4px; }
@@ -1494,12 +1495,10 @@ function fmtChg(cur, prev) {
   return '<span class="stat-chg ' + cls + '">' + arrow + ' ' + Math.abs(pct).toFixed(1) + '% 环比</span>';
 }
 
-function fmtVal(v) { return v.toLocaleString ? v.toLocaleString() : v; }
-
 function setStats(elId, curVal, prevVal, label, suffix) {
   var el = document.getElementById(elId);
   if (!el) return;
-  el.innerHTML = '<span class="stat-item"><span>' + label + '：</span><span class="stat-val">' + fmtVal(curVal) + (suffix||'') + '</span></span>' + fmtChg(curVal, prevVal);
+  el.innerHTML = '<span class="stat-item"><span>' + label + '：</span>' + fmtChg(curVal, prevVal) + '</span>';
 }
 
 // Populate stats from data arrays (last = current, second-last = previous)
@@ -1508,30 +1507,29 @@ function setStats(elId, curVal, prevVal, label, suffix) {
   
   d = NEW_VOLUME_PRICE; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsNewVolumePrice', last[1], prev[1], '本周成销量', '套');
-  var priceInfo = '<span class="stat-item"><span>成销均价：</span><span class="stat-val">' + fmtVal(last[2]) + '元/㎡</span></span>' + fmtChg(last[2], prev[2]);
-  document.getElementById('statsNewVolumePrice').innerHTML += priceInfo;
+  document.getElementById('statsNewVolumePrice').innerHTML += '<span class="stat-item"><span>成销均价：</span>' + fmtChg(last[2], prev[2]) + '</span>';
 
   d = NEW_CHANNEL; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsNewChannel', last[1], prev[1], '合作项目数', '个');
-  document.getElementById('statsNewChannel').innerHTML += '<span class="stat-item"><span>占比：</span><span class="stat-val">' + (last[2]*100).toFixed(1) + '%</span></span>' + fmtChg(last[2]*100, prev[2]*100);
+  document.getElementById('statsNewChannel').innerHTML += '<span class="stat-item"><span>占比：</span>' + fmtChg(last[2]*100, prev[2]*100) + '</span>';
 
   d = NEW_COMMISSION; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsNewCommission', (last[1]*100).toFixed(2), (prev[1]*100).toFixed(2), '佣金点位', '%');
 
   d = NEW_DEMAND; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsNewDemand', last[1], prev[1], '商机量', '');
-  document.getElementById('statsNewDemand').innerHTML += '<span class="stat-item"><span>带看：</span><span class="stat-val">' + fmtVal(last[2]) + '</span></span>' + fmtChg(last[2], prev[2]);
-  document.getElementById('statsNewDemand').innerHTML += '<span class="stat-item"><span>认购：</span><span class="stat-val">' + fmtVal(last[3]) + '套</span></span>' + fmtChg(last[3], prev[3]);
+  document.getElementById('statsNewDemand').innerHTML += '<span class="stat-item"><span>带看：</span>' + fmtChg(last[2], prev[2]) + '</span>';
+  document.getElementById('statsNewDemand').innerHTML += '<span class="stat-item"><span>认购：</span>' + fmtChg(last[3], prev[3]) + '</span>';
 
   d = OLD_SUPPLY_DEMAND; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsOldSupplyDemand', last[2], prev[2], '本周成交', '套');
-  document.getElementById('statsOldSupplyDemand').innerHTML += '<span class="stat-item"><span>新增房源：</span><span class="stat-val">' + fmtVal(last[1]) + '套</span></span>' + fmtChg(last[1], prev[1]);
-  document.getElementById('statsOldSupplyDemand').innerHTML += '<span class="stat-item"><span>成交均价：</span><span class="stat-val">' + fmtVal(last[4]) + '元/㎡</span></span>' + fmtChg(last[4], prev[4]);
+  document.getElementById('statsOldSupplyDemand').innerHTML += '<span class="stat-item"><span>新增房源：</span>' + fmtChg(last[1], prev[1]) + '</span>';
+  document.getElementById('statsOldSupplyDemand').innerHTML += '<span class="stat-item"><span>成交均价：</span>' + fmtChg(last[4], prev[4]) + '</span>';
 
   d = OLD_DEMAND; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsOldDemand', last[1], prev[1], '商机量', '');
-  document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>带看：</span><span class="stat-val">' + fmtVal(last[2]) + '</span></span>' + fmtChg(last[2], prev[2]);
-  document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>认购：</span><span class="stat-val">' + fmtVal(last[3]) + '套</span></span>' + fmtChg(last[3], prev[3]);
+  document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>带看：</span>' + fmtChg(last[2], prev[2]) + '</span>';
+  document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>认购：</span>' + fmtChg(last[3], prev[3]) + '</span>';
 
   d = OLD_BARGAIN; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsOldBargain', (last[1]*100).toFixed(1), (prev[1]*100).toFixed(1), '议价幅度', '%');
@@ -1541,14 +1539,35 @@ function setStats(elId, curVal, prevVal, label, suffix) {
 
   d = OLD_CYCLE; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsOldCycle', last[1], prev[1], '房源成交天数', '天');
-  document.getElementById('statsOldCycle').innerHTML += '<span class="stat-item"><span>客源：</span><span class="stat-val">' + fmtVal(last[2]) + '天</span></span>' + fmtChg(last[2], prev[2]);
+  document.getElementById('statsOldCycle').innerHTML += '<span class="stat-item"><span>客源：</span>' + fmtChg(last[2], prev[2]) + '</span>';
 
   d = OLD_RATIO; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsOldRatio', (last[1]*100).toFixed(1), (prev[1]*100).toFixed(1), '本月客房比', '%');
-  document.getElementById('statsOldRatio').innerHTML += '<span class="stat-item"><span>新增客户：</span><span class="stat-val">' + fmtVal(last[2]) + '</span></span>' + fmtChg(last[2], prev[2]);
+  document.getElementById('statsOldRatio').innerHTML += '<span class="stat-item"><span>新增客户：</span>' + fmtChg(last[2], prev[2]) + '</span>';
 
 })();
 
+
+// Register datalabels plugin with global defaults
+if (typeof ChartDataLabels !== 'undefined') {
+  Chart.register(ChartDataLabels);
+  Chart.defaults.set('plugins.datalabels', {
+    display: function(ctx) {
+      // Only show on bar datasets, not line datasets
+      return ctx.dataset.type !== 'line' && ctx.dataset.label !== '成交均价(元/㎡)' && ctx.dataset.label !== '成销均价(元/㎡)';
+    },
+    anchor: 'end',
+    align: 'top',
+    font: { size: 9, weight: 'bold' },
+    color: '#444',
+    offset: 3,
+    formatter: function(value) {
+      if (value === 0 || value === null || value === undefined) return '';
+      if (value >= 10000) return (value/10000).toFixed(1) + '万';
+      return value.toLocaleString();
+    }
+  });
+}
 
 // ===== 贝壳数据 Chart.js 图表 =====
 function getLabels(data) { return data.map(function(r) { return r[0]; }); }
