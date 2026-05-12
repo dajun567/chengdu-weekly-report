@@ -84,7 +84,15 @@ window._AMapSecurityConfig = {
   .beike-charts { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
   .beike-charts.full { grid-template-columns:1fr; }
   .beike-chart-card { background:var(--card); border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,0.06); padding:18px; }
-  .beike-chart-card h4 { font-size:14px; color:var(--primary); margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .beike-chart-card h4 { font-size:14px; color:var(--primary); margin-bottom:4px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+
+  .chart-stats { display:flex; gap:16px; flex-wrap:wrap; font-size:11px; margin-bottom:6px; padding:4px 0; }
+  .chart-stats .stat-item { display:flex; align-items:center; gap:4px; }
+  .chart-stats .stat-val { font-weight:700; color:var(--primary); }
+  .chart-stats .stat-chg { font-size:10px; padding:1px 5px; border-radius:3px; }
+  .chart-stats .stat-chg.up { background:#fde8e8; color:var(--up); }
+  .chart-stats .stat-chg.down { background:#e8f5e9; color:var(--down); }
+  .chart-stats .stat-chg.flat { background:#f5f5f5; color:var(--muted); }
   .beike-chart-card .chart-wrap { position:relative; width:100%; height:280px; }
   .beike-chart-card .chart-wrap canvas { width:100% !important; }
   .beike-chart-card .chart-note { font-size:11px; color:var(--muted); margin-top:4px; }
@@ -143,6 +151,35 @@ window._AMapSecurityConfig = {
   /* Popup styles */
   .amap-info-content { font-size:12px; line-height:1.6; }
   .amap-info-content strong { color:var(--primary); }
+
+
+  /* ===== 周报导航侧边栏 ===== */
+  .sidebar { position:fixed; left:0; top:0; width:56px; height:100vh; background:#1a3a5c; z-index:200; overflow-y:auto; transition:width 0.25s; display:flex; flex-direction:column; align-items:center; padding-top:12px; }
+  .sidebar:hover { width:200px; align-items:flex-start; }
+  .sidebar-toggle { display:none; }
+  .sidebar-label { display:none; color:rgba(255,255,255,0.7); font-size:11px; padding:8px 16px 4px; white-space:nowrap; }
+  .sidebar:hover .sidebar-label { display:block; }
+  .sidebar a { display:flex; align-items:center; gap:10px; padding:10px 16px; color:rgba(255,255,255,0.65); text-decoration:none; font-size:12px; white-space:nowrap; width:100%; transition:all 0.15s; border-left:3px solid transparent; }
+  .sidebar a:hover { color:#fff; background:rgba(255,255,255,0.08); border-left-color:rgba(255,255,255,0.3); }
+  .sidebar a.active { color:#fff; background:rgba(255,255,255,0.12); border-left-color:#c41230; font-weight:600; }
+  .sidebar a .wk-num { font-size:20px; font-weight:700; min-width:28px; text-align:center; }
+  .sidebar a .wk-label { display:none; }
+  .sidebar:hover a .wk-label { display:inline; }
+  .sidebar a .wk-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.3); min-width:8px; }
+  .sidebar:hover a .wk-dot { display:none; }
+  body { margin-left:56px; }
+  @media (max-width:768px) {
+    .sidebar { width:100%; height:auto; position:sticky; top:42px; flex-direction:row; overflow-x:auto; padding:0; z-index:199; }
+    .sidebar:hover { width:100%; align-items:center; }
+    .sidebar-label { display:none !important; }
+    .sidebar a { flex-direction:column; gap:2px; padding:8px 12px; border-left:none; border-bottom:3px solid transparent; font-size:10px; min-width:52px; width:auto; text-align:center; }
+    .sidebar a:hover { border-left-color:transparent; border-bottom-color:rgba(255,255,255,0.3); }
+    .sidebar a.active { border-left-color:transparent; border-bottom-color:#c41230; }
+    .sidebar a .wk-num { font-size:16px; min-width:auto; }
+    .sidebar a .wk-label { display:inline !important; font-size:9px; }
+    .sidebar a .wk-dot { display:none; }
+    body { margin-left:0; }
+  }
 
   /* ===== 响应式布局 ===== */
   @media (max-width:768px) {
@@ -249,6 +286,30 @@ window._AMapSecurityConfig = {
 </div>
 
 <!-- Navigation -->
+
+<!-- ====== 周报导航侧边栏 ====== -->
+<div class="sidebar" id="weeklySidebar">
+  <div class="sidebar-label" style="font-size:13px;font-weight:700;color:#fff;padding:12px 16px 8px;">📋 周报导航</div>
+  <a href="#" class="active" data-week="2026W19">
+    <span class="wk-num">19</span>
+    <span class="wk-label">2026年第19周<br><small style="opacity:0.6">5.4 - 5.10</small></span>
+  </a>
+  <a href="#" data-week="2026W18">
+    <span class="wk-num">18</span>
+    <span class="wk-label">2026年第18周<br><small style="opacity:0.6">4.27 - 5.3</small></span>
+  </a>
+  <a href="#" data-week="2026W17">
+    <span class="wk-num">17</span>
+    <span class="wk-label">2026年第17周<br><small style="opacity:0.6">4.20 - 4.26</small></span>
+  </a>
+  <div class="sidebar-label" style="margin-top:8px;">历史周报</div>
+  <a href="#" data-week="2026W16"><span class="wk-dot"></span><span class="wk-label">第16周 (4.13-4.19)</span></a>
+  <a href="#" data-week="2026W15"><span class="wk-dot"></span><span class="wk-label">第15周 (4.6-4.12)</span></a>
+  <a href="#" data-week="2026W14"><span class="wk-dot"></span><span class="wk-label">第14周 (3.30-4.5)</span></a>
+  <a href="#" data-week="2026W13"><span class="wk-dot"></span><span class="wk-label">第13周 (3.23-3.29)</span></a>
+</div>
+
+
 <div class="nav">
   <a href="#policy" class="active" onclick="scrollToSection('policy')">政策动态</a>
   <a href="#newhome" onclick="scrollToSection('newhome')">新房市场</a>
@@ -416,6 +477,39 @@ window._AMapSecurityConfig = {
   </div>
 </section>
 
+
+<!-- ====== 贝壳新房数据 ====== -->
+<section id="beike-new" class="section">
+  <div class="section-title"><span class="icon">📊</span>贝壳新房市场监测</div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：贝壳找房 · 成都新房 · 近20周趋势</p>
+  <div class="beike-charts">
+    <div class="beike-chart-card">
+      <h4>新房成交量价走势</h4>
+        <div class="chart-stats" id="statsNewVolumePrice"></div>
+      <div class="chart-wrap"><canvas id="chartNewVolumePrice"></canvas></div>
+      <div class="chart-note">柱状：成销量(套) · 折线：成销均价(元/㎡)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>新房渠道势能</h4>
+        <div class="chart-stats" id="statsNewChannel"></div>
+      <div class="chart-wrap"><canvas id="chartNewChannel"></canvas></div>
+      <div class="chart-note">柱状：合作项目数(个) · 折线：合作项目占比(%)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>渠道佣金点位走势</h4>
+        <div class="chart-stats" id="statsNewCommission"></div>
+      <div class="chart-wrap"><canvas id="chartNewCommission"></canvas></div>
+      <div class="chart-note">折线：成销佣金点位(%)</div>
+    </div>
+    <div class="beike-chart-card">
+      <h4>需求量走势（需求-转化）</h4>
+        <div class="chart-stats" id="statsNewDemand"></div>
+      <div class="chart-wrap"><canvas id="chartNewDemand"></canvas></div>
+      <div class="chart-note">柱状：商机量 · 折线①：带看量 · 折线②：认购量(套)</div>
+    </div>
+  </div>
+</section>
+
 <!-- ====== 周度成交排名 ====== -->
 <section id="ranking" class="section">
   <div class="section-title"><span class="icon">🏆</span>周度成交排名（商品住宅）</div>
@@ -464,7 +558,7 @@ window._AMapSecurityConfig = {
         <div id="plateMap" class="rank-map"></div>
       </div>
       <div class="card rank-table-wrap">
-        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">本周成交套数排名前15板块（数据为估算值）：</p>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:12px;">本周成交套数 Top10 板块（数据为估算值）：</p>
         <table>
           <thead><tr><th>排名</th><th>板块</th><th>所属区域</th><th>供应套数</th><th>成交套数</th><th>成交均价(元/㎡)</th><th>存量套数</th></tr></thead>
           <tbody>
@@ -478,157 +572,69 @@ window._AMapSecurityConfig = {
             <tr><td>8</td><td>十陵</td><td>龙泉驿区</td><td>28</td><td><strong>32</strong></td><td>14,800</td><td>1,500</td></tr>
             <tr><td>9</td><td>怡心湖</td><td>双流区</td><td>0</td><td><strong>30</strong></td><td>18,500</td><td>1,100</td></tr>
             <tr><td>10</td><td>杉板桥</td><td>成华区</td><td>0</td><td><strong>28</strong></td><td>24,000</td><td>800</td></tr>
-            <tr><td>11</td><td>国宾</td><td>金牛区</td><td>0</td><td><strong>26</strong></td><td>23,500</td><td>1,000</td></tr>
-            <tr><td>12</td><td>锦江生态带</td><td>天府新区</td><td>0</td><td><strong>25</strong></td><td>21,000</td><td>1,300</td></tr>
-            <tr><td>13</td><td>航空港</td><td>双流区</td><td>0</td><td><strong>24</strong></td><td>14,500</td><td>1,400</td></tr>
-            <tr><td>14</td><td>三圣乡</td><td>锦江区</td><td>0</td><td><strong>22</strong></td><td>28,000</td><td>700</td></tr>
-            <tr><td>15</td><td>新川</td><td>高新区</td><td>0</td><td><strong>20</strong></td><td>26,500</td><td>900</td></tr>
+
           </tbody>
         </table>
       </div>
     </div>
-    <p style="font-size:11px;color:var(--muted);margin-top:12px;">注：板块地图使用百度地图底图（BD-09坐标系）。东升、二八板块、杉板桥、航空港4个板块暂无板块坐标数据，未在地图上显示。板块填色以成交套数为依据。</p>
+    <p style="font-size:11px;color:var(--muted);margin-top:12px;">注：板块地图使用百度地图底图（BD-09坐标系）。部分板块暂无坐标数据，未在地图上显示。板块填色以成交套数为依据。</p>
   </div>
 </section>
 
-<!-- ====== 3. 二手房市场 ====== -->
-<section id="secondhand" class="section">
-  <div class="section-title"><span class="icon">🔄</span>三、二手房市场</div>
-
-  <div class="kpi-row" style="margin-bottom:20px;">
-    <div class="kpi">
-      <div class="label">本周新增挂牌</div>
-      <div class="value">3,826<span style="font-size:16px;font-weight:400;"> 套</span></div>
-      <div class="change up">↑ 5.8% 环比</div>
-    </div>
-    <div class="kpi">
-      <div class="label">本周成交套数</div>
-      <div class="value">2,103<span style="font-size:16px;font-weight:400;"> 套</span></div>
-      <div class="change up">↑ 3.2% 环比</div>
-    </div>
-    <div class="kpi">
-      <div class="label">成交均价</div>
-      <div class="value">16,250<span style="font-size:16px;font-weight:400;"> 元/㎡</span></div>
-      <div class="change down">↓ 0.8% 环比</div>
-    </div>
-    <div class="kpi">
-      <div class="label">挂牌均价</div>
-      <div class="value">18,420<span style="font-size:16px;font-weight:400;"> 元/㎡</span></div>
-      <div class="change down">↓ 1.1% 环比</div>
-    </div>
-    <div class="kpi">
-      <div class="label">议价空间</div>
-      <div class="value">11.8<span style="font-size:16px;font-weight:400;">%</span></div>
-      <div class="change" style="color:var(--muted);">扩大0.3pp</div>
-    </div>
-  </div>
-
-  <div class="chart-row">
-    <div class="card">
-      <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">近12周二手房挂牌/成交走势（套）</h4>
-      <div class="chart-wrap"><canvas id="chartSHListing"></canvas></div>
-    </div>
-    <div class="card">
-      <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">近12周二手房成交均价走势（元/㎡）</h4>
-      <div class="chart-wrap"><canvas id="chartSHPrice"></canvas></div>
-    </div>
-  </div>
-
-  <!-- District breakdown -->
-  <div class="card" style="margin-top:20px;">
-    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周各区域二手房成交情况</h4>
-    <div style="overflow-x:auto;">
-    <table>
-      <thead><tr><th>区域</th><th>成交套数</th><th>环比</th><th>成交均价(元/㎡)</th><th>环比</th><th>套均面积(㎡)</th><th>套均总价(万元)</th></tr></thead>
-      <tbody>
-        <tr><td>高新区</td><td>286</td><td class="up">↑ 6.3%</td><td>22,400</td><td class="down">↓ 1.2%</td><td>98.5</td><td>220.6</td></tr>
-        <tr><td>天府新区</td><td>245</td><td class="up">↑ 4.7%</td><td>19,800</td><td class="down">↓ 0.5%</td><td>105.2</td><td>208.3</td></tr>
-        <tr><td>锦江区</td><td>198</td><td class="up">↑ 2.1%</td><td>21,600</td><td class="down">↓ 1.8%</td><td>92.8</td><td>200.4</td></tr>
-        <tr><td>成华区</td><td>312</td><td class="up">↑ 8.7%</td><td>16,200</td><td class="up">↑ 0.3%</td><td>88.6</td><td>143.5</td></tr>
-        <tr><td>武侯区</td><td>205</td><td class="down">↓ 2.3%</td><td>17,800</td><td class="down">↓ 0.9%</td><td>91.2</td><td>162.3</td></tr>
-        <tr><td>龙泉驿区</td><td>268</td><td class="up">↑ 5.5%</td><td>13,500</td><td class="down">↓ 0.6%</td><td>95.8</td><td>129.3</td></tr>
-        <tr><td>双流区</td><td>189</td><td class="up">↑ 1.8%</td><td>14,200</td><td class="up">↑ 0.2%</td><td>102.3</td><td>145.3</td></tr>
-        <tr><td>温江区</td><td>142</td><td class="down">↓ 3.5%</td><td>11,800</td><td class="down">↓ 0.4%</td><td>96.5</td><td>113.9</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
-</section>
-
-<!-- ====== 贝壳新房数据 ====== -->
-<section id="beike-new" class="section">
-  <div class="section-title"><span class="icon">📊</span>贝壳新房市场监测</div>
-  <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：贝壳找房 · 成都新房 · 近20周趋势</p>
-  <div class="beike-charts">
-    <div class="beike-chart-card">
-      <h4>新房成交量价走势</h4>
-      <div class="chart-wrap"><canvas id="chartNewVolumePrice"></canvas></div>
-      <div class="chart-note">柱状：成销量(套) · 折线：成销均价(元/㎡)</div>
-    </div>
-    <div class="beike-chart-card">
-      <h4>新房渠道势能</h4>
-      <div class="chart-wrap"><canvas id="chartNewChannel"></canvas></div>
-      <div class="chart-note">柱状：合作项目数(个) · 折线：合作项目占比(%)</div>
-    </div>
-    <div class="beike-chart-card">
-      <h4>渠道佣金点位走势</h4>
-      <div class="chart-wrap"><canvas id="chartNewCommission"></canvas></div>
-      <div class="chart-note">折线：成销佣金点位(%)</div>
-    </div>
-    <div class="beike-chart-card">
-      <h4>需求量走势（需求-转化）</h4>
-      <div class="chart-wrap"><canvas id="chartNewDemand"></canvas></div>
-      <div class="chart-note">柱状：商机量 · 折线①：带看量 · 折线②：认购量(套)</div>
-    </div>
-  </div>
-</section>
-
-<!-- ====== 贝壳二手数据 ====== -->
+<!-- ====== 二手房市场监测（贝壳找房） ====== -->
 <section id="beike-old" class="section">
-  <div class="section-title"><span class="icon">📈</span>贝壳二手市场监测</div>
+  <div class="section-title"><span class="icon">📈</span>四、二手房市场监测（贝壳找房）</div>
   <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：贝壳找房 · 成都二手 · 近20周趋势（部分月度数据）</p>
   <div class="beike-charts">
     <div class="beike-chart-card">
       <h4>供销量价走势</h4>
+        <div class="chart-stats" id="statsOldSupplyDemand"></div>
       <div class="chart-wrap"><canvas id="chartOldSupplyDemand"></canvas></div>
       <div class="chart-note">柱状：新增房源量+成交量(套) · 折线：新增挂牌均价+成交均价(元/㎡)</div>
     </div>
+<div class="beike-chart-card">
+      <h4>需求量走势（需求-转化）</h4>
+        <div class="chart-stats" id="statsOldDemand"></div>
+      <div class="chart-wrap"><canvas id="chartOldDemand"></canvas></div>
+      <div class="chart-note">柱状：商机量 · 折线①：带看量 · 折线②：认购量(套)</div>
+    </div>
     <div class="beike-chart-card">
       <h4>成交议价幅度（买卖博弈）</h4>
+        <div class="chart-stats" id="statsOldBargain"></div>
       <div class="chart-wrap"><canvas id="chartOldBargain"></canvas></div>
       <div class="chart-note">折线：二手成交房源议价幅度 vs 30天前挂牌价(%) · 数值越大买方议价空间越大</div>
     </div>
     <div class="beike-chart-card">
       <h4>买方情绪 · 看房次数</h4>
+        <div class="chart-stats" id="statsOldViewing"></div>
       <div class="chart-wrap"><canvas id="chartOldViewing"></canvas></div>
       <div class="chart-note">折线：成交客户平均有效带看次数(次)</div>
     </div>
     <div class="beike-chart-card">
       <h4>房源/客源成交周期</h4>
+        <div class="chart-stats" id="statsOldCycle"></div>
       <div class="chart-wrap"><canvas id="chartOldCycle"></canvas></div>
       <div class="chart-note">折线：房源平均成交天数 · 客源平均成交天数</div>
     </div>
     <div class="beike-chart-card">
       <h4>新增客房比走势（月度）</h4>
+        <div class="chart-stats" id="statsOldRatio"></div>
       <div class="chart-wrap"><canvas id="chartOldRatio"></canvas></div>
       <div class="chart-note">柱状：新增有效客户量+新增房源量(套) · 折线：新增有效客房比</div>
     </div>
     <div class="beike-chart-card">
       <h4>潜客走势（月度）</h4>
+        <div class="chart-stats" id="statsOldPotential"></div>
       <div class="chart-wrap"><canvas id="chartOldPotential"></canvas></div>
       <div class="chart-note">柱状：新二潜客量 · 折线：潜客支付力(万元)</div>
     </div>
-    <div class="beike-chart-card">
-      <h4>需求量走势（需求-转化）</h4>
-      <div class="chart-wrap"><canvas id="chartOldDemand"></canvas></div>
-      <div class="chart-note">柱状：商机量 · 折线①：带看量 · 折线②：认购量(套)</div>
-    </div>
+    
   </div>
 </section>
 
 <!-- ====== 4. 土地市场 ====== -->
 <section id="land" class="section">
-  <div class="section-title"><span class="icon">📍</span>四、土地市场</div>
+  <div class="section-title"><span class="icon">📍</span>五、土地市场</div>
 
   <!-- Tabs -->
   <div class="tabs">
@@ -678,7 +684,7 @@ window._AMapSecurityConfig = {
 
 <!-- ====== 5. 规证公示 ====== -->
 <section id="planning" class="section">
-  <div class="section-title"><span class="icon">📐</span>五、规划许可公示（规证）</div>
+  <div class="section-title"><span class="icon">📐</span>六、规划许可公示（规证）</div>
   <div class="card">
     <p style="font-size:13px;color:var(--muted);margin-bottom:16px;">数据来源：成都市规划和自然资源局 (mpnr.chengdu.gov.cn) — 建设工程规划许可公告。注：该网站有反爬保护（WAF），当前通过搜索索引获取。本周仅1个住宅项目公示（5月9日），节后首周公示量较少。</p>
     <div style="overflow-x:auto;">
@@ -701,7 +707,7 @@ window._AMapSecurityConfig = {
 
 <!-- ====== 6. 本周小结 ====== -->
 <section id="summary" class="section">
-  <div class="section-title"><span class="icon">📝</span>六、本周小结与展望</div>
+  <div class="section-title"><span class="icon">📝</span>七、本周小结与展望</div>
   <div class="card">
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
       <div>
@@ -957,78 +963,6 @@ document.querySelectorAll('#newHomeTabs .tab-btn').forEach(btn => {
     updateKPIs(region);
     setTimeout(() => { scrollContainer.scrollLeft = scrollContainer.scrollWidth; }, 50);
   });
-});
-
-// Second-hand listing/sales chart
-new Chart(document.getElementById('chartSHListing'), {
-  type: 'bar',
-  data: {
-    labels: weeksShort,
-    datasets: [
-      { label:'新增挂牌(套)', data:[3200,3450,3610,3350,3520,3780,3400,3560,3700,3410,3615,3826], backgroundColor:'rgba(14,165,233,0.75)', borderColor:'#0ea5e9', borderWidth:1, borderRadius:3, hoverBackgroundColor:'rgba(14,165,233,0.95)' },
-      { label:'成交套数', data:[1850,1920,1880,1950,1900,2050,1980,2010,2080,1950,2036,2103], backgroundColor:'rgba(99,102,241,0.75)', borderColor:'#6366f1', borderWidth:1, borderRadius:3, hoverBackgroundColor:'rgba(99,102,241,0.95)' }
-    ]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false,
-    interaction:{ mode:'index', intersect:false },
-    plugins:{
-      legend:{ position:'top', labels:{ usePointStyle:true, padding:24, pointStyleWidth:10 } },
-      tooltip:{
-        backgroundColor:'rgba(15,23,42,0.92)', titleColor:'#94a3b8', bodyColor:'#e2e8f0', borderColor:'#334155', borderWidth:1, padding:14,
-        callbacks:{
-          label:function(ctx){
-            const idx=ctx.dataIndex; const curr=ctx.parsed.y; const data=ctx.dataset.data;
-            const lines=[ctx.dataset.label+': '+curr.toLocaleString()+' 套'];
-            if(idx>0&&data[idx-1]&&data[idx-1]!==0){
-              const prev=data[idx-1]; const chg=((curr-prev)/prev*100);
-              lines.push('环比 '+(chg>=0?'↑':'↓')+' '+Math.abs(chg).toFixed(1)+'%');
-              this._chgDir = chg>=0?'up':'down';
-            }else{this._chgDir=null;}
-            return lines;
-          },
-          labelTextColor:function(ctx){if(this._chgDir==='up')return['#e2e8f0','#ef4444'];if(this._chgDir==='down')return['#e2e8f0','#22c55e'];return'#e2e8f0';}
-        }
-      }
-    },
-    scales:{ y:{ beginAtZero:false, min:1500, grid:{ color:'#f1f5f9' }, ticks:{ color:'#94a3b8' } }, x:{ grid:{ display:false }, ticks:{ color:'#64748b', font:{ size:11 } } } }
-  }
-});
-
-// Second-hand price chart
-new Chart(document.getElementById('chartSHPrice'), {
-  type: 'line',
-  data: {
-    labels: weeksShort,
-    datasets: [
-      { label:'成交均价(元/㎡)', data:[16700,16580,16450,16320,16400,16280,16350,16300,16200,16280,16380,16250], borderColor:'#f59e0b', backgroundColor:'rgba(245,158,11,0.06)', fill:true, tension:0.35, pointRadius:5, pointBackgroundColor:'#f59e0b', pointBorderColor:'#fff', pointBorderWidth:2, pointHoverRadius:7 },
-      { label:'挂牌均价(元/㎡)', data:[19200,19050,18900,18750,18680,18550,18500,18480,18400,18450,18620,18420], borderColor:'#94a3b8', borderDash:[5,5], backgroundColor:'transparent', fill:false, tension:0.35, pointRadius:4, pointBackgroundColor:'#94a3b8', pointBorderColor:'#fff', pointBorderWidth:2 }
-    ]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false,
-    interaction:{ mode:'index', intersect:false },
-    plugins:{
-      legend:{ position:'top', labels:{ usePointStyle:true, padding:24, pointStyleWidth:10 } },
-      tooltip:{
-        backgroundColor:'rgba(15,23,42,0.92)', titleColor:'#94a3b8', bodyColor:'#e2e8f0', borderColor:'#334155', borderWidth:1, padding:14,
-        callbacks:{
-          label:function(ctx){
-            const idx=ctx.dataIndex; const curr=ctx.parsed.y; const data=ctx.dataset.data;
-            const lines=[ctx.dataset.label+': '+curr.toLocaleString()+' 元/㎡'];
-            if(idx>0&&data[idx-1]&&data[idx-1]!==0){
-              const prev=data[idx-1]; const chg=((curr-prev)/prev*100);
-              lines.push('环比 '+(chg>=0?'↑':'↓')+' '+Math.abs(chg).toFixed(1)+'%');
-              this._chgDir = chg>=0?'up':'down';
-            }else{this._chgDir=null;}
-            return lines;
-          },
-          labelTextColor:function(ctx){if(this._chgDir==='up')return['#e2e8f0','#ef4444'];if(this._chgDir==='down')return['#e2e8f0','#22c55e'];return'#e2e8f0';}
-        }
-      }
-    },
-    scales:{ y:{ beginAtZero:false, min:15000, grid:{ color:'#f1f5f9' }, ticks:{ color:'#94a3b8', callback:v=>v.toLocaleString() } }, x:{ grid:{ display:false }, ticks:{ color:'#64748b', font:{size:11} } } }
-  }
 });
 
 // ===== Map (高德地图) =====
@@ -1449,11 +1383,11 @@ function initPlateMap() {
   // Add legend
   var legendHTML = '<div style="background:rgba(255,255,255,0.92);padding:8px 10px;border-radius:6px;font-size:10px;line-height:1.7;box-shadow:0 1px 6px rgba(0,0,0,0.15);">' +
     '<strong style="font-size:11px;">成交套数</strong><br/>' +
-    '<span style="display:inline-block;width:12px;height:12px;background:#b2182b;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>55+<br/>' +
-    '<span style="display:inline-block;width:12px;height:12px;background:#ef8a62;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>42-54<br/>' +
-    '<span style="display:inline-block;width:12px;height:12px;background:#f4a582;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>32-41<br/>' +
-    '<span style="display:inline-block;width:12px;height:12px;background:#fddbc7;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>25-31<br/>' +
-    '<span style="display:inline-block;width:12px;height:12px;background:#f7e1d7;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>20-24<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#4a4a4a;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>55+<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#6e6e6e;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>42-54<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#919191;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>32-41<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#b0b0b0;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>25-31<br/>' +
+    '<span style="display:inline-block;width:12px;height:12px;background:#cfcfcf;margin-right:3px;vertical-align:middle;border-radius:2px;"></span>20-24<br/>' +
     '</div>';
   var legendCtrl = new BMap.Control();
   legendCtrl.defaultAnchor = BMAP_ANCHOR_BOTTOM_LEFT;
@@ -1468,6 +1402,75 @@ function initPlateMap() {
 
   plateMapInitialized = true;
 }
+
+
+// ===== 图表数据标签填充 =====
+function fmtChg(cur, prev) {
+  if (prev === 0 || prev === undefined || prev === null) return '<span class="stat-chg flat">--</span>';
+  var pct = ((cur - prev) / Math.abs(prev)) * 100;
+  var cls = pct > 0 ? 'up' : (pct < 0 ? 'down' : 'flat');
+  var arrow = pct > 0 ? '↑' : (pct < 0 ? '↓' : '→');
+  return '<span class="stat-chg ' + cls + '">' + arrow + ' ' + Math.abs(pct).toFixed(1) + '% 环比</span>';
+}
+
+function fmtVal(v) { return v.toLocaleString ? v.toLocaleString() : v; }
+
+function setStats(elId, curVal, prevVal, label, suffix) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = '<span class="stat-item"><span>' + label + '：</span><span class="stat-val">' + fmtVal(curVal) + (suffix||'') + '</span></span>' + fmtChg(curVal, prevVal);
+}
+
+// Populate stats from data arrays (last = current, second-last = previous)
+(function() {
+  var d, last, prev;
+  
+  d = NEW_VOLUME_PRICE; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsNewVolumePrice', last[1], prev[1], '本周成销量', '套');
+  var priceInfo = '<span class="stat-item"><span>成销均价：</span><span class="stat-val">' + fmtVal(last[2]) + '元/㎡</span></span>' + fmtChg(last[2], prev[2]);
+  document.getElementById('statsNewVolumePrice').innerHTML += priceInfo;
+
+  d = NEW_CHANNEL; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsNewChannel', last[1], prev[1], '合作项目数', '个');
+  document.getElementById('statsNewChannel').innerHTML += '<span class="stat-item"><span>占比：</span><span class="stat-val">' + (last[2]*100).toFixed(1) + '%</span></span>' + fmtChg(last[2]*100, prev[2]*100);
+
+  d = NEW_COMMISSION; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsNewCommission', (last[1]*100).toFixed(2), (prev[1]*100).toFixed(2), '佣金点位', '%');
+
+  d = NEW_DEMAND; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsNewDemand', last[1], prev[1], '商机量', '');
+  document.getElementById('statsNewDemand').innerHTML += '<span class="stat-item"><span>带看：</span><span class="stat-val">' + fmtVal(last[2]) + '</span></span>' + fmtChg(last[2], prev[2]);
+  document.getElementById('statsNewDemand').innerHTML += '<span class="stat-item"><span>认购：</span><span class="stat-val">' + fmtVal(last[3]) + '套</span></span>' + fmtChg(last[3], prev[3]);
+
+  d = OLD_SUPPLY_DEMAND; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsOldSupplyDemand', last[2], prev[2], '本周成交', '套');
+  document.getElementById('statsOldSupplyDemand').innerHTML += '<span class="stat-item"><span>新增房源：</span><span class="stat-val">' + fmtVal(last[1]) + '套</span></span>' + fmtChg(last[1], prev[1]);
+  document.getElementById('statsOldSupplyDemand').innerHTML += '<span class="stat-item"><span>成交均价：</span><span class="stat-val">' + fmtVal(last[4]) + '元/㎡</span></span>' + fmtChg(last[4], prev[4]);
+
+  d = OLD_DEMAND; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsOldDemand', last[1], prev[1], '商机量', '');
+  document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>带看：</span><span class="stat-val">' + fmtVal(last[2]) + '</span></span>' + fmtChg(last[2], prev[2]);
+  document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>认购：</span><span class="stat-val">' + fmtVal(last[3]) + '套</span></span>' + fmtChg(last[3], prev[3]);
+
+  d = OLD_BARGAIN; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsOldBargain', (last[1]*100).toFixed(1), (prev[1]*100).toFixed(1), '议价幅度', '%');
+
+  d = OLD_VIEWING; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsOldViewing', last[1], prev[1], '有效带看', '次');
+
+  d = OLD_CYCLE; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsOldCycle', last[1], prev[1], '房源成交天数', '天');
+  document.getElementById('statsOldCycle').innerHTML += '<span class="stat-item"><span>客源：</span><span class="stat-val">' + fmtVal(last[2]) + '天</span></span>' + fmtChg(last[2], prev[2]);
+
+  d = OLD_RATIO; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsOldRatio', (last[1]*100).toFixed(1), (prev[1]*100).toFixed(1), '本月客房比', '%');
+  document.getElementById('statsOldRatio').innerHTML += '<span class="stat-item"><span>新增客户：</span><span class="stat-val">' + fmtVal(last[2]) + '</span></span>' + fmtChg(last[2], prev[2]);
+
+  d = OLD_POTENTIAL; last = d[d.length-1]; prev = d[d.length-2];
+  setStats('statsOldPotential', fmtVal(last[1]), fmtVal(prev[1]), '本月潜客量', '');
+  document.getElementById('statsOldPotential').innerHTML += '<span class="stat-item"><span>支付力：</span><span class="stat-val">' + fmtVal(last[2]) + '万</span></span>' + fmtChg(last[2], prev[2]);
+})();
+
 
 // ===== 贝壳数据 Chart.js 图表 =====
 function getLabels(data) { return data.map(function(r) { return r[0]; }); }
@@ -1745,6 +1748,41 @@ var COLORS = {
     }
   });
 })();
+
+
+// ===== 侧边栏行为 =====
+(function() {
+  // Update active sidebar link on scroll
+  var sidebarLinks = document.querySelectorAll('#weeklySidebar a');
+  window.addEventListener('scroll', function() {
+    var current = '';
+    document.querySelectorAll('.section').forEach(function(s) {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    sidebarLinks.forEach(function(a) {
+      a.classList.toggle('active', false);
+    });
+    // Keep the week-active link active
+    var activeWeek = document.querySelector('#weeklySidebar a[data-week="2026W19"]');
+    if (activeWeek) activeWeek.classList.add('active');
+  });
+
+  // Click on sidebar week links shows placeholder for future weeks
+  sidebarLinks.forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var wk = this.dataset.week;
+      if (wk === '2026W19') {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+        return;
+      }
+      // Future weeks: gentle reminder
+      var label = this.textContent.trim();
+      alert('「' + label + '」的周报数据尚未上传。\n\n当前仅展示 2026年第19周 (5.4-5.10) 的数据。\n后续每周数据会陆续上线。');
+    });
+  });
+})();
+
 
 // Hook into ranking tab switch to init plate map lazily
 document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
