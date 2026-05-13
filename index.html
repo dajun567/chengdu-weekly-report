@@ -308,6 +308,127 @@ window._AMapSecurityConfig = {
   .plate-section { margin-top:24px; }
   .plate-section h4 { font-size:14px; color:var(--primary); margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
   @media (max-width:768px) { .rank-layout { grid-template-columns:1fr; } .rank-map { height:350px; } }
+
+  /* ===== 本周预售/现售项目（住宅类） ===== */
+  #launch-section {
+    margin: 24px 0;
+  }
+  #launch-section .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary, #1a3a5c);
+    margin-bottom: 16px;
+    padding-left: 12px;
+    border-left: 4px solid var(--accent, #c41230);
+  }
+  .launch-layout {
+    display: flex;
+    gap: 16px;
+    min-height: 500px;
+  }
+  .launch-map-wrap {
+    flex: 1;
+    min-width: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background: #f0f0f0;
+  }
+  #launchProjectMap {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+  }
+  .launch-list {
+    width: 480px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 520px;
+    overflow-y: auto;
+  }
+  .launch-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px 16px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+    border-left: 3px solid transparent;
+  }
+  .launch-card:hover {
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    transform: translateX(2px);
+  }
+  .launch-card.active {
+    border-left-color: var(--accent, #c41230);
+    background: #fef9f9;
+  }
+  .launch-card .lc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .launch-card .lc-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--primary, #1a3a5c);
+  }
+  .launch-card .lc-date {
+    font-size: 12px;
+    color: #888;
+    white-space: nowrap;
+  }
+  .launch-card .lc-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+    font-size: 12px;
+    color: #555;
+  }
+  .launch-card .lc-info .val {
+    font-weight: 600;
+    color: #333;
+  }
+  .launch-card .lc-info .price {
+    color: var(--accent, #c41230);
+    font-weight: 700;
+  }
+  .launch-card .lc-scope {
+    margin-top: 6px;
+    font-size: 11px;
+    color: #888;
+    line-height: 1.4;
+  }
+  .launch-legend {
+    font-size: 11px;
+    color: #999;
+    margin-top: 8px;
+    text-align: right;
+  }
+  .launch-summary {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+  .launch-summary strong {
+    color: var(--primary, #1a3a5c);
+  }
+  @media (max-width: 900px) {
+    .launch-layout {
+      flex-direction: column;
+    }
+    .launch-list {
+      width: 100%;
+      max-height: none;
+    }
+    #launchProjectMap {
+      min-height: 350px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -600,48 +721,19 @@ window._AMapSecurityConfig = {
   </div>
 </section>
 
-<!-- ====== 本周开盘项目 ====== -->
+<!-- ====== 本周预售/现售项目（住宅类） ====== -->
 <section id="launch" class="section">
-  <div class="section-title"><span class="icon">🚀</span>本周开盘项目</div>
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:12px;">
-    <p style="font-size:13px;color:var(--muted);margin:0;">手动填写 · 点击地图标记位置 · 表格可直接编辑</p>
-    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <span id="launchStatus" style="font-size:11px;color:var(--muted);"></span>
-      <button class="launch-pub-btn" onclick="loadPublishedData()" title="从服务器加载已发布数据">📥 加载</button>
-      <button class="launch-pub-btn launch-pub-primary" onclick="publishData()" title="发布到服务器，其他人可见">📤 发布</button>
-      <button class="launch-cfg-btn" onclick="setupToken()" title="设置 GitHub Token">⚙️</button>
-    </div>
+  <div class="section-title">本周预售/现售项目（住宅类）</div>
+  <div class="launch-summary">
+    上周（<strong>2026.5.5 — 5.11</strong>）住建蓉e办共公示 <strong>10</strong> 个预售/现售项目，其中 <strong>5</strong> 个含住宅（含公寓），合计住宅预售建筑面积约 <strong>35,770㎡</strong>。点击左侧地图标记或右侧卡片查看详情。
   </div>
-
-  <div class="project-top-row">
-    <div class="card" style="padding:0; min-height:400px;">
-      <div id="launchMap" class="project-map" style="height:480px;"></div>
-      <p style="font-size:11px;color:var(--muted);padding:8px 12px;border-top:1px solid var(--border);">💡 点击地图任意位置添加项目标记，点击标记可输入项目名称或删除</p>
+  <div class="launch-layout">
+    <div class="launch-map-wrap">
+      <div id="launchProjectMap"></div>
     </div>
-    <div class="card project-info-card" style="overflow-x:auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;">
-        <h4 style="font-size:16px;color:var(--primary);">项目开盘信息表</h4>
-        <button class="launch-add-btn" onclick="addLaunchRow()">+ 添加行</button>
-      </div>
-      <table class="launch-table">
-        <thead>
-          <tr>
-            <th>开盘类型</th>
-            <th>项目名称</th>
-            <th>开盘时间</th>
-            <th>供应套型</th>
-            <th>供应套数</th>
-            <th>认购套数</th>
-            <th>去化率</th>
-            <th>认购均价<br>(元/㎡)</th>
-            <th>销售分析</th>
-            <th style="width:36px;"></th>
-          </tr>
-        </thead>
-        <tbody id="launchTableBody"></tbody>
-      </table>
-    </div>
+    <div class="launch-list" id="launchList"></div>
   </div>
+  <div class="launch-legend">数据来源：成都市建筑（项目）全生命周期管理平台（住建蓉e办） · 高德地图</div>
 </section>
 
 <!-- ====== 贝壳二手市场监测 ====== -->
@@ -1907,397 +1999,198 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
   }, 500);
 })();
 
-// ===== Launch Map (本周开盘项目 高德地图 + localStorage) =====
+// ===== Launch Section (预售/现售项目 AMap + cards) =====
 (function() {
-  var mapContainer = document.getElementById('launchMap');
-  if (!mapContainer || mapContainer.offsetHeight === 0) return;
+  var projects = [
+    {
+      pid: "510129202683514",
+      name: "盛世天玺花园",
+      region: "大邑县",
+      address: "成都市大邑县建华南路88号",
+      date: "2026-05-09",
+      scope: "9号楼住宅及对应地下室",
+      residentCount: 44,
+      avgPrice: 10069.83,
+      totArea: 6360.69,
+      usage: "车位、公寓、住宅"
+    },
+    {
+      pid: "510132202683511",
+      name: "楠院",
+      region: "新津县",
+      address: "成都市新津区五津街道红石社区2组",
+      date: "2026-05-06",
+      scope: "第2、3栋及对应地下室车位",
+      residentCount: 46,
+      avgPrice: 13506.68,
+      totArea: 6879.62,
+      usage: "地下机动车位、零售商业、住宅"
+    },
+    {
+      pid: "510117202683411",
+      name: "鹏悦麓隐西鸣小区",
+      region: "郫都区",
+      address: "成都市郫都区双亭路666号",
+      date: "2026-05-06",
+      scope: "暂无明细",
+      residentCount: null,
+      avgPrice: null,
+      totArea: 12135.94,
+      usage: "商业服务业设施、住宅"
+    },
+    {
+      pid: "510114202683414",
+      name: "旭辉江与山苑",
+      region: "新都区",
+      address: "成都市新都区云谷路111号",
+      date: "现房",
+      scope: "5、7号楼",
+      residentCount: 36,
+      avgPrice: 23288.40,
+      totArea: 6529.92,
+      usage: "住宅"
+    },
+    {
+      pid: "510182202683412",
+      name: "北岛泷悦",
+      region: "彭州市",
+      address: "成都市彭州市濛阳街道濛阳大道99号",
+      date: "现房",
+      scope: "第120栋",
+      residentCount: 28,
+      avgPrice: 7320.00,
+      totArea: 3864.28,
+      usage: "住宅"
+    }
+  ];
 
-  var launchMap = new AMap.Map('launchMap', {
-    center: [104.0668, 30.5728],
-    zoom: 11,
-    viewMode: '2D',
-    resizeEnable: true
-  });
+  // Render project cards
+  var listEl = document.getElementById('launchList');
+  if (listEl) {
+    projects.forEach(function(p, i) {
+      var ratio = p.residentCount ? (p.totArea / p.residentCount).toFixed(2) : '--';
+      var priceStr = p.avgPrice ? p.avgPrice.toLocaleString('zh-CN') + ' 元/㎡' : '暂无数据';
+      var countStr = p.residentCount ? p.residentCount + ' 套' : '暂无数据';
 
-  var STORAGE_KEY = 'launch_markers_v1';
-  var allMarkers = [];
+      var card = document.createElement('div');
+      card.className = 'launch-card';
+      card.setAttribute('data-idx', i);
+      card.innerHTML =
+        '<div class="lc-header">' +
+          '<span class="lc-name">' + p.name + '</span>' +
+          '<span class="lc-date">' + p.date + '</span>' +
+        '</div>' +
+        '<div class="lc-info">' +
+          '<span>区域：<span class="val">' + p.region + '</span></span>' +
+          '<span>住宅套数：<span class="val">' + countStr + '</span></span>' +
+          '<span>预售均价：<span class="price">' + priceStr + '</span></span>' +
+          '<span>预售面积：<span class="val">' + p.totArea.toLocaleString() + '㎡</span></span>' +
+          '<span>建筑面积/套：<span class="val">' + ratio + '㎡/套</span></span>' +
+          '<span>房屋用途：<span class="val">' + p.usage.replace(/、/g, ' / ') + '</span></span>' +
+        '</div>' +
+        '<div class="lc-scope">销售范围：' + p.scope + ' | 地址：' + p.address + '</div>';
 
-  function saveMarkers() {
-    var data = allMarkers.map(function(m) {
-      return { lng: m.getPosition().getLng(), lat: m.getPosition().getLat(), name: m._launchName };
+      card.addEventListener('click', function() {
+        var marker = window._launchMarkers && window._launchMarkers[i];
+        if (marker && window._launchMap) {
+          window._launchMap.setCenter(marker.getPosition());
+          window._launchMap.setZoom(15);
+          marker.emit('click');
+        }
+        document.querySelectorAll('.launch-card').forEach(function(c) { c.classList.remove('active'); });
+        card.classList.add('active');
+      });
+
+      listEl.appendChild(card);
     });
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
   }
 
-  function createMarker(lng, lat, name) {
-    var marker = new AMap.Marker({
-      position: [lng, lat],
-      title: name,
-      map: launchMap
+  // Initialize AMap
+  function initMap() {
+    if (typeof AMap === 'undefined') {
+      setTimeout(initMap, 200);
+      return;
+    }
+
+    var mapContainer = document.getElementById('launchProjectMap');
+    if (!mapContainer || mapContainer.offsetHeight === 0) return;
+
+    var map = new AMap.Map('launchProjectMap', {
+      center: [104.065735, 30.659462],
+      zoom: 9,
+      mapStyle: 'amap://styles/light'
     });
 
-    var infoContent = '<div style="padding:6px 10px;font-size:12px;">'
-      + '<strong>' + name + '</strong><br>'
-      + '<span style="color:#999;">坐标: ' + lng.toFixed(4) + ', ' + lat.toFixed(4) + '</span><br>'
-      + '<a href="javascript:void(0)" onclick="window._deleteLaunchMarker(' + lng + ',' + lat + ')" style="color:#c0392b;font-size:11px;">删除此标记</a></div>';
+    window._launchMap = map;
+    window._launchMarkers = [];
 
-    marker.on('click', function() {
-      var infoWin = new AMap.InfoWindow({
-        content: infoContent,
-        offset: new AMap.Pixel(0, -30)
+    AMap.plugin(['AMap.Geocoder', 'AMap.ToolBar'], function() {
+      map.addControl(new AMap.ToolBar({ position: 'RT' }));
+
+      var geocoder = new AMap.Geocoder();
+      var pending = projects.length;
+
+      projects.forEach(function(p, i) {
+        geocoder.getLocation(p.address, function(status, result) {
+          pending--;
+
+          var lng, lat;
+          if (status === 'complete' && result.info === 'OK') {
+            var loc = result.geocodes[0].location;
+            lng = loc.lng;
+            lat = loc.lat;
+          }
+
+          if (lng && lat) {
+            var priceStr2 = p.avgPrice ? '<br>均价：' + p.avgPrice.toLocaleString() + ' 元/㎡' : '';
+            var countStr2 = p.residentCount ? p.residentCount + '套' : '套数暂无';
+            var ratio2 = p.residentCount ? (p.totArea / p.residentCount).toFixed(2) : '--';
+
+            var content =
+              '<div style="padding:8px;min-width:200px;">' +
+                '<h4 style="margin:0 0 6px;color:#1a3a5c;">' + p.name + '</h4>' +
+                '<p style="margin:2px 0;font-size:12px;">预售证号：' + p.pid + '</p>' +
+                '<p style="margin:2px 0;font-size:12px;">区域：' + p.region + ' | 日期：' + p.date + '</p>' +
+                '<p style="margin:2px 0;font-size:12px;">销售范围：' + p.scope + '</p>' +
+                '<p style="margin:2px 0;font-size:12px;">住宅套数：' + countStr2 + ' | 面积：' + p.totArea.toLocaleString() + '㎡' +
+                priceStr2 + '</p>' +
+                '<p style="margin:2px 0;font-size:12px;">建筑面积/套：' + ratio2 + '㎡/套</p>' +
+              '</div>';
+
+            var marker = new AMap.Marker({
+              position: [lng, lat],
+              title: p.name,
+              content: '<div style="background:#c41230;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);">' + p.name + '</div>',
+              offset: new AMap.Pixel(-20, -12)
+            });
+
+            marker.on('click', function() {
+              var infoWin = new AMap.InfoWindow({
+                content: content,
+                offset: new AMap.Pixel(0, -30)
+              });
+              infoWin.open(map, marker.getPosition());
+            });
+
+            map.add(marker);
+            window._launchMarkers[i] = marker;
+          }
+
+          if (pending === 0 && window._launchMarkers.length > 0) {
+            map.setFitView(null, false, [60, 60, 400, 60]);
+          }
+        });
       });
-      infoWin.open(launchMap, marker.getPosition());
     });
-
-    marker._launchName = name;
-    allMarkers.push(marker);
-    saveMarkers();
-
-    // Auto open
-    setTimeout(function() {
-      var infoWin = new AMap.InfoWindow({
-        content: infoContent,
-        offset: new AMap.Pixel(0, -30)
-      });
-      infoWin.open(launchMap, marker.getPosition());
-    }, 300);
   }
 
-  window._deleteLaunchMarker = function(lng, lat) {
-    // Close info windows
-    var aw = document.querySelectorAll('.amap-info-window');
-    aw.forEach(function(w) { w.remove && w.remove(); });
-    // Remove marker from map and array
-    for (var i = allMarkers.length - 1; i >= 0; i--) {
-      var m = allMarkers[i];
-      if (Math.abs(m.getPosition().getLng() - lng) < 0.0001 && Math.abs(m.getPosition().getLat() - lat) < 0.0001) {
-        m.setMap(null);
-        allMarkers.splice(i, 1);
-        break;
-      }
-    }
-    saveMarkers();
-    alert('标记已删除。');
-  };
-
-  // Click to add
-  launchMap.on('click', function(e) {
-    var name = prompt('请输入项目名称：', '');
-    if (!name) return;
-    createMarker(e.lnglat.getLng(), e.lnglat.getLat(), name);
-  });
-
-  // Restore saved markers
-  try {
-    var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved && saved.length) {
-      saved.forEach(function(item) {
-        createMarker(item.lng, item.lat, item.name);
-      });
-    }
-  } catch(e) {}
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMap);
+  } else {
+    initMap();
+  }
 })();
 
-// ===== Launch Table: localStorage 持久化 + 自动计算 =====
-(function() {
-  var STORAGE_KEY = 'launch_table_v1';
-  var tbody = document.getElementById('launchTableBody');
-  if (!tbody) return;
-
-  function saveTable() {
-    var rows = [];
-    tbody.querySelectorAll('tr').forEach(function(tr) {
-      var cells = tr.querySelectorAll('td[contenteditable]');
-      var row = [];
-      cells.forEach(function(td) { row.push(td.textContent.trim()); });
-      rows.push(row);
-    });
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(rows)); } catch(e) {}
-  }
-  window._saveLaunchTable = saveTable;
-
-  function loadTable() {
-    try {
-      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (saved && saved.length) {
-        // Clear existing rows
-        tbody.innerHTML = '';
-        saved.forEach(function(rowData) {
-          addRow(rowData);
-        });
-        return;
-      }
-    } catch(e) {}
-    // No saved data: add 3 default empty rows
-    for (var i = 0; i < 3; i++) { addRow(null); }
-  }
-
-  function makeCell(val, isSupplyOrSub, colIdx) {
-    var td = document.createElement('td');
-    td.setAttribute('contenteditable', 'true');
-    if (val) td.textContent = val;
-    if (isSupplyOrSub) {
-      td.oninput = function() { recalcRow(this); saveTable(); };
-    }
-    td.onblur = function() { saveTable(); };
-    return td;
-  }
-
-  function addRow(data) {
-    var tr = document.createElement('tr');
-    var editableCols = [false, false, false, false, true, true, false, false, false];
-    for (var i = 0; i < 9; i++) {
-      tr.appendChild(makeCell(data && data[i] ? data[i] : '', editableCols[i], i));
-    }
-    // 去化率 cell
-    var rateTd = document.createElement('td');
-    rateTd.className = 'launch-rate';
-    tr.appendChild(rateTd);
-    // Delete button
-    var delTd = document.createElement('td');
-    var delBtn = document.createElement('button');
-    delBtn.className = 'del-btn';
-    delBtn.textContent = '×';
-    delBtn.title = '删除行';
-    delBtn.onclick = function() { deleteLaunchRow(this); };
-    delTd.appendChild(delBtn);
-    tr.appendChild(delTd);
-    tbody.appendChild(tr);
-    // Recalc if data has supply/sub values
-    if (data && (data[4] || data[5])) {
-      var cells = tr.querySelectorAll('td[contenteditable]');
-      recalcRow(cells[4]); // trigger recalc on supply cell
-    }
-  }
-
-  window.addLaunchRow = function() {
-    addRow(null);
-    tbody.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    saveTable();
-  };
-
-  window.deleteLaunchRow = function(btn) {
-    if (tbody.children.length <= 1) { alert('至少保留一行'); return; }
-    btn.closest('tr').remove();
-    saveTable();
-  };
-
-  window.recalcRow = function(cell) {
-    var row = cell.closest('tr');
-    var cells = row.querySelectorAll('td[contenteditable]');
-    var supply = parseFloat(cells[4].textContent.trim()) || 0;
-    var sub = parseFloat(cells[5].textContent.trim()) || 0;
-    var rateCell = row.querySelector('.launch-rate');
-    if (rateCell) {
-      if (supply > 0 && sub >= 0) {
-        var rate = (sub / supply * 100);
-        rateCell.textContent = rate.toFixed(1) + '%';
-        rateCell.style.color = rate >= 80 ? '#27ae60' : rate >= 50 ? '#e67e22' : '#c0392b';
-        rateCell.style.fontWeight = '600';
-      } else {
-        rateCell.textContent = '—';
-        rateCell.style.color = '';
-        rateCell.style.fontWeight = '';
-      }
-    }
-  };
-
-  // Load saved data on page init
-  loadTable();
-})();
-
-// ===== GitHub 发布系统 =====
-var GH_OWNER = 'v6445123-creator';
-var GH_REPO = 'chengdu-weekly-report';
-var GH_FILE = 'launch_data.json';
-var GH_API = 'https://api.github.com/repos/' + GH_OWNER + '/' + GH_REPO + '/contents/' + GH_FILE;
-var GH_RAW = 'https://raw.githubusercontent.com/' + GH_OWNER + '/' + GH_REPO + '/main/' + GH_FILE;
-var TOKEN_KEY = 'gh_pat_launch';
-
-function getToken() {
-  return localStorage.getItem(TOKEN_KEY);
-}
-
-function setStatus(msg, cls) {
-  var el = document.getElementById('launchStatus');
-  if (!el) return;
-  el.textContent = msg;
-  el.className = cls || '';
-  setTimeout(function() { el.textContent = ''; el.className = ''; }, 4000);
-}
-
-window.setupToken = function() {
-  var msg = '请输入 GitHub Personal Access Token：\n\n'
-    + '如何获取：\n'
-    + '1. 访问 https://github.com/settings/tokens\n'
-    + '2. 点击 "Generate new token (classic)"\n'
-    + '3. 勾选 "public_repo" 权限\n'
-    + '4. 生成后粘贴到这里\n\n'
-    + '当前 Token：' + (getToken() ? '已设置 (' + getToken().substring(0,8) + '...)' : '未设置');
-  var token = prompt(msg, getToken() || '');
-  if (token && token.trim()) {
-    localStorage.setItem(TOKEN_KEY, token.trim());
-    setStatus('Token 已保存', 'launch-status-ok');
-  }
-};
-
-function collectData() {
-  var rows = [];
-  var tbody = document.getElementById('launchTableBody');
-  if (tbody) {
-    tbody.querySelectorAll('tr').forEach(function(tr) {
-      var cells = tr.querySelectorAll('td[contenteditable]');
-      var row = [];
-      cells.forEach(function(td) { row.push(td.textContent.trim()); });
-      // Only include non-empty rows
-      var hasContent = row.some(function(v) { return v !== ''; });
-      if (hasContent) rows.push(row);
-    });
-  }
-  var markers = [];
-  try {
-    var saved = JSON.parse(localStorage.getItem('launch_markers_v1'));
-    if (saved && saved.length) markers = saved;
-  } catch(e) {}
-  return { rows: rows, markers: markers, updatedAt: new Date().toISOString() };
-}
-
-window.publishData = function() {
-  var token = getToken();
-  if (!token) {
-    alert('请先设置 GitHub Token（点击 ⚙️ 按钮）');
-    setupToken();
-    return;
-  }
-  var data = collectData();
-  if (!data.rows.length && !data.markers.length) {
-    alert('没有可发布的数据。请先填写表格或添加地图标记。');
-    return;
-  }
-  var btn = document.querySelector('.launch-pub-primary');
-  if (btn) { btn.disabled = true; btn.textContent = '发布中...'; }
-
-  var content = JSON.stringify(data, null, 2);
-  var b64 = btoa(unescape(encodeURIComponent(content)));
-
-  // First GET existing file to get SHA
-  fetch(GH_API, { headers: { 'Authorization': 'Bearer ' + token } })
-    .then(function(r) { return r.ok ? r.json() : { sha: null }; })
-    .then(function(existing) {
-      var body = { message: 'Update launch data', content: b64 };
-      if (existing.sha) body.sha = existing.sha;
-      return fetch(GH_API, {
-        method: 'PUT',
-        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-    })
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function(result) {
-      setStatus('发布成功！(' + new Date().toLocaleTimeString() + ')', 'launch-status-ok');
-      if (btn) { btn.disabled = false; btn.textContent = '📤 发布'; }
-    })
-    .catch(function(err) {
-      setStatus('发布失败: ' + err.message, 'launch-status-err');
-      if (btn) { btn.disabled = false; btn.textContent = '📤 发布'; }
-      if (err.message.indexOf('401') > -1) {
-        alert('Token 无效或已过期，请重新设置（点击 ⚙️）。');
-        localStorage.removeItem(TOKEN_KEY);
-      }
-    });
-};
-
-window.loadPublishedData = function() {
-  var btn = document.querySelector('.launch-pub-btn:not(.launch-pub-primary)');
-  if (btn) { btn.disabled = true; btn.textContent = '加载中...'; }
-
-  fetch(GH_RAW + '?t=' + Date.now())
-    .then(function(r) {
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      return r.json();
-    })
-    .then(function(data) {
-      // Populate markers
-      if (data.markers && data.markers.length) {
-        localStorage.setItem('launch_markers_v1', JSON.stringify(data.markers));
-        // Reload map markers (requires page refresh or rebuild markers)
-        setStatus('数据已加载，请刷新页面以显示地图标记', 'launch-status-ok');
-      }
-      // Populate table
-      if (data.rows && data.rows.length) {
-        var tbody = document.getElementById('launchTableBody');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        data.rows.forEach(function(rowData) {
-          // normalize to 9 columns
-          while (rowData.length < 9) rowData.push('');
-          if (rowData.length > 9) rowData = rowData.slice(0, 9);
-          window._addRowFromData(rowData);
-        });
-        // Save to localStorage too
-        var tableData = [];
-        tbody.querySelectorAll('tr').forEach(function(tr) {
-          var cells = tr.querySelectorAll('td[contenteditable]');
-          var row = [];
-          cells.forEach(function(td) { row.push(td.textContent.trim()); });
-          tableData.push(row);
-        });
-        try { localStorage.setItem('launch_table_v1', JSON.stringify(tableData)); } catch(e) {}
-        setStatus('已加载 ' + data.rows.length + ' 条记录 (' + (data.updatedAt || '').substring(0,10) + ')', 'launch-status-ok');
-      } else {
-        setStatus('服务器暂无数据', '');
-      }
-      if (btn) { btn.disabled = false; btn.textContent = '📥 加载'; }
-    })
-    .catch(function(err) {
-      setStatus('加载失败: ' + err.message, 'launch-status-err');
-      if (btn) { btn.disabled = false; btn.textContent = '📥 加载'; }
-    });
-};
-
-// Expose addRow for loadPublishedData (uses the inner addRow function)
-window._addRowFromData = function(data) {
-  var tbody = document.getElementById('launchTableBody');
-  if (!tbody) return;
-  var tr = document.createElement('tr');
-  var editableCols = [false, false, false, false, true, true, false, false, false];
-  for (var i = 0; i < 9; i++) {
-    var td = document.createElement('td');
-    td.setAttribute('contenteditable', 'true');
-    if (data[i]) td.textContent = data[i];
-    if (editableCols[i]) {
-      td.oninput = function() { recalcRow(this); if (window._saveLaunchTable) window._saveLaunchTable(); };
-    }
-    td.onblur = function() { if (window._saveLaunchTable) window._saveLaunchTable(); };
-    tr.appendChild(td);
-  }
-  // 去化率 cell
-  var rateTd = document.createElement('td');
-  rateTd.className = 'launch-rate';
-  tr.appendChild(rateTd);
-  // Delete button
-  var delTd = document.createElement('td');
-  var delBtn = document.createElement('button');
-  delBtn.className = 'del-btn';
-  delBtn.textContent = '×';
-  delBtn.title = '删除行';
-  delBtn.onclick = function() { deleteLaunchRow(this); };
-  delTd.appendChild(delBtn);
-  tr.appendChild(delTd);
-  tbody.appendChild(tr);
-  // Recalc if data has supply/sub values
-  if (data[4] || data[5]) {
-    setTimeout(function() { recalcRow(tr.querySelectorAll('td[contenteditable]')[4]); }, 50);
-  }
-};
-
-// Check token status on load
-(function() {
-  if (getToken()) { setStatus('Token 已就绪', 'launch-status-ok'); }
-})();
 
 </script>
 
