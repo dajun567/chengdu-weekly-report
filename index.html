@@ -12,7 +12,6 @@ window._AMapSecurityConfig = {
 <script src="https://webapi.amap.com/maps?v=2.0&key=37b06865a18c74420f8b2724427bd812"></script>
 <script src="https://api.map.baidu.com/api?v=3.0&ak=gbBJzz3WNdYUfFkX2n2m3RxDHMp1lmoJ"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
     --primary: #1a3a5c;
@@ -1656,26 +1655,32 @@ function setStats(elId, curVal, prevVal, label, suffix) {
 })();
 
 
-// Register datalabels plugin with global defaults
-if (typeof ChartDataLabels !== 'undefined') {
-  Chart.register(ChartDataLabels);
-  Chart.defaults.set('plugins.datalabels', {
-    display: function(ctx) {
-      // Only show on bar datasets, not line datasets
-      return ctx.dataset.type !== 'line' && ctx.dataset.label !== '成交均价(元/㎡)' && ctx.dataset.label !== '成销均价(元/㎡)';
-    },
-    anchor: 'end',
-    align: 'top',
-    font: { size: 9, weight: 'bold' },
-    color: '#444',
-    offset: 3,
-    formatter: function(value) {
-      if (value === 0 || value === null || value === undefined) return '';
-      if (value >= 10000) return (value/10000).toFixed(1) + '万';
-      return value.toLocaleString();
-    }
-  });
-}
+// Inline datalabels plugin (Chart.js 4.x compatible — replaces incompatible chartjs-plugin-datalabels@2.2.0)
+Chart.register({
+  id: 'inlineDatalabels',
+  afterDatasetsDraw: function(chart) {
+    var ctx = chart.ctx;
+    chart.data.datasets.forEach(function(dataset, dsIdx) {
+      if (dataset.type === 'line') return; // skip line datasets
+      var label = dataset.label || '';
+      if (label === '成交均价(元/㎡)' || label === '成销均价(元/㎡)') return;
+      var meta = chart.getDatasetMeta(dsIdx);
+      if (!meta || !meta.data) return;
+      meta.data.forEach(function(el, i) {
+        var value = dataset.data[i];
+        if (value === 0 || value === null || value === undefined) return;
+        var text = value >= 10000 ? (value/10000).toFixed(1) + '万' : value.toLocaleString();
+        ctx.save();
+        ctx.font = 'bold 9px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillStyle = '#444';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(text, el.x, el.y - 3);
+        ctx.restore();
+      });
+    });
+  }
+});
 
 // ===== 贝壳数据 Chart.js 图表 =====
 function getLabels(data) { return data.map(function(r) { return r[0]; }); }
