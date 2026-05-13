@@ -99,6 +99,7 @@ window._AMapSecurityConfig = {
 
   /* ===== 规划许可项目详情 ===== */
   .project-top-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .project-left-col { display:flex; flex-direction:column; }
   .project-map { width:100%; height:380px; border-radius:8px; }
   .project-info-card { font-size:13px; }
   .project-info-table { width:100%; border-collapse:collapse; }
@@ -416,6 +417,24 @@ window._AMapSecurityConfig = {
   .launch-summary strong {
     color: var(--primary, #1a3a5c);
   }
+  .land-layout {
+    display: flex;
+    gap: 16px;
+    min-height: 500px;
+  }
+  .land-map-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+  .land-table-wrap {
+    width: 480px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 560px;
+    overflow-y: auto;
+  }
   @media (max-width: 900px) {
     .launch-layout {
       flex-direction: column;
@@ -426,6 +445,16 @@ window._AMapSecurityConfig = {
     }
     #launchProjectMap {
       min-height: 350px;
+    }
+    .land-layout {
+      flex-direction: column;
+    }
+    .land-table-wrap {
+      width: 100%;
+      max-height: none;
+    }
+    .land-map-wrap .map-wrap {
+      height: 300px;
     }
   }
 </style>
@@ -769,12 +798,6 @@ window._AMapSecurityConfig = {
       <div class="chart-note">柱状：商机量 · 折线①：带看量 · 折线②：认购量(套)</div>
     </div>
     <div class="beike-chart-card">
-      <h4>成交议价幅度（买卖博弈）</h4>
-        <div class="chart-stats" id="statsOldBargain"></div>
-      <div class="chart-wrap"><canvas id="chartOldBargain"></canvas></div>
-      <div class="chart-note">折线：二手成交房源议价幅度 vs 30天前挂牌价(%) · 数值越大买方议价空间越大</div>
-    </div>
-    <div class="beike-chart-card">
       <h4>买方情绪 · 看房次数</h4>
         <div class="chart-stats" id="statsOldViewing"></div>
       <div class="chart-wrap"><canvas id="chartOldViewing"></canvas></div>
@@ -785,12 +808,6 @@ window._AMapSecurityConfig = {
         <div class="chart-stats" id="statsOldCycle"></div>
       <div class="chart-wrap"><canvas id="chartOldCycle"></canvas></div>
       <div class="chart-note">折线：房源平均成交天数 · 客源平均成交天数</div>
-    </div>
-    <div class="beike-chart-card">
-      <h4>新增客房比走势（月度）</h4>
-        <div class="chart-stats" id="statsOldRatio"></div>
-      <div class="chart-wrap"><canvas id="chartOldRatio"></canvas></div>
-      <div class="chart-note">柱状：新增有效客户量+新增房源量(套) · 折线：新增有效客房比</div>
     </div>
   </div>
 </section>
@@ -805,43 +822,48 @@ window._AMapSecurityConfig = {
     <button class="tab-btn" onclick="switchLandTab('deal')">土地成交</button>
   </div>
 
-  <!-- Map -->
-  <div class="card" style="margin-bottom:20px;">
-    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周土地分布示意图</h4>
-    <div id="landMap" class="map-wrap"></div>
-    <div class="map-legend">
-      <span><span class="dot dot-supply"></span> 新增挂牌地块</span>
-      <span><span class="dot dot-deal"></span> 成交地块</span>
+  <div class="land-layout">
+    <!-- Map (left) -->
+    <div class="land-map-wrap">
+      <div class="card" style="height:100%;">
+        <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周土地分布示意图</h4>
+        <div id="landMap" class="map-wrap" style="height:420px;"></div>
+        <div class="map-legend">
+          <span><span class="dot dot-supply"></span> 新增挂牌地块</span>
+          <span><span class="dot dot-deal"></span> 成交地块</span>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Supply Table -->
-  <div class="card" id="landSupplyTable">
-    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周新增挂牌地块（来源：成都市公共资源交易服务中心、中国土地市场网）</h4>
-    <div style="overflow-x:auto;">
-    <table>
-      <thead><tr><th>地块编号</th><th>区域</th><th>板块</th><th>用地性质</th><th>土地面积(亩)</th><th>容积率</th><th>起始楼面价(元/㎡)</th><th>起始总价(万元)</th><th>竞拍日期</th></tr></thead>
-      <tbody>
-        <tr><td>SLG-(07)-2026-002</td><td>双流区</td><td>东升街道花园社区</td><td>二类住宅</td><td>36.45</td><td>≤2.5</td><td>7,300</td><td>44,345</td><td>5月29日</td></tr>
-        <tr><td>LQ07(252):2025-07</td><td>龙泉驿区</td><td>大面街道东洪社区</td><td>二类住宅</td><td>61.35</td><td>≤2.5</td><td>10,504</td><td>107,400</td><td>5月29日</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <p style="font-size:11px;color:var(--muted);margin-top:8px;">本周适逢五一节后首周，新增供应较少。上述两宗地为5月10日公告（成公资土拍告[2026]14号），合计起始价约15.17亿元，将于5月29日集中拍卖。另5月15日还有3宗宅地待拍（天府新区27.94亩、青羊区68.41亩、新都区30.39亩），系4月22日公告。</p>
-  </div>
+    <!-- Table (right) -->
+    <div class="land-table-wrap">
+      <div class="card" id="landSupplyTable">
+        <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周新增挂牌地块（来源：成都市公共资源交易服务中心、中国土地市场网）</h4>
+        <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>地块编号</th><th>区域</th><th>板块</th><th>用地性质</th><th>土地面积(亩)</th><th>容积率</th><th>起始楼面价(元/㎡)</th><th>起始总价(万元)</th><th>竞拍日期</th></tr></thead>
+          <tbody>
+            <tr><td>SLG-(07)-2026-002</td><td>双流区</td><td>东升街道花园社区</td><td>二类住宅</td><td>36.45</td><td>≤2.5</td><td>7,300</td><td>44,345</td><td>5月29日</td></tr>
+            <tr><td>LQ07(252):2025-07</td><td>龙泉驿区</td><td>大面街道东洪社区</td><td>二类住宅</td><td>61.35</td><td>≤2.5</td><td>10,504</td><td>107,400</td><td>5月29日</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px;">本周适逢五一节后首周，新增供应较少。上述两宗地为5月10日公告（成公资土拍告[2026]14号），合计起始价约15.17亿元，将于5月29日集中拍卖。另5月15日还有3宗宅地待拍（天府新区27.94亩、青羊区68.41亩、新都区30.39亩），系4月22日公告。</p>
+      </div>
 
-  <!-- Deal Table -->
-  <div class="card" id="landDealTable" style="display:none;">
-    <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周土地成交结果（来源：成都市公共资源交易服务中心）</h4>
-    <div style="overflow-x:auto;">
-    <table>
-      <thead><tr><th>地块编号</th><th>区域</th><th>板块</th><th>用地性质</th><th>土地面积(亩)</th><th>容积率</th><th>成交楼面价(元/㎡)</th><th>溢价率</th><th>竞得人</th><th>成交日期</th></tr></thead>
-      <tbody>
-        <tr><td>JN01(070102):2026-012</td><td>金牛区</td><td>国际商贸城片区</td><td>二类住宅</td><td>74.28</td><td>2.5</td><td>7,050</td><td>0.0%</td><td>金牛国投产业投资开发有限公司</td><td>5月8日</td></tr>
-      </tbody>
-    </table>
+      <div class="card" id="landDealTable" style="display:none;">
+        <h4 style="font-size:14px;color:var(--muted);margin-bottom:12px;">本周土地成交结果（来源：成都市公共资源交易服务中心）</h4>
+        <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>地块编号</th><th>区域</th><th>板块</th><th>用地性质</th><th>土地面积(亩)</th><th>容积率</th><th>成交楼面价(元/㎡)</th><th>溢价率</th><th>竞得人</th><th>成交日期</th></tr></thead>
+          <tbody>
+            <tr><td>JN01(070102):2026-012</td><td>金牛区</td><td>国际商贸城片区</td><td>二类住宅</td><td>74.28</td><td>2.5</td><td>7,050</td><td>0.0%</td><td>金牛国投产业投资开发有限公司</td><td>5月8日</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p style="font-size:11px;color:var(--muted);margin-top:8px;">金牛区国际商贸城片区为八年来首次供地，由区属国资平台以底价8.73亿元托底摘得。本周仅此一宗宅地成交，五一节后土地市场整体平淡。五月中下旬将迎来本月供地高峰，5月15日、29日共有5宗宅地陆续拍卖。</p>
+      </div>
     </div>
-    <p style="font-size:11px;color:var(--muted);margin-top:8px;">金牛区国际商贸城片区为八年来首次供地，由区属国资平台以底价8.73亿元托底摘得。本周仅此一宗宅地成交，五一节后土地市场整体平淡。五月中下旬将迎来本月供地高峰，5月15日、29日共有5宗宅地陆续拍卖。</p>
   </div>
 </section>
 
@@ -853,8 +875,18 @@ window._AMapSecurityConfig = {
 
   <div class="project-detail">
     <div class="project-top-row">
-      <div class="card" style="padding:0; min-height:380px;">
-        <div id="projectMap" class="project-map"></div>
+      <div class="project-left-col">
+        <div class="card" style="padding:0; min-height:380px;">
+          <div id="projectMap" class="project-map"></div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <h4 style="font-size:14px;color:var(--primary);margin-bottom:12px;">📋 综合技术经济指标表</h4>
+          <div class="project-img-wrap">
+            <img src="planning_indicators.jpg" alt="综合技术经济指标表 - 金茂外金沙43亩" style="max-width:100%;border:1px solid var(--border);border-radius:4px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+            <div class="no-policy" style="display:none;"><span class="icon" style="font-size:36px;display:block;margin-bottom:10px;opacity:0.5;">📷</span>指标表图片待上传<br><small style="color:var(--muted);">请将图片保存为 planning_indicators.jpg 并放置于项目目录</small></div>
+          </div>
+          <p style="font-size:11px;color:var(--muted);margin-top:8px;">注：以上为报规方案综合技术经济指标，最终数据以成都市规自局颁发的《建设工程规划许可证》为准。本表由用户提供，金茂于2026年3月31日首入青羊区拿地，此为其在成都的第三个住宅项目（继武侯金茂府、锦江金茂府之后）。</p>
+        </div>
       </div>
       <div class="card project-info-card">
         <h4 style="font-size:16px;color:var(--primary);margin-bottom:4px;">金茂 · 外金沙43亩住宅项目</h4>
@@ -879,15 +911,6 @@ window._AMapSecurityConfig = {
           </tbody>
         </table>
       </div>
-    </div>
-
-    <div class="card" style="margin-top:20px;">
-      <h4 style="font-size:14px;color:var(--primary);margin-bottom:12px;">📋 综合技术经济指标表</h4>
-      <div class="project-img-wrap">
-        <img src="planning_indicators.jpg" alt="综合技术经济指标表 - 金茂外金沙43亩" style="max-width:100%;border:1px solid var(--border);border-radius:4px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
-        <div class="no-policy" style="display:none;"><span class="icon" style="font-size:36px;display:block;margin-bottom:10px;opacity:0.5;">📷</span>指标表图片待上传<br><small style="color:var(--muted);">请将图片保存为 planning_indicators.jpg 并放置于项目目录</small></div>
-      </div>
-      <p style="font-size:11px;color:var(--muted);margin-top:8px;">注：以上为报规方案综合技术经济指标，最终数据以成都市规自局颁发的《建设工程规划许可证》为准。本表由用户提供，金茂于2026年3月31日首入青羊区拿地，此为其在成都的第三个住宅项目（继武侯金茂府、锦江金茂府之后）。</p>
     </div>
   </div>
 </section>
@@ -937,11 +960,9 @@ const NEW_VOLUME_PRICE = [["2025W51",102,20362],["2025W52",164,22901],["2026W01"
 const NEW_CHANNEL = [["2025W52",342,0.755],["2026W01",274,0.6049],["2026W02",282,0.6171],["2026W03",287,0.635],["2026W04",296,0.6534],["2026W05",295,0.6484],["2026W06",301,0.6586],["2026W07",301,0.6586],["2026W08",300,0.6565],["2026W09",288,0.6372],["2026W10",290,0.6402],["2026W11",299,0.6571],["2026W12",299,0.66],["2026W13",300,0.6608],["2026W14",287,0.6294],["2026W15",288,0.6344],["2026W16",291,0.6396],["2026W17",298,0.6521],["2026W18",306,0.674],["2026W19",300,0.6608]];
 const NEW_COMMISSION = [["2025W51",0.0332],["2025W52",0.0323],["2026W01",0.0361],["2026W02",0.034],["2026W03",0.0375],["2026W04",0.0344],["2026W05",0.0325],["2026W06",0.0347],["2026W07",0.0353],["2026W09",0.0316],["2026W10",0.0312],["2026W11",0.0328],["2026W12",0.0383],["2026W13",0.0371],["2026W14",0.0337],["2026W15",0.0461],["2026W16",0.0369],["2026W17",0.0367],["2026W18",0.0329],["2026W19",0.0372]];
 const NEW_DEMAND = [["2025W52",16439,8311,379],["2026W01",17610,6522,324],["2026W02",17366,8078,278],["2026W03",19011,7786,252],["2026W04",17355,7182,261],["2026W05",16168,6590,276],["2026W06",14446,5209,205],["2026W07",12480,2294,84],["2026W08",14528,1159,14],["2026W09",26342,9576,460],["2026W10",24301,9803,461],["2026W11",27004,11928,576],["2026W12",23982,11531,501],["2026W13",22770,9515,492],["2026W14",20837,9313,535],["2026W15",22542,10631,492],["2026W16",21250,9232,352],["2026W17",18897,8782,351],["2026W18",19376,10525,536],["2026W19",21359,11390,592]];
-const OLD_BARGAIN = [["2025W52",0.112],["2026W01",0.113],["2026W02",0.11],["2026W03",0.109],["2026W04",0.109],["2026W05",0.105],["2026W06",0.106],["2026W07",0.097],["2026W08",0.093],["2026W09",0.088],["2026W10",0.093],["2026W11",0.1],["2026W12",0.105],["2026W13",0.108],["2026W14",0.108],["2026W15",0.106],["2026W16",0.106],["2026W17",0.106],["2026W18",0.105],["2026W19",0.106]];
 const OLD_VIEWING = [["2025W52",38],["2026W01",40],["2026W02",40],["2026W03",38],["2026W04",38],["2026W05",39],["2026W06",38],["2026W07",34],["2026W08",34],["2026W09",32],["2026W10",34],["2026W11",34],["2026W12",34],["2026W13",35],["2026W14",34],["2026W15",35],["2026W16",35],["2026W17",35],["2026W18",36],["2026W19",34]];
 const OLD_SUPPLY_DEMAND = [["2025W52",5318,1347,17199,12972],["2026W01",5051,1240,17867,12836],["2026W02",6054,1553,17448,13110],["2026W03",5581,1640,16970,13041],["2026W04",4978,1560,17219,13135],["2026W05",4914,1418,16994,12976],["2026W06",3630,1263,16404,13684],["2026W07",1379,552,16653,13971],["2026W08",556,41,15784,12343],["2026W09",8624,1605,16314,12389],["2026W10",7912,2413,16893,12778],["2026W11",7622,2641,16690,12709],["2026W12",7217,2536,17226,12951],["2026W13",6602,2414,16592,12979],["2026W14",5858,1924,16636,12883],["2026W15",6826,2413,16804,12775],["2026W16",6370,2098,16982,12929],["2026W17",6007,1905,17614,13122],["2026W18",4669,1451,17006,12923],["2026W19",6198,2057,17277,12918]];
 const OLD_CYCLE = [["2025W52",131,103],["2026W01",140,102],["2026W02",138,106],["2026W03",145,97],["2026W04",136,99],["2026W05",147,100],["2026W06",140,98],["2026W07",164,91],["2026W08",134,113],["2026W09",158,102],["2026W10",154,103],["2026W11",157,97],["2026W12",163,96],["2026W13",153,91],["2026W14",151,90],["2026W15",153,97],["2026W16",153,90],["2026W17",151,94],["2026W18",150,97],["2026W19",152,96]];
-const OLD_RATIO = [["2025-05",1.9874,57936,29152],["2025-06",1.7733,52294,29489],["2025-07",1.5079,47048,31202],["2025-08",1.6225,47608,29343],["2025-09",1.5971,49647,31086],["2025-10",1.8304,51107,27921],["2025-11",1.7428,47691,27365],["2025-12",1.7277,45258,26196],["2026-01",1.9163,48339,25225],["2026-02",1.8309,26443,14443],["2026-03",2.0773,71584,34460],["2026-04",1.9918,56170,28200]];
 const OLD_DEMAND = [["2025W52",18024,8830,425],["2026W01",19250,7103,390],["2026W02",18971,8645,354],["2026W03",21003,8567,325],["2026W04",19285,7761,357],["2026W05",18046,7084,329],["2026W06",16059,5673,248],["2026W07",14055,2583,97],["2026W08",16554,1296,14],["2026W09",29319,10342,596],["2026W10",26651,10609,538],["2026W11",29719,12716,662],["2026W12",26481,12259,562],["2026W13",25113,10152,559],["2026W14",23031,10010,602],["2026W15",24803,11356,538],["2026W16",23540,9914,393],["2026W17",20985,9473,389],["2026W18",21450,11459,638],["2026W19",23563,12120,719]];
 
 // ===== Smooth scroll =====
@@ -1638,19 +1659,12 @@ function setStats(elId, curVal, prevVal, label, suffix) {
   document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>带看：</span>' + fmtChg(last[2], prev[2]) + '</span>';
   document.getElementById('statsOldDemand').innerHTML += '<span class="stat-item"><span>认购：</span>' + fmtChg(last[3], prev[3]) + '</span>';
 
-  d = OLD_BARGAIN; last = d[d.length-1]; prev = d[d.length-2];
-  setStats('statsOldBargain', (last[1]*100).toFixed(1), (prev[1]*100).toFixed(1), '议价幅度', '%');
-
   d = OLD_VIEWING; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsOldViewing', last[1], prev[1], '有效带看', '次');
 
   d = OLD_CYCLE; last = d[d.length-1]; prev = d[d.length-2];
   setStats('statsOldCycle', last[1], prev[1], '房源成交天数', '天');
   document.getElementById('statsOldCycle').innerHTML += '<span class="stat-item"><span>客源：</span>' + fmtChg(last[2], prev[2]) + '</span>';
-
-  d = OLD_RATIO; last = d[d.length-1]; prev = d[d.length-2];
-  setStats('statsOldRatio', (last[1]*100).toFixed(1), (prev[1]*100).toFixed(1), '本月客房比', '%');
-  document.getElementById('statsOldRatio').innerHTML += '<span class="stat-item"><span>新增客户：</span>' + fmtChg(last[2], prev[2]) + '</span>';
 
 })();
 
@@ -1820,28 +1834,6 @@ var COLORS = {
 })();
 
 (function() {
-  var ctx = document.getElementById('chartOldBargain').getContext('2d');
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: getLabels(OLD_BARGAIN),
-      datasets: [
-        { label: '议价幅度(%)', data: OLD_BARGAIN.map(function(r){return Math.round(r[1]*10000)/100;}), borderColor: COLORS.red, backgroundColor: 'rgba(196,18,48,0.06)', borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, tension: 0.3, fill: true }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
-      scales: {
-        y: { grid: { color: '#eee' }, ticks: { font: { size: 10 }, callback: function(v) { return v+'%'; } } },
-        x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
-      }
-    }
-  });
-})();
-
-(function() {
   var ctx = document.getElementById('chartOldViewing').getContext('2d');
   new Chart(ctx, {
     type: 'line',
@@ -1881,31 +1873,6 @@ var COLORS = {
       scales: {
         y: { grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
         x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 30 } }
-      }
-    }
-  });
-})();
-
-(function() {
-  var ctx = document.getElementById('chartOldRatio').getContext('2d');
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: getLabels(OLD_RATIO),
-      datasets: [
-        { type: 'bar', label: '新增有效客户量', data: OLD_RATIO.map(function(r){return r[2];}), backgroundColor: COLORS.blueLight, borderRadius: 3, yAxisID: 'y', order: 3 },
-        { type: 'bar', label: '新增房源量(套)', data: OLD_RATIO.map(function(r){return r[3];}), backgroundColor: COLORS.greenLight, borderRadius: 3, yAxisID: 'y', order: 2 },
-        { type: 'line', label: '新增有效客房比', data: OLD_RATIO.map(function(r){return Math.round(r[1]*100)/100;}), borderColor: COLORS.red, borderWidth: 2.5, pointRadius: 4, pointHoverRadius: 7, tension: 0.3, yAxisID: 'y1', order: 1 }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { position: 'top', labels: { boxWidth: 14, padding: 12, font: { size: 10 }, usePointStyle: true } } },
-      scales: {
-        y: { type: 'linear', position: 'left', grid: { color: '#eee' }, ticks: { font: { size: 10 } } },
-        y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { size: 10 } } },
-        x: { ticks: { font: { size: 10 }, maxRotation: 45, minRotation: 0 } }
       }
     }
   });
