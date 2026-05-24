@@ -574,7 +574,7 @@ window._AMapSecurityConfig = {
     </div>
     <div class="kpi">
       <div class="label">取证项目数（上周）</div>
-      <div class="value">19<span style="font-size:16px;font-weight:400;"> 个</span></div>
+      <div class="value" id="kpiPresaleCount">19<span style="font-size:16px;font-weight:400;"> 个</span></div>
       <div class="change" style="color:var(--primary);">含住宅项目</div>
     </div>
   </div>
@@ -597,7 +597,7 @@ window._AMapSecurityConfig = {
   <!-- 本周预售/现售项目（住宅类） -->
   <div id="launch-section">
     <div class="section-title">本周预售/现售项目（住宅类）</div>
-    <div class="launch-summary">
+    <div class="launch-summary" id="launchSummary">
       上周（<strong>2026.5.11 — 5.17</strong>）住建蓉e办共公示 <strong>19</strong> 个预售/现售项目（含住宅），合计住宅预售建筑面积约 <strong>199,505㎡</strong>，住宅房源共 <strong>1,163</strong> 套。点击地图标记查看详情。
     </div>
     <div class="launch-layout">
@@ -915,7 +915,7 @@ window._AMapSecurityConfig = {
         <ul style="font-size:13px;color:#555;line-height:2.2;padding-left:20px;">
           <li><strong>政策面：</strong>成都9部门联合印发建筑业"11条新政"（交地即开工+预售资金直拨施工方+严禁以审代结），从审批提速、资金监管、智能建造等维度支持行业高质量发展。政策延续宽松但更重落地实效。</li>
           <li><strong>新房端：</strong>上周供应648套（↑356%，节后供应恢复）、成交1,110套（↓5.8%），供销比0.58。五一假期后第二周供应端恢复明显，成交端小幅回落但仍保持千套以上，整体供销结构趋于正常。</li>
-          <li><strong>取证端：</strong>W20住建蓉e办新增预售/现售项目20个（含住宅19个），取证房源1,163套、预售建面约20.0万㎡。取证量较W19明显回升，主力项目：麓湖生态城（66套/2.7万㎡）、观云苑（156套/2.3万㎡）、锦湖岸小区（204套/2.1万㎡）。取证高峰集中在5月13-15日，价格跨度大（金堂县7,818元/㎡—天府新区116,761元/㎡）。</li>
+          <li id="summaryPresale"><strong>取证端：</strong>W20住建蓉e办新增预售/现售项目20个（含住宅19个），取证房源1,163套、预售建面约20.0万㎡。取证量较W19明显回升，主力项目：麓湖生态城（66套/2.7万㎡）、观云苑（156套/2.3万㎡）、锦湖岸小区（204套/2.1万㎡）。取证高峰集中在5月13-15日，价格跨度大（金堂县7,818元/㎡—天府新区116,761元/㎡）。</li>
           <li><strong>二手端：</strong>W20新增房源6,097套（↓1.2%）、成交1,911套（↓8.1%），成交均价13,127元/㎡（↑1.6%）。看房次数26次/成交客户（↑8.3%），房源成交周期158天（↑6天），买方市场特征延续。需求端商机量143,243（↓2.7%）、带看量40,557（↓7.6%），成交量1,911套。</li>
           <li><strong>土地端：</strong>本周无新增土地挂牌。5月15日集中土拍3宗宅地合计成交21.01亿元。天府新区华阳27.94亩（锦江生态带时隔五年首供）溢价21.9%，明信+恒鑫隆胜以楼面价11,700元/㎡竞得；青羊区航空新城68.41亩由华润置地以楼面价16,300元/㎡拿下（今年第二次在该片区拿地）；新都桂湖30.39亩底价成交。</li>
           <li><strong>规证端：</strong>本周新增轨道交通犀浦110亩项目（郫都区犀浦板块，净用地73,369.50㎡约110亩，容积率2.00，计容建面146,739㎡，1,219户）。建设单位为成都金牛区梓郡轨道城市发展有限公司，TOD综合开发，含9班幼儿园及健身设施。2021年1月获取地块，本周进入建设工程规划许可公示阶段。</li>
@@ -953,6 +953,45 @@ const OLD_VIEWING = [["2025W21",24],["2025W22",24],["2025W23",28],["2025W24",24]
 const OLD_SUPPLY_DEMAND = [["2025W21",6181,1709,16835,14196],["2025W22",5262,1391,17278,14992],["2025W23",6891,1854,17325,14183],["2025W24",6321,1717,17487,13926],["2025W25",6584,1592,16960,13610],["2025W26",6352,1544,17271,14151],["2025W27",6656,1641,17286,13965],["2025W28",6246,1641,16955,14077],["2025W29",5844,1522,16588,13759],["2025W30",8343,1556,21303,13832],["2025W31",6078,1434,18133,14297],["2025W32",5791,1359,17271,13926],["2025W33",6191,1458,17192,13272],["2025W34",6529,1516,17640,13824],["2025W35",6409,1489,17421,13799],["2025W36",7212,1605,17413,13839],["2025W37",7307,1716,17477,13430],["2025W38",6719,1644,16911,13857],["2025W39",6362,1448,17530,13835],["2025W40",4205,981,16897,13676],["2025W41",6721,1674,16871,13625],["2025W42",6777,1715,17143,13843],["2025W43",6125,1604,17010,13785],["2025W44",5947,1568,17014,13806],["2025W45",6172,1482,17031,13009],["2025W46",5878,1293,16792,13327],["2025W47",5882,1302,16661,13302],["2025W48",6075,1300,16382,13262],["2025W49",6082,1272,16990,12959],["2025W50",5701,1286,17328,13053],["2025W51",5415,1282,16919,13189],["2025W52",5319,1347,17191,12972],["2026W01",5052,1240,17848,12836],["2026W02",6054,1553,17433,13110],["2026W03",5579,1640,16951,13041],["2026W04",4980,1560,17200,13135],["2026W05",4919,1418,16972,12976],["2026W06",3633,1263,16389,13684],["2026W07",1380,552,16626,13971],["2026W08",557,41,15760,12343],["2026W09",8634,1607,16286,12389],["2026W10",7919,2415,16872,12780],["2026W11",7633,2643,16663,12706],["2026W12",7219,2544,17200,12952],["2026W13",6608,2419,16565,12971],["2026W14",5868,1928,16626,12880],["2026W15",6825,2426,16771,12768],["2026W16",6376,2121,16933,12915],["2026W17",6007,1934,17576,13101],["2026W18",4659,1474,16981,12904],["2026W19",6168,2079,17242,12919],["2026W20",6097,1911,17272,13127]];
 const OLD_CYCLE = [["2025W21",134,94],["2025W22",132,98],["2025W23",135,97],["2025W24",141,95],["2025W25",132,92],["2025W26",135,93],["2025W27",138,90],["2025W28",140,92],["2025W29",138,97],["2025W30",136,99],["2025W31",132,94],["2025W32",136,96],["2025W33",135,100],["2025W34",133,104],["2025W35",133,108],["2025W36",128,102],["2025W37",131,99],["2025W38",132,108],["2025W39",131,102],["2025W40",128,97],["2025W41",132,91],["2025W42",128,106],["2025W43",132,107],["2025W44",134,98],["2025W45",129,100],["2025W46",126,103],["2025W47",128,99],["2025W48",127,103],["2025W49",128,112],["2025W50",129,99],["2025W51",135,108],["2025W52",131,103],["2026W01",140,102],["2026W02",138,106],["2026W03",145,97],["2026W04",136,99],["2026W05",147,100],["2026W06",140,98],["2026W07",164,91],["2026W08",134,113],["2026W09",158,102],["2026W10",154,103],["2026W11",157,97],["2026W12",163,96],["2026W13",153,91],["2026W14",151,90],["2026W15",153,98],["2026W16",152,91],["2026W17",151,95],["2026W18",149,97],["2026W19",152,96],["2026W20",158,95]];
 const OLD_DEMAND = [["2025W21",153568,44159,1709],["2025W22",144109,35206,1391],["2025W23",171267,48557,1854],["2025W24",157983,40993,1717],["2025W25",161338,40798,1592],["2025W26",158785,39981,1544],["2025W27",156197,39327,1641],["2025W28",157304,41149,1641],["2025W29",149599,35663,1522],["2025W30",156774,37904,1556],["2025W31",142425,34843,1434],["2025W32",142504,35273,1359],["2025W33",146167,39024,1458],["2025W34",147600,39216,1516],["2025W35",140749,37172,1489],["2025W36",143769,44873,1605],["2025W37",141978,44667,1716],["2025W38",135700,40921,1644],["2025W39",126053,36397,1448],["2025W40",107351,29858,981],["2025W41",147200,42835,1674],["2025W42",126127,44323,1715],["2025W43",122303,38893,1604],["2025W44",126286,39344,1568],["2025W45",125200,39800,1482],["2025W46",114964,36258,1293],["2025W47",113653,35037,1302],["2025W48",116568,37362,1300],["2025W49",118323,37595,1272],["2025W50",116813,37465,1286],["2025W51",116446,34961,1282],["2025W52",116509,36185,1347],["2026W01",109609,28209,1240],["2026W02",122381,40307,1553],["2026W03",112321,40583,1640],["2026W04",115933,34666,1560],["2026W05",105140,33111,1418],["2026W06",92568,25022,1263],["2026W07",66788,6959,552],["2026W08",69873,2327,41],["2026W09",161058,44387,1607],["2026W10",164195,47095,2415],["2026W11",176056,50448,2643],["2026W12",169892,50323,2544],["2026W13",162332,45575,2419],["2026W14",137965,39267,1928],["2026W15",146336,47287,2426],["2026W16",148494,43189,2121],["2026W17",143458,41580,1934],["2026W18",129353,33449,1474],["2026W19",147216,43873,2079],["2026W20",143243,40557,1911]];
+
+// ===== 预售/现售项目 按周存储 =====
+var PRESALE_DATA = {
+  "2026W20": {
+    summary: {
+      projectCount: 19,
+      residentCount: 1163,
+      totArea: 199505,
+      dateRange: "2026.5.11 — 5.17",
+      priceLow: 7818,
+      priceLowRegion: "金堂县",
+      priceHigh: 116761,
+      priceHighRegion: "天府新区"
+    },
+    projects: [
+      {pid:"510116202683532",name:"朗栖成园",region:"双流区",address:"双流区温家山路88号",date:"2026-05-15",scope:"3号楼及对应地下室",residentCount:28,avgPrice:25711.21,totArea:8600.58,pos:[103.926,30.566],usage:"住宅"},
+      {pid:"510105202683531",name:"观云苑",region:"青羊区",address:"成都市青羊区光彩路88号",date:"2026-05-15",scope:"2、3、4号楼及对应地下车位",residentCount:156,avgPrice:27017.21,totArea:23222.44,pos:[104.056,30.678],usage:"住宅"},
+      {pid:"510108202683530",name:"滨江峯萃名邸",region:"成华区",address:"成都市成华区御风一路51号",date:"2026-05-15",scope:"3栋",residentCount:34,avgPrice:36981,totArea:6400.71,pos:[104.116,30.67],usage:"住宅"},
+      {pid:"510108202683529",name:"滨江峯萃名邸",region:"成华区",address:"成都市成华区御风一路51号",date:"2026-05-15",scope:"4号楼",residentCount:33,avgPrice:36193.05,totArea:4596.78,pos:[104.116,30.67],usage:"住宅"},
+      {pid:"510110202683528",name:"保利创智锦城",region:"天府新区",address:"天府新区华阳街道伏龙北巷268号",date:"现房",scope:"36号楼",residentCount:6,avgPrice:13489.38,totArea:728.21,pos:[104.068,30.471],usage:"住宅"},
+      {pid:"510110202683527",name:"卓萃名邸",region:"天府新区",address:"四川省成都市天府新区和景四街566号",date:"2026-05-15",scope:"4、7号楼及对应地下车位",residentCount:64,avgPrice:31341.96,totArea:11258.64,pos:[104.074,30.492],usage:"住宅"},
+      {pid:"510182202683526",name:"龙兴合锦小区",region:"彭州市",address:"彭州市延秀街300号",date:"2026-05-15",scope:"11栋 14栋",residentCount:39,avgPrice:18547,totArea:11143.7,pos:[103.96,30.992],usage:"住宅"},
+      {pid:"510108202683525",name:"天宸上院",region:"成华区",address:"成华区和悦路239号",date:"2026-05-15",scope:"4栋",residentCount:66,avgPrice:35061,totArea:13030.45,pos:[104.121,30.675],usage:"住宅"},
+      {pid:"510104202683524",name:"海耀小区",region:"锦江区",address:"锦江区国安街501号",date:"2026-05-15",scope:"5栋",residentCount:23,avgPrice:80338,totArea:8215.86,pos:[104.091,30.606],usage:"住宅"},
+      {pid:"510121202683523",name:"清凤阅江源小区",region:"金堂县",address:"金堂县环岛路上段199号",date:"2026-05-15",scope:"3栋",residentCount:50,avgPrice:9827,totArea:9293.72,pos:[104.415,30.865],usage:"住宅"},
+      {pid:"510117202683522",name:"和喜域峰名邸",region:"郫都区",address:"成都市郫都区清江三街7号（临）",date:"2026-05-14",scope:"8栋 9栋",residentCount:58,avgPrice:13032,totArea:6479.66,pos:[103.9,30.798],usage:"住宅"},
+      {pid:"510117202683521",name:"国宾名邸",region:"郫都区",address:"郫都区金粮路840号（临）",date:"2026-05-14",scope:"4栋",residentCount:34,avgPrice:21392,totArea:4829.24,pos:[103.912,30.79],usage:"住宅"},
+      {pid:"510110202683520",name:"麓湖生态城",region:"天府新区",address:"四川省成都市天府新区澄湾路435号（临）",date:"2026-05-14",scope:"6-16栋",residentCount:66,avgPrice:116761,totArea:27080.01,pos:[104.081,30.467],usage:"住宅"},
+      {pid:"510109202683519",name:"成都高新瑞玺小区",region:"高新区",address:"成都市高新区南华路56号",date:"2026-05-13",scope:"7栋",residentCount:16,avgPrice:105000,totArea:3836.67,pos:[104.052,30.569],usage:"住宅"},
+      {pid:"510182202683518",name:"锦湖岸小区",region:"彭州市",address:"彭州市致和街道清林街359号",date:"2026-05-13",scope:"6栋 10栋",residentCount:136,avgPrice:8465,totArea:14275.84,pos:[103.955,30.992],usage:"住宅"},
+      {pid:"510182202683517",name:"锦湖岸小区",region:"彭州市",address:"彭州市致和街道清林街359号",date:"2026-05-13",scope:"第3栋",residentCount:68,avgPrice:8394.17,totArea:7137.92,pos:[103.955,30.992],usage:"住宅"},
+      {pid:"510184202683516",name:"御江名门小区",region:"崇州市",address:"崇州市滨江路南三段399号",date:"2026-05-12",scope:"住宅及对应地下室",residentCount:90,avgPrice:9200,totArea:11975.88,pos:[103.677,30.628],usage:"住宅"},
+      {pid:"510115202683612",name:"星河七栖里",region:"温江区",address:"温江区览云二街499号",date:"2026-05-12",scope:"住宅楼栋",residentCount:56,avgPrice:14800,totArea:7818.59,pos:[103.859,30.685],usage:"住宅"},
+      {pid:"510121202683611",name:"金云府珺逸阁（A区）",region:"金堂县",address:"金堂县赵镇西家坝路198号附1号",date:"现房",scope:"7栋、10栋、11栋",residentCount:140,avgPrice:7817.59,totArea:19579.61,pos:[104.417,30.864],usage:"住宅"}
+    ]
+  }
+};
+
+var currentPresaleWeek = "2026W20";
 
 // ===== Smooth scroll =====
 function scrollToSection(id) {
@@ -2259,33 +2298,35 @@ var COLORS = {
 
 // ===== 侧边栏行为 =====
 (function() {
-  // Update active sidebar link on scroll
   var sidebarLinks = document.querySelectorAll('#weeklySidebar a');
+
+  // Update active sidebar link on scroll — respects currentPresaleWeek
   window.addEventListener('scroll', function() {
-    var current = '';
-    document.querySelectorAll('.section').forEach(function(s) {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
     sidebarLinks.forEach(function(a) {
       a.classList.toggle('active', false);
     });
-    // Keep the week-active link active
-    var activeWeek = document.querySelector('#weeklySidebar a[data-week="2026W20"]');
+    var activeWeek = document.querySelector('#weeklySidebar a[data-week="' + currentPresaleWeek + '"]');
     if (activeWeek) activeWeek.classList.add('active');
   });
 
-  // Click on sidebar week links shows placeholder for future weeks
+  // Click handler: switch to week if data exists, else alert
   sidebarLinks.forEach(function(a) {
     a.addEventListener('click', function(e) {
       e.preventDefault();
       var wk = this.dataset.week;
-      if (wk === '2026W20') {
+
+      // Update sidebar active state
+      sidebarLinks.forEach(function(link) { link.classList.remove('active'); });
+      this.classList.add('active');
+
+      if (PRESALE_DATA[wk]) {
+        currentPresaleWeek = wk;
+        renderPresaleSection(wk);
         window.scrollTo({top: 0, behavior: 'smooth'});
-        return;
+      } else {
+        var label = this.textContent.trim();
+        alert('「' + label + '」的周报数据尚未上传。\n\n当前仅展示已录入周次的数据。\n后续每周数据会陆续上线。');
       }
-      // Future weeks: gentle reminder
-      var label = this.textContent.trim();
-      alert('「' + label + '」的周报数据尚未上传。\n\n当前仅展示 2026年第20周 (5.11-5.17) 的数据。\n后续每周数据会陆续上线。');
     });
   });
 })();
@@ -2342,261 +2383,44 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
 })();
 
 // ===== Launch Section (预售/现售项目 AMap + cards) =====
-(function() {
-  var projects = [
-  {
-    pid: "510116202683532",
-    name: "朗栖成园",
-    region: "双流区",
-    address: "双流区温家山路88号",
-    date: "2026-05-15",
-    scope: "3号楼及对应地下室",
-    residentCount: 28,
-    avgPrice: 25711.21,
-    totArea: 8600.58,
-    pos: [103.926, 30.566],
-    usage: "住宅"
-  },
-  {
-    pid: "510105202683531",
-    name: "观云苑",
-    region: "青羊区",
-    address: "成都市青羊区光彩路88号",
-    date: "2026-05-15",
-    scope: "2、3、4号楼及对应地下车位",
-    residentCount: 156,
-    avgPrice: 27017.21,
-    totArea: 23222.44,
-    pos: [104.056, 30.678],
-    usage: "住宅"
-  },
-  {
-    pid: "510108202683530",
-    name: "滨江峯萃名邸",
-    region: "成华区",
-    address: "成都市成华区御风一路51号",
-    date: "2026-05-15",
-    scope: "3栋",
-    residentCount: 34,
-    avgPrice: 36981,
-    totArea: 6400.71,
-    pos: [104.116, 30.67],
-    usage: "住宅"
-  },
-  {
-    pid: "510108202683529",
-    name: "滨江峯萃名邸",
-    region: "成华区",
-    address: "成都市成华区御风一路51号",
-    date: "2026-05-15",
-    scope: "4号楼",
-    residentCount: 33,
-    avgPrice: 36193.05,
-    totArea: 4596.78,
-    pos: [104.116, 30.67],
-    usage: "住宅"
-  },
-  {
-    pid: "510110202683528",
-    name: "保利创智锦城",
-    region: "天府新区",
-    address: "天府新区华阳街道伏龙北巷268号",
-    date: "现房",
-    scope: "36号楼",
-    residentCount: 6,
-    avgPrice: 13489.38,
-    totArea: 728.21,
-    pos: [104.068, 30.471],
-    usage: "住宅"
-  },
-  {
-    pid: "510110202683527",
-    name: "卓萃名邸",
-    region: "天府新区",
-    address: "四川省成都市天府新区和景四街566号",
-    date: "2026-05-15",
-    scope: "4、7号楼及对应地下车位",
-    residentCount: 64,
-    avgPrice: 31341.96,
-    totArea: 11258.64,
-    pos: [104.074, 30.492],
-    usage: "住宅"
-  },
-  {
-    pid: "510182202683526",
-    name: "龙兴合锦小区",
-    region: "彭州市",
-    address: "彭州市延秀街300号",
-    date: "2026-05-15",
-    scope: "11栋 14栋",
-    residentCount: 39,
-    avgPrice: 18547,
-    totArea: 11143.7,
-    pos: [103.96, 30.992],
-    usage: "住宅"
-  },
-  {
-    pid: "510108202683525",
-    name: "天宸上院",
-    region: "成华区",
-    address: "成华区和悦路239号",
-    date: "2026-05-15",
-    scope: "4栋",
-    residentCount: 66,
-    avgPrice: 35061,
-    totArea: 13030.45,
-    pos: [104.121, 30.675],
-    usage: "住宅"
-  },
-  {
-    pid: "510104202683524",
-    name: "海耀小区",
-    region: "锦江区",
-    address: "锦江区国安街501号",
-    date: "2026-05-15",
-    scope: "5栋",
-    residentCount: 23,
-    avgPrice: 80338,
-    totArea: 8215.86,
-    pos: [104.091, 30.606],
-    usage: "住宅"
-  },
-  {
-    pid: "510121202683523",
-    name: "清凤阅江源小区",
-    region: "金堂县",
-    address: "金堂县环岛路上段199号",
-    date: "2026-05-15",
-    scope: "3栋",
-    residentCount: 50,
-    avgPrice: 9827,
-    totArea: 9293.72,
-    pos: [104.415, 30.865],
-    usage: "住宅"
-  },
-  {
-    pid: "510117202683522",
-    name: "和喜域峰名邸",
-    region: "郫都区",
-    address: "成都市郫都区清江三街7号（临）",
-    date: "2026-05-14",
-    scope: "8栋 9栋",
-    residentCount: 58,
-    avgPrice: 13032,
-    totArea: 6479.66,
-    pos: [103.9, 30.798],
-    usage: "住宅"
-  },
-  {
-    pid: "510117202683521",
-    name: "国宾名邸",
-    region: "郫都区",
-    address: "郫都区金粮路840号（临）",
-    date: "2026-05-14",
-    scope: "4栋",
-    residentCount: 34,
-    avgPrice: 21392,
-    totArea: 4829.24,
-    pos: [103.912, 30.79],
-    usage: "住宅"
-  },
-  {
-    pid: "510110202683520",
-    name: "麓湖生态城",
-    region: "天府新区",
-    address: "四川省成都市天府新区澄湾路435号（临）",
-    date: "2026-05-14",
-    scope: "6-16栋",
-    residentCount: 66,
-    avgPrice: 116761,
-    totArea: 27080.01,
-    pos: [104.081, 30.467],
-    usage: "住宅"
-  },
-  {
-    pid: "510109202683519",
-    name: "成都高新瑞玺小区",
-    region: "高新区",
-    address: "成都市高新区南华路56号",
-    date: "2026-05-13",
-    scope: "7栋",
-    residentCount: 16,
-    avgPrice: 105000,
-    totArea: 3836.67,
-    pos: [104.052, 30.569],
-    usage: "住宅"
-  },
-  {
-    pid: "510182202683518",
-    name: "锦湖岸小区",
-    region: "彭州市",
-    address: "彭州市致和街道清林街359号",
-    date: "2026-05-13",
-    scope: "6栋 10栋",
-    residentCount: 136,
-    avgPrice: 8465,
-    totArea: 14275.84,
-    pos: [103.955, 30.992],
-    usage: "住宅"
-  },
-  {
-    pid: "510182202683517",
-    name: "锦湖岸小区",
-    region: "彭州市",
-    address: "彭州市致和街道清林街359号",
-    date: "2026-05-13",
-    scope: "第3栋",
-    residentCount: 68,
-    avgPrice: 8394.17,
-    totArea: 7137.92,
-    pos: [103.955, 30.992],
-    usage: "住宅"
-  },
-  {
-    pid: "510184202683516",
-    name: "御江名门小区",
-    region: "崇州市",
-    address: "崇州市滨江路南三段399号",
-    date: "2026-05-12",
-    scope: "住宅及对应地下室",
-    residentCount: 90,
-    avgPrice: 9200,
-    totArea: 11975.88,
-    pos: [103.677, 30.628],
-    usage: "住宅"
-  },
-  {
-    pid: "510115202683612",
-    name: "星河七栖里",
-    region: "温江区",
-    address: "温江区览云二街499号",
-    date: "2026-05-12",
-    scope: "住宅楼栋",
-    residentCount: 56,
-    avgPrice: 14800,
-    totArea: 7818.59,
-    pos: [103.859, 30.685],
-    usage: "住宅"
-  },
-  {
-    pid: "510121202683611",
-    name: "金云府珺逸阁（A区）",
-    region: "金堂县",
-    address: "金堂县赵镇西家坝路198号附1号",
-    date: "现房",
-    scope: "7栋、10栋、11栋",
-    residentCount: 140,
-    avgPrice: 7817.59,
-    totArea: 19579.61,
-    pos: [104.417, 30.864],
-    usage: "住宅"
-  },
-];
+var _presaleRenderGen = 0;
 
+function renderPresaleSection(weekKey) {
+  var data = PRESALE_DATA[weekKey];
+  if (!data) return;
 
-  // Render project cards
+  var s = data.summary;
+  var projects = data.projects;
+
+  // Update KPI
+  var kpiEl = document.getElementById('kpiPresaleCount');
+  if (kpiEl) {
+    kpiEl.innerHTML = s.projectCount + '<span style="font-size:16px;font-weight:400;"> 个</span>';
+  }
+
+  // Update launch summary
+  var sumEl = document.getElementById('launchSummary');
+  if (sumEl) {
+    sumEl.innerHTML = '上周（<strong>' + s.dateRange + '</strong>）住建蓉e办共公示 <strong>' + s.projectCount + '</strong> 个预售/现售项目（含住宅），合计住宅预售建筑面积约 <strong>' + s.totArea.toLocaleString() + '㎡</strong>，住宅房源共 <strong>' + s.residentCount.toLocaleString() + '</strong> 套。点击地图标记查看详情。';
+  }
+
+  // Update summary bullet (取证端)
+  var top3 = projects.slice().sort(function(a,b){ return (b.totArea||0) - (a.totArea||0); }).slice(0,3);
+  var top3Str = top3.map(function(p){
+    return p.name + '（' + (p.residentCount||0) + '套/' + ((p.totArea||0)/10000).toFixed(1) + '万㎡）';
+  }).join('、');
+
+  var summaryEl = document.getElementById('summaryPresale');
+  if (summaryEl) {
+    summaryEl.innerHTML = '<strong>取证端：</strong>W20住建蓉e办新增预售/现售项目' + s.projectCount + '个（含住宅），取证房源' + s.residentCount.toLocaleString() + '套、预售建面约' + (s.totArea/10000).toFixed(1) + '万㎡。' +
+      '主力项目：' + top3Str + '。' +
+      '价格跨度大（' + s.priceLowRegion + s.priceLow.toLocaleString() + '元/㎡—' + s.priceHighRegion + s.priceHigh.toLocaleString() + '元/㎡）。';
+  }
+
+  // Clear and rebuild project cards
   var listEl = document.getElementById('launchList');
   if (listEl) {
+    listEl.innerHTML = '';
     projects.forEach(function(p, i) {
       var ratio = p.residentCount ? (p.totArea / p.residentCount).toFixed(2) : '--';
       var priceStr = p.avgPrice ? p.avgPrice.toLocaleString('zh-CN') + ' 元/㎡' : '暂无数据';
@@ -2621,11 +2445,11 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
         '<div class="lc-scope">销售范围：' + p.scope + ' | 地址：' + p.address + '</div>';
 
       card.addEventListener('click', function() {
-        var marker = window._launchMarkers && window._launchMarkers[i];
-        if (marker && window._launchMap) {
-          window._launchMap.setCenter(marker.getPosition());
+        var m = window._launchMarkers && window._launchMarkers[i];
+        if (m && window._launchMap) {
+          window._launchMap.setCenter(m.getPosition());
           window._launchMap.setZoom(15);
-          marker.emit('click');
+          m.emit('click');
         }
         document.querySelectorAll('.launch-card').forEach(function(c) { c.classList.remove('active'); });
         card.classList.add('active');
@@ -2635,94 +2459,103 @@ document.querySelectorAll('#rankingTabs .tab-btn').forEach(function(btn) {
     });
   }
 
-  // Initialize AMap
-  function initMap() {
+  // Rebuild map markers
+  _presaleRenderGen++;
+  var gen = _presaleRenderGen;
+
+  function initMapMarkers() {
     if (typeof AMap === 'undefined') {
-      setTimeout(initMap, 200);
+      setTimeout(initMapMarkers, 200);
       return;
     }
 
     var mapContainer = document.getElementById('launchProjectMap');
     if (!mapContainer || mapContainer.offsetHeight === 0) return;
 
-    var map = new AMap.Map('launchProjectMap', {
-      center: [104.065735, 30.659462],
-      zoom: 9,
-      mapStyle: 'amap://styles/light'
-    });
+    var map = window._launchMap;
+    if (!map) {
+      map = new AMap.Map('launchProjectMap', {
+        center: [104.065735, 30.659462],
+        zoom: 9,
+        mapStyle: 'amap://styles/light'
+      });
+      window._launchMap = map;
+      AMap.plugin(['AMap.Geocoder', 'AMap.ToolBar'], function() {
+        map.addControl(new AMap.ToolBar({ position: 'RT' }));
+      });
+    }
 
-    window._launchMap = map;
+    map.clearMap();
     window._launchMarkers = [];
 
-    AMap.plugin(['AMap.Geocoder', 'AMap.ToolBar'], function() {
-      map.addControl(new AMap.ToolBar({ position: 'RT' }));
+    var geocoder = new AMap.Geocoder();
+    var pending = projects.length;
 
-      var geocoder = new AMap.Geocoder();
-      var pending = projects.length;
+    projects.forEach(function(p, i) {
+      geocoder.getLocation(p.address, function(status, result) {
+        if (gen !== _presaleRenderGen) return;
 
-      projects.forEach(function(p, i) {
-        geocoder.getLocation(p.address, function(status, result) {
-          pending--;
+        pending--;
 
-          var lng, lat;
-          if (status === 'complete' && result.info === 'OK') {
-            var loc = result.geocodes[0].location;
-            lng = loc.lng;
-            lat = loc.lat;
-          }
-          // Fallback to pre-computed coordinates
-          if (!lng && p.pos) {
-            lng = p.pos[0];
-            lat = p.pos[1];
-          }
+        var lng, lat;
+        if (status === 'complete' && result.info === 'OK') {
+          var loc = result.geocodes[0].location;
+          lng = loc.lng;
+          lat = loc.lat;
+        }
+        if (!lng && p.pos) { lng = p.pos[0]; lat = p.pos[1]; }
 
-          if (lng && lat) {
-            var priceStr2 = p.avgPrice ? '<br>均价：' + p.avgPrice.toLocaleString() + ' 元/㎡' : '';
-            var countStr2 = p.residentCount ? p.residentCount + '套' : '套数暂无';
-            var ratio2 = p.residentCount ? (p.totArea / p.residentCount).toFixed(2) : '--';
+        if (lng && lat) {
+          var priceStr2 = p.avgPrice ? '<br>均价：' + p.avgPrice.toLocaleString() + ' 元/㎡' : '';
+          var countStr2 = p.residentCount ? p.residentCount + '套' : '套数暂无';
+          var ratio2 = p.residentCount ? (p.totArea / p.residentCount).toFixed(2) : '--';
 
-            var content =
-              '<div style="padding:8px;min-width:200px;">' +
-                '<h4 style="margin:0 0 6px;color:#1a3a5c;">' + p.name + '</h4>' +
-                '<p style="margin:2px 0;font-size:12px;">预售证号：' + p.pid + '</p>' +
-                '<p style="margin:2px 0;font-size:12px;">区域：' + p.region + ' | 日期：' + p.date + '</p>' +
-                '<p style="margin:2px 0;font-size:12px;">销售范围：' + p.scope + '</p>' +
-                '<p style="margin:2px 0;font-size:12px;">住宅套数：' + countStr2 + ' | 面积：' + p.totArea.toLocaleString() + '㎡' +
-                priceStr2 + '</p>' +
-                '<p style="margin:2px 0;font-size:12px;">建筑面积/套：' + ratio2 + '㎡/套</p>' +
-              '</div>';
+          var content =
+            '<div style="padding:8px;min-width:200px;">' +
+              '<h4 style="margin:0 0 6px;color:#1a3a5c;">' + p.name + '</h4>' +
+              '<p style="margin:2px 0;font-size:12px;">预售证号：' + p.pid + '</p>' +
+              '<p style="margin:2px 0;font-size:12px;">区域：' + p.region + ' | 日期：' + p.date + '</p>' +
+              '<p style="margin:2px 0;font-size:12px;">销售范围：' + p.scope + '</p>' +
+              '<p style="margin:2px 0;font-size:12px;">住宅套数：' + countStr2 + ' | 面积：' + p.totArea.toLocaleString() + '㎡' +
+              priceStr2 + '</p>' +
+              '<p style="margin:2px 0;font-size:12px;">建筑面积/套：' + ratio2 + '㎡/套</p>' +
+            '</div>';
 
-            var marker = new AMap.Marker({
-              position: [lng, lat],
-              title: p.name,
-              content: '<div style="background:#c41230;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);">' + p.name + '</div>',
-              offset: new AMap.Pixel(-20, -12)
+          var marker = new AMap.Marker({
+            position: [lng, lat],
+            title: p.name,
+            content: '<div style="background:#c41230;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);">' + p.name + '</div>',
+            offset: new AMap.Pixel(-20, -12)
+          });
+
+          marker.on('click', function() {
+            var infoWin = new AMap.InfoWindow({
+              content: content,
+              offset: new AMap.Pixel(0, -30)
             });
+            infoWin.open(map, marker.getPosition());
+          });
 
-            marker.on('click', function() {
-              var infoWin = new AMap.InfoWindow({
-                content: content,
-                offset: new AMap.Pixel(0, -30)
-              });
-              infoWin.open(map, marker.getPosition());
-            });
+          map.add(marker);
+          window._launchMarkers[i] = marker;
+        }
 
-            map.add(marker);
-            window._launchMarkers[i] = marker;
-          }
-
-          if (pending === 0 && window._launchMarkers.length > 0) {
-            map.setFitView(null, false, [60, 60, 400, 60]);
-          }
-        });
+        if (pending === 0 && window._launchMarkers.length > 0) {
+          map.setFitView(null, false, [60, 60, 400, 60]);
+        }
       });
     });
   }
 
+  initMapMarkers();
+}
+
+// Initialize on DOM ready
+(function() {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initMap);
+    document.addEventListener('DOMContentLoaded', function() { renderPresaleSection('2026W20'); });
   } else {
-    initMap();
+    renderPresaleSection('2026W20');
   }
 })();
 
