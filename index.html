@@ -2289,6 +2289,7 @@ var COLORS = {
       if (PRESALE_DATA[wk]) {
         currentPresaleWeek = wk;
         renderPresaleSection(wk);
+	        updateMainKPIs(wk);
         window.scrollTo({top: 0, behavior: 'smooth'});
       } else {
         var label = this.textContent.trim();
@@ -2297,6 +2298,45 @@ var COLORS = {
     });
   });
 })();
+
+// Update main KPI cards (supply/sales/price/ratio) for a given week
+function updateMainKPIs(weekKey) {
+  var d = newHomeData.all;
+  var idx = d.labels.indexOf(weekKey);
+  if (idx < 0) return;
+
+  var curS = d.supply[idx], prevS = idx > 0 ? d.supply[idx-1] : curS;
+  var curX = d.sales[idx],  prevX = idx > 0 ? d.sales[idx-1]  : curX;
+  var curP = d.price[idx],  prevP = idx > 0 ? d.price[idx-1]  : curP;
+
+  function fmtChg(cur, prev) {
+    if (prev === 0) return { html: '--', cls: '' };
+    var chg = ((cur - prev) / prev * 100);
+    var arrow = chg >= 0 ? '↑' : '↓';
+    return { html: arrow + ' ' + Math.abs(chg).toFixed(1) + '% 环比', cls: chg >= 0 ? 'up' : 'down' };
+  }
+
+  document.getElementById('kpiSupply').innerHTML = curS.toLocaleString() + '<span style="font-size:16px;font-weight:400;"> 套</span>';
+  var sChg = fmtChg(curS, prevS);
+  var sEl = document.getElementById('kpiSupplyChg');
+  sEl.textContent = sChg.html; sEl.className = 'change ' + sChg.cls;
+
+  document.getElementById('kpiSales').innerHTML = curX.toLocaleString() + '<span style="font-size:16px;font-weight:400;"> 套</span>';
+  var xChg = fmtChg(curX, prevX);
+  var xEl = document.getElementById('kpiSalesChg');
+  xEl.textContent = xChg.html; xEl.className = 'change ' + xChg.cls;
+
+  document.getElementById('kpiPrice').innerHTML = Math.round(curP).toLocaleString() + '<span style="font-size:16px;font-weight:400;"> 元/㎡</span>';
+  var pChg = fmtChg(curP, prevP);
+  var pEl = document.getElementById('kpiPriceChg');
+  pEl.textContent = pChg.html; pEl.className = 'change ' + pChg.cls;
+
+  var ratio = curX > 0 ? curS / curX : 0;
+  document.getElementById('kpiRatio').textContent = ratio.toFixed(2);
+  var rNote = document.getElementById('kpiRatioNote');
+  rNote.textContent = ratio < 0.5 ? '供远小于求' : ratio < 0.8 ? '供小于求' : ratio < 1.2 ? '供需平衡' : '供大于求';
+  rNote.style.color = 'var(--muted)';
+}
 
 
 // Hook into ranking tab switch to init plate map lazily
