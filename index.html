@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>成都房地产市场周报 | 2026年第21周 (5.18-5.24)</title>
+<title>成都房地产市场周报 | 2026年第22周 (5.25-5.31)</title>
 <script>
 window._AMapSecurityConfig = {
   securityJsCode: '042cd6c07dab9e0a1f78fe505e23989d'
@@ -2451,7 +2451,7 @@ function renderPresaleSection(weekKey) {
   if (summaryEl) {
     summaryEl.innerHTML = '<strong>取证端：</strong>' + s.dateRange + '住建蓉e办新增预售/现售项目' + s.projectCount + '个（含住宅），取证房源' + s.residentCount.toLocaleString() + '套、预售建面约' + (s.totArea/10000).toFixed(1) + '万㎡。' +
       '主力项目：' + top3Str + '。' +
-      '价格跨度大（' + s.priceLowRegion + s.priceLow.toLocaleString() + '元/㎡—' + s.priceHighRegion + s.priceHigh.toLocaleString() + '元/㎡）。';
+      (s.priceLow != null ? '价格跨度大（' + s.priceLowRegion + s.priceLow.toLocaleString() + '元/㎡—' + s.priceHighRegion + s.priceHigh.toLocaleString() + '元/㎡）。' : '价格数据待补充。');
   }
 
   // Clear and rebuild project cards
