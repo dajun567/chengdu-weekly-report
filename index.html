@@ -2523,9 +2523,55 @@ function renderPresaleSection(weekKey) {
     var pending = projects.length;
 
     projects.forEach(function(p, i) {
+      // Use explicit pos first; fall back to geocoding only if pos is missing
+      function addMarker(lng, lat) {
+        if (!lng || !lat) return;
+        var priceStr2 = p.avgPrice ? (typeof p.avgPrice === 'string' ? p.avgPrice : p.avgPrice.toLocaleString('zh-CN')) + ' 元/㎡' : '暂无数据';
+        var countStr2 = p.residentCount ? p.residentCount + '套' : '套数暂无';
+        var unitStr2 = p.unitArea ? p.unitArea + '㎡' : (p.residentCount ? (p.totArea / p.residentCount).toFixed(2) + '㎡/套' : '--');
+
+        var content =
+          '<div style="padding:8px;min-width:200px;">' +
+            '<h4 style="margin:0 0 6px;color:#1a3a5c;">' + p.name + '</h4>' +
+            '<p style="margin:2px 0;font-size:12px;">预售证号：' + p.pid + '</p>' +
+            '<p style="margin:2px 0;font-size:12px;">区域：' + p.region + ' | 日期：' + p.date + '</p>' +
+            '<p style="margin:2px 0;font-size:12px;">销售范围：' + p.scope + '</p>' +
+            '<p style="margin:2px 0;font-size:12px;">住宅套数：' + countStr2 + ' | 面积：' + p.totArea.toLocaleString() + '㎡' +
+            priceStr2 + '</p>' +
+            '<p style="margin:2px 0;font-size:12px;">户型建面：' + unitStr2 + '</p>' +
+          '</div>';
+
+        var marker = new AMap.Marker({
+          position: [lng, lat],
+          title: p.name,
+          content: '<div style="background:#c41230;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);">' + p.name + '</div>',
+          offset: new AMap.Pixel(-20, -12)
+        });
+
+        marker.on('click', function() {
+          var infoWin = new AMap.InfoWindow({
+            content: content,
+            offset: new AMap.Pixel(0, -30)
+          });
+          infoWin.open(map, marker.getPosition());
+        });
+
+        map.add(marker);
+        window._launchMarkers[i] = marker;
+      }
+
+      // Priority: explicit pos coordinates > geocoding result
+      if (p.pos && p.pos.length === 2 && p.pos[0] && p.pos[1]) {
+        addMarker(p.pos[0], p.pos[1]);
+        pending--;
+        if (pending === 0 && window._launchMarkers.length > 0) {
+          map.setFitView(null, false, [60, 60, 400, 60]);
+        }
+        return;
+      }
+
       geocoder.getLocation(p.address, function(status, result) {
         if (gen !== _presaleRenderGen) return;
-
         pending--;
 
         var lng, lat;
@@ -2534,42 +2580,8 @@ function renderPresaleSection(weekKey) {
           lng = loc.lng;
           lat = loc.lat;
         }
-        if (!lng && p.pos) { lng = p.pos[0]; lat = p.pos[1]; }
 
-        if (lng && lat) {
-          var priceStr2 = p.avgPrice ? '<br>均价：' + p.avgPrice.toLocaleString() + ' 元/㎡' : '';
-          var countStr2 = p.residentCount ? p.residentCount + '套' : '套数暂无';
-          var ratio2 = p.residentCount ? (p.totArea / p.residentCount).toFixed(2) : '--';
-
-          var content =
-            '<div style="padding:8px;min-width:200px;">' +
-              '<h4 style="margin:0 0 6px;color:#1a3a5c;">' + p.name + '</h4>' +
-              '<p style="margin:2px 0;font-size:12px;">预售证号：' + p.pid + '</p>' +
-              '<p style="margin:2px 0;font-size:12px;">区域：' + p.region + ' | 日期：' + p.date + '</p>' +
-              '<p style="margin:2px 0;font-size:12px;">销售范围：' + p.scope + '</p>' +
-              '<p style="margin:2px 0;font-size:12px;">住宅套数：' + countStr2 + ' | 面积：' + p.totArea.toLocaleString() + '㎡' +
-              priceStr2 + '</p>' +
-              '<p style="margin:2px 0;font-size:12px;">建筑面积/套：' + ratio2 + '㎡/套</p>' +
-            '</div>';
-
-          var marker = new AMap.Marker({
-            position: [lng, lat],
-            title: p.name,
-            content: '<div style="background:#c41230;color:#fff;padding:3px 8px;border-radius:12px;font-size:11px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);">' + p.name + '</div>',
-            offset: new AMap.Pixel(-20, -12)
-          });
-
-          marker.on('click', function() {
-            var infoWin = new AMap.InfoWindow({
-              content: content,
-              offset: new AMap.Pixel(0, -30)
-            });
-            infoWin.open(map, marker.getPosition());
-          });
-
-          map.add(marker);
-          window._launchMarkers[i] = marker;
-        }
+        addMarker(lng, lat);
 
         if (pending === 0 && window._launchMarkers.length > 0) {
           map.setFitView(null, false, [60, 60, 400, 60]);
